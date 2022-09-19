@@ -17,40 +17,42 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
-      catchError(err => {
-        if (err) {
-          switch (err.status) {
+      catchError(error => {
+        if (error) {
+          switch (error.status) {
             case 400:
-              if (err.error.errors) {
+              if (error.error.errors) {
                 const modalStateErrors = [];
-                for (const key in err.error.errors) {
-                  if (err.error.errors[key]) {
-                    modalStateErrors.push(err.error.errors[key]);
+                for (const key in error.error.errors) {
+                  if (error.error.errors[key]) {
+                    modalStateErrors.push(error.error.errors[key]);
                   }
                 }
                 throw modalStateErrors.flat();
+              } else if (typeof (error.error) === 'object') {
+                this.toastr.error(error.error.title, error.status);
               } else {
-                this.toastr.error(err.statusText, err.status);
+                this.toastr.error(error.error, error.status)
               }
               break;
             case 401:
-              this.toastr.error(err.statusText, err.status)
+              this.toastr.error(error.statusText, error.status)
               break;
             case 404:
               this.router.navigateByUrl('/not-found');
               break;
             case 500:
-              const navigationExtras: NavigationExtras = {state: {error: err.error}};
+              const navigationExtras: NavigationExtras = {state: {error: error.error}};
               this.router.navigateByUrl('/server-error', navigationExtras);
               break;
             default:
               this.toastr.error('Something unexpected went wrong');
-              console.log(err);
+              console.log(error);
               break;
             
           }
         }
-        return throwError(err);
+        return throwError(error);
       })
     );
   }
