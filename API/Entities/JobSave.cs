@@ -13,5 +13,5 @@ namespace API.Entities
         public AppUser SavedUser{get;set;}
 
         public int SavedUserId{get;set;}
-    }
+    } 
 }
