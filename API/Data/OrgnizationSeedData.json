@@ -1,0 +1,14 @@
+[
+    {
+      "Id": 0,
+      "Name": "Spring Reed",
+      "Introduction": "Lorem ipsum dolor sit amet",
+      "Established": 2008,
+      "Photos": [
+        {
+          "Url": "https://randomuser.me/api/portraits/women/54.jpg",
+          "IsMain": true
+        }
+      ]
+    }
+]
