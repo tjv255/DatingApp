@@ -7,6 +7,8 @@ on:
   push:
     branches:
       - CAP_24_A_DB_TV
+    paths:
+      - 'client/**'
   workflow_dispatch:
 
 jobs:
