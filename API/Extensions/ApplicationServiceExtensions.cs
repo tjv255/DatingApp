@@ -19,6 +19,9 @@ namespace API.Extensions
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<LogUserActivity>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+
+
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddDbContext<DataContext>(options =>
             {
