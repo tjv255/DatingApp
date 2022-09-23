@@ -10,7 +10,7 @@ namespace API.Entities
          public int Id{get;set;}
          public string Title{get;set;}
 
-         public Organization Organization{get;set;}
+       //  public Organization Organization{get;set;}
         public int OrgId{get;set;}
 
         public AppUser JobPoster{get;set;}
