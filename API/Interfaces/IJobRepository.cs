@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.DTOs;
 using API.Entities;
 
 namespace API.Interfaces
@@ -10,9 +11,12 @@ namespace API.Interfaces
     {
        // void Update(Job job);
 		Task<bool> SaveAllAsync();
-		//Task<List<Job>> GetJobsAsync();
+		Task<IEnumerable<Job>> GetJobsAsync();
 		Task<Job> GetJobByIdAsync(int id);
+        //Task<Job> GetJobByTitleAsync(string title);
 		//Task<bool> DeleteJobAsync(int id);
         //Task<List<Job>> GetJobsByPosterIdAsync(int id);
+        Task<IEnumerable<JobDto>> GetMemberJobsAsync();
+        Task<JobDto> GetMemberJobAsync();
     }
 }
