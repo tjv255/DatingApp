@@ -7,8 +7,8 @@ namespace API.Entities
 {
     public class Job
     {
-        public int Id{get;set;}
-        public string Title{get;set;}
+         public int Id{get;set;}
+         public string Title{get;set;}
 
          public Organization Organization{get;set;}
         public int OrgId{get;set;}
@@ -29,6 +29,7 @@ namespace API.Entities
         public DateTime DateCreated{get;set;} = DateTime.Now;
         public DateTime Deadline{get;set;} = DateTime.Now;
         public DateTime LastUpdated{get;set;} = DateTime.Now;
+       
         
     }
 }

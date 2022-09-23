@@ -182,6 +182,67 @@ namespace API.Data.Migrations
                     b.ToTable("Groups");
                 });
 
+            modelBuilder.Entity("API.Entities.Job", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ApplicationUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("City")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Deadline")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Genres")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("JobPosterId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("JobType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LogoUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("OrgId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ProvinceOrState")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Salary")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SkillsRequired")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JobPosterId");
+
+                    b.ToTable("Jobs");
+                });
+
             modelBuilder.Entity("API.Entities.Message", b =>
                 {
                     b.Property<int>("Id")
@@ -375,6 +436,17 @@ namespace API.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("API.Entities.Job", b =>
+                {
+                    b.HasOne("API.Entities.AppUser", "JobPoster")
+                        .WithMany("SavedJobs")
+                        .HasForeignKey("JobPosterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("JobPoster");
+                });
+
             modelBuilder.Entity("API.Entities.Message", b =>
                 {
                     b.HasOne("API.Entities.AppUser", "Recipient")
@@ -476,6 +548,8 @@ namespace API.Data.Migrations
                     b.Navigation("MessagesSent");
 
                     b.Navigation("Photos");
+
+                    b.Navigation("SavedJobs");
 
                     b.Navigation("UserRoles");
                 });

@@ -8,11 +8,11 @@ namespace API.Interfaces
 {
     public interface IJobRepository
     {
-        void Update(Job job);
+       // void Update(Job job);
 		Task<bool> SaveAllAsync();
-		Task<IEnumerable<Job>> GetJobsAsync();
+		//Task<List<Job>> GetJobsAsync();
 		Task<Job> GetJobByIdAsync(int id);
-		Task<bool> DeleteJob(int id);
-        
+		//Task<bool> DeleteJobAsync(int id);
+        //Task<List<Job>> GetJobsByPosterIdAsync(int id);
     }
 }

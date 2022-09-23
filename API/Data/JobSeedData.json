@@ -1,18 +1,21 @@
 [
-    {
-        "Id": 0,
-        "Title": "Electric Drummer",
-        "OrgId": 0,
-        "JobPosterId": 0,
-        "Description": "Lorem ipsum dolor sit amet",
-        "Salary": 5000,
-        "City": "Los Angeles",
-        "ProvinceOrState": "California",
-        "Country": "USA",
-        "Generes": ["Alternative", "Hip Hop"],
-        "JobType": "Contract",
-        "SkilledRequired": ["Electric drum"],
-        "ApplicationUrl":"https://google.com",
-        "Deadline": "2022-12-12"
-    }
+  {
+    "Id": 0,
+    "Title": "Electric Drummer",
+    "OrgId": 0,
+    "JobPosterId": 0,
+    "LogoUrl": "",
+    "Description": "Lorem ipsum dolor sit amet",
+    "Salary": 5000,
+    "City": "Los Angeles",
+    "ProvinceOrState": "California",
+    "Country": "USA",
+    "Generes": "Hip Hop",
+    "JobType": "Contract",
+    "SkilledRequired": "Electric drum",
+    "ApplicationUrl": "https://google.com",
+    "Deadline": "2022-12-12",
+    "DateCreated": "2022-12-12",
+    "LastUpdated": "2022-12-12"
+  }
 ]
