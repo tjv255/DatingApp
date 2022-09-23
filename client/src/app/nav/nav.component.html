@@ -45,21 +45,21 @@
       </ul>
     </div>
 
-    <form *ngIf="(accountService.currentUser$ | async) === null" #loginform="ngForm" class="d-flex" role="search" (ngSubmit)="login()" 
+    <form *ngIf="(accountService.currentUser$ | async) === null" #loginform="ngForm" class="d-flex align-items-center" role="search" (ngSubmit)="login()" 
       autocomplete="off">
       <input 
         name="usename"
         [(ngModel)]="model.username"
-        class="form-control me-2" 
+        class="form-control me-2 rounded" 
         type="text" 
         placeholder="Username">
       <input 
         name="password"
         [(ngModel)]="model.password"
-        class="form-control me-2" 
+        class="form-control me-2 rounded" 
         type="password" 
         placeholder="Password">
-      <button class="btn btn-success my-w my-sm-0" type="submit">Login</button>
+      <button class="btn btn-outline-secondary m-0 py-2 px-3" type="submit">Login</button>
     </form>
   </div>
 </nav>

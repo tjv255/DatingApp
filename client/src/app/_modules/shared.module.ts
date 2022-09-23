@@ -20,7 +20,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
     CommonModule, 
     BsDropdownModule.forRoot(),
     ToastrModule.forRoot({
-      positionClass: 'toast-botton-right'
+      positionClass: 'toast-bottom-right'
     }),
     TabsModule.forRoot(),
     NgxGalleryModule,
