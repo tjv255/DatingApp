@@ -14,4 +14,8 @@ namespace API.Entities
 
         public int SavedUserId{get;set;}
     } 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 612eeb2b023411e8ac8a0a3a0ffcde644ae8e747

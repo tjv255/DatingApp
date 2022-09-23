@@ -10,7 +10,7 @@ namespace API.Entities
         public int Id{get;set;}
         public string Title{get;set;}
 
-      //  public Organization Organization{get;set;}
+         public Organization Organization{get;set;}
         public int OrgId{get;set;}
 
         public AppUser JobPoster{get;set;}
@@ -22,9 +22,9 @@ namespace API.Entities
         public string City{set;get;}
         public string ProvinceOrState{get;set;}
         public string Country{get;set;}
-        public string[] Genres{get; set;}
+        public string Genres{get; set;}
         public string JobType{get;set;}
-        public string[] SkillsRequired{get; set;}
+        public string SkillsRequired{get; set;}
         public string ApplicationUrl{get;set;}
         public DateTime DateCreated{get;set;} = DateTime.Now;
         public DateTime Deadline{get;set;} = DateTime.Now;
