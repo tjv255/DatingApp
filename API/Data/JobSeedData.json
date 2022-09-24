@@ -9,20 +9,10 @@
         "City": "Kingston",
         "ProvinceOrState": "Ontario",
         "Country": "Canada",
-        "Genres": [
-            "Semiquaver",
-            "Rock 'n' Roll",
-            "Jazz",
-            "Latin Music",
-            "Hip Hop"
-        ],
+        "Genres":
+            "Semiquaver,Rock 'n' Roll,Jazz,Latin Music,Hip Hop",
         "JobType": "Contract",
-        "SkilledRequired": [
-            "Training and skill in percussion.",
-            "Must be creative.",
-            "Must be able to take initiative.",
-            "Work well in a team."
-        ],
+        "SkilledRequired": "percussion,creativity,leadership,teamwork",
         "ApplicationUrl": "https://google.com",
         "Deadline": "2022-12-12",
         "DateCreated": "2022-09-23",
@@ -39,21 +29,9 @@
         "City": "Victoria",
         "ProvinceOrState": "British Columbia",
         "Country": "Canada",
-        "Genres": [
-            "Anti-Folk",
-            "Rock 'n' Roll",
-            "Jazz",
-            "Latin Music",
-            "Synthcore",
-            "Hip Hop"
-        ],
+        "Genres": "Anti-Folk,Rock 'n' Roll,Jazz,Latin Music,Synthcore,Hip Hop",
         "JobType": "Part Time",
-        "SkilledRequired": [
-            "Training and skill in percussion.",
-            "Must be creative.",
-            "Must be able to take initiative.",
-            "Work well in a team."
-        ],
+        "SkilledRequired": "keyboard,creativity,leadership,teamwork,electronic music",
         "ApplicationUrl": "https://google.com",
         "Deadline": "2022-11-28",
         "DateCreated": "2022-09-23",
@@ -70,21 +48,9 @@
         "City": "Victoria",
         "ProvinceOrState": "British Columbia",
         "Country": "Canada",
-        "Genres": [
-            "Funk",
-            "Soul",
-            "Jazz",
-            "Motown",
-            "Rock",
-            "Hip Hop"
-        ],
+        "Genres": "Funk,Soul,Jazz,Motown,Rock,Hip Hop",
         "JobType": "Part Time",
-        "SkilledRequired": [
-            "Training and skill in percussion.",
-            "Must be creative.",
-            "Must be able to take initiative.",
-            "Work well in a team."
-        ],
+        "SkilledRequired": "singing,creativity,Basic French,Basic Spanish,Basic knowledge of IPA,leadership,teamwork",
         "ApplicationUrl": "https://google.com",
         "Deadline": "2022-10-05",
         "DateCreated": "2022-09-23",
@@ -101,21 +67,9 @@
         "City": "London",
         "ProvinceOrState": "Ontario",
         "Country": "Canada",
-        "Genres": [
-            "Funk",
-            "Soul",
-            "Jazz",
-            "Motown",
-            "Rock",
-            "Hip Hop"
-        ],
+        "Genres": "Funk,Soul,Jazz,Motown,Rock,Hip Hop",
         "JobType": "Full Time",
-        "SkilledRequired": [
-            "Training and skill in percussion.",
-            "Must be creative.",
-            "Must be able to take initiative.",
-            "Work well in a team."
-        ],
+        "SkilledRequired": "rock guitar,creativity,leadership,teamwork",
         "ApplicationUrl": "https://google.com",
         "Deadline": "2022-10-25",
         "DateCreated": "2022-09-23",
@@ -132,21 +86,9 @@
         "City": "Calgary",
         "ProvinceOrState": "Alberta",
         "Country": "Canada",
-        "Genres": [
-            "Funk",
-            "Soul",
-            "Jazz",
-            "Motown",
-            "Rock",
-            "Hip Hop"
-        ],
+        "Genres": "Funk,Soul,Jazz,Motown,Rock,Hip Hop",
         "JobType": "Full Time",
-        "SkilledRequired": [
-            "Training and skill in percussion.",
-            "Must be creative.",
-            "Must be able to take initiative.",
-            "Work well in a team."
-        ],
+        "SkilledRequired": "sound engineering,creativity,leadership,teamwork",
         "ApplicationUrl": "https://google.com",
         "Deadline": "2022-11-19",
         "DateCreated": "2022-09-23",
@@ -163,21 +105,9 @@
         "City": "Edmonton",
         "ProvinceOrState": "Alberta",
         "Country": "Canada",
-        "Genres": [
-            "Funk",
-            "Soul",
-            "Jazz",
-            "Motown",
-            "Rock",
-            "Hip Hop"
-        ],
+        "Genres": "Funk,Soul,Jazz,Motown,Rock,Hip Hop",
         "JobType": "Full Time",
-        "SkilledRequired": [
-            "Training and skill in percussion.",
-            "Must be creative.",
-            "Must be able to take initiative.",
-            "Work well in a team."
-        ],
+        "SkilledRequired": "rock guitar,creativity,leadership,teamwork",
         "ApplicationUrl": "https://google.com",
         "Deadline": "2022-12-16",
         "DateCreated": "2022-09-23",
@@ -194,21 +124,9 @@
         "City": "Saskatoon",
         "ProvinceOrState": "Saskatchewan",
         "Country": "Canada",
-        "Genres": [
-            "Anti-Folk",
-            "Rock 'n' Roll",
-            "Jazz",
-            "Latin Music",
-            "Synthcore",
-            "Hip Hop"
-        ],
+        "Genres": "Anti-Folk,Rock 'n' Roll,Jazz,Latin Music,Synthcore,Hip Hop",
         "JobType": "Part Time",
-        "SkilledRequired": [
-            "Training and skill in percussion.",
-            "Must be creative.",
-            "Must be able to take initiative.",
-            "Work well in a team."
-        ],
+        "SkilledRequired": "keyboard,creativity,leadership,teamwork",
         "ApplicationUrl": "https://google.com",
         "Deadline": "2022-11-31",
         "DateCreated": "2022-09-23",
@@ -225,21 +143,9 @@
         "City": "Toronto",
         "ProvinceOrState": "Ontario",
         "Country": "Canada",
-        "Genres": [
-            "Anti-Folk",
-            "Rock 'n' Roll",
-            "Jazz",
-            "Latin Music",
-            "Synthcore",
-            "Hip Hop"
-        ],
+        "Genres": "Anti-Folk,Rock 'n' Roll,Jazz,Latin Music,Synthcore,Hip Hop",
         "JobType": "Part Time",
-        "SkilledRequired": [
-            "Training and skill in percussion.",
-            "Must be creative.",
-            "Must be able to take initiative.",
-            "Work well in a team."
-        ],
+        "SkilledRequired": "music production,management,business communication,creativity,leadership,teamwork",
         "ApplicationUrl": "https://google.com",
         "Deadline": "2022-10-01",
         "DateCreated": "2022-09-23",
@@ -256,20 +162,9 @@
         "City": "Hamilon",
         "ProvinceOrState": "Ontario",
         "Country": "Canada",
-        "Genres": [
-            "Semiquaver",
-            "Rock 'n' Roll",
-            "Jazz",
-            "Latin Music",
-            "Hip Hop"
-        ],
+        "Genres": "Semiquaver,Rock 'n' Roll,Jazz,Latin Music,Hip Hop",
         "JobType": "Contract",
-        "SkilledRequired": [
-            "Training and skill in percussion.",
-            "Must be creative.",
-            "Must be able to take initiative.",
-            "Work well in a team."
-        ],
+        "SkilledRequired": "percussion,creativity,leadership,teamwork",
         "ApplicationUrl": "https://google.com",
         "Deadline": "2022-10-12",
         "DateCreated": "2022-09-23",
@@ -286,21 +181,9 @@
         "City": "Victoria",
         "ProvinceOrState": "British Columbia",
         "Country": "Canada",
-        "Genres": [
-            "Anti-Folk",
-            "Rock 'n' Roll",
-            "Jazz",
-            "Latin Music",
-            "Synthcore",
-            "Hip Hop"
-        ],
+        "Genres": "Anti-Folk,Rock 'n' Roll,Jazz,Latin Music,Synthcore,Hip Hop",
         "JobType": "Contract",
-        "SkilledRequired": [
-            "Training and skill in percussion.",
-            "Must be creative.",
-            "Must be able to take initiative.",
-            "Work well in a team."
-        ],
+        "SkilledRequired": "keyboard,creativity,leadership,teamwork",
         "ApplicationUrl": "https://google.com",
         "Deadline": "2022-11-13",
         "DateCreated": "2022-09-23",
