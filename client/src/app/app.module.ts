@@ -35,6 +35,10 @@ import { JobCardComponent } from './Jobs/job-card/job-card.component';
 import { JobDetailComponent } from './Jobs/job-detail/job-detail.component';
 import { JobListComponent } from './Jobs/job-list/job-list.component';
 import { JobEditComponent } from './Jobs/job-edit/job-edit.component';
+import { OrganizationEditComponent } from './organization/organization-edit/organization-edit.component';
+import { OrganizationCardComponent } from './organization/organization-card/organization-card.component';
+import { OrganizationDetailComponent } from './organization/organization-detail/organization-detail.component';
+import { OrganizationListComponent } from './organization/organization-list/organization-list.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +67,11 @@ import { JobEditComponent } from './Jobs/job-edit/job-edit.component';
     JobCardComponent,
     JobDetailComponent,
     JobListComponent,
-    JobEditComponent
+    JobEditComponent,
+    OrganizationEditComponent,
+    OrganizationCardComponent,
+    OrganizationDetailComponent,
+    OrganizationListComponent
   ],
   imports: [
     BrowserModule,
