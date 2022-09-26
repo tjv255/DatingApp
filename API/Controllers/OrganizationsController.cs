@@ -29,13 +29,10 @@ namespace API.Controllers
         }
 
         [HttpGet ("{id}")]
-        public  async Task<ActionResult<OrganizationDto>>GetOrganizationsById(int id)
+        public  async Task<ActionResult<Organization>>GetOrganizationsById(int id)
 
         {
-            var organizations =  await _organizationRepository.GetOrganizationByIdAsync(id);
-            var organizationsToReturn = _mapper.Map<IEnumerable<OrganizationDto>>(organizations);
-    
-            return Ok(organizationsToReturn);
+            return  await _organizationRepository.GetOrganizationByIdAsync(id);
 
 
         }

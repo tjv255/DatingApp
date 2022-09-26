@@ -23,10 +23,10 @@ namespace API.Data
             return await  _context.Organizations.ToListAsync();;
         }
 
-        public Task<Organization> GetOrganizationByIdAsync(int id)
+        public async Task<Organization> GetOrganizationByIdAsync(int id)
         {
-            
-            throw new NotImplementedException();
+            return await _context.Organizations.FindAsync(id);
+           // throw new NotImplementedException();
         }
 
         public Task<Organization> GetOrganizationByOrganizationameAsync(string organizationname)
@@ -39,10 +39,10 @@ namespace API.Data
             throw new NotImplementedException();
         }
 
-        public void Update(AppUser user)
-        {
-            throw new NotImplementedException();
-        }
+        // public void Update(AppUser user)
+        // {
+        //     throw new NotImplementedException();
+        // }
 
     }
 }

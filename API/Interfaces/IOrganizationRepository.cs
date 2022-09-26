@@ -7,7 +7,7 @@ namespace API.Interfaces
     public interface IOrganizationRepository
     {
 
-    void Update(AppUser organization);
+  //  void Update(AppUser organization);
     Task<bool> SaveAllAsync();
 
     Task<IEnumerable<Organization>> GetOrganizationsAsync();
