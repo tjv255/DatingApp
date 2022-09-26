@@ -67,7 +67,8 @@ namespace API.Data
     
     public async Task<IEnumerable<Job>> GetJobsByPosterIdAsync(int id){
       // var jobs = await _context.Jobs.Where(t=>t.JobPosterId.Contains(id)).ToListAsync();
-      return await _context.Jobs.Where(a=> a.JobPosterId==id).ToListAsync();
+      throw new NotImplementedException();
+     // return await _context.Jobs.Where(a=> a.JobPosterId==id).ToListAsync();
     }
   }
 }

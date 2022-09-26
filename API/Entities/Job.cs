@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,9 +15,11 @@ namespace API.Entities
        //  public Organization Organization{get;set;}
         public int OrgId{get;set;}
 
-        public AppUser JobPoster{get;set;}
-        public int JobPosterId{get;set;}
+        public int PosterId{get;set;}
 
+        // [ForeignKey("JobPosterId")]
+        public AppUser AppUser{get;set;}
+        
         public string LogoUrl{get;set;} = null;
         public string Description{get;set;}
         public int Salary{get;set;}
