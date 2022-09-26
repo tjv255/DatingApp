@@ -6,7 +6,8 @@ export interface Ogranization {
     id: number
     name: string
     introduction: string
-    established: Date
+    photoUrl: string
+    established: number
     created: Date
     lastUpdated: Date
     //backend returns list of members who work for the org

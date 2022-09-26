@@ -8,7 +8,7 @@ export interface Job {
     //dependant on cap72
     orgId: number
     jobPoster: User
-    photos: Photo[]
+    logoUrl: string
     description: string
     salary: number
     city: string
