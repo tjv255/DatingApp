@@ -31,7 +31,7 @@ const routes: Routes = [
       {path: 'messages', component: MessagesComponent},
       {path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard]},
       {path: 'jobs', component: JobListComponent},
-      {path: 'organization', component: OrganizationListComponent}
+      {path: 'organizations', component: OrganizationListComponent}
     ]
   },
   {path: 'errors', component: TestErrorsComponent},
