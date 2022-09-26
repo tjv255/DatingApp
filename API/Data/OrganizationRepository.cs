@@ -25,6 +25,7 @@ namespace API.Data
 
         public Task<Organization> GetOrganizationByIdAsync(int id)
         {
+            
             throw new NotImplementedException();
         }
 
@@ -32,8 +33,6 @@ namespace API.Data
         {
             throw new NotImplementedException();
         }
-
-        
 
         public Task<bool> SaveAllAsync()
         {

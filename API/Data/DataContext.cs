@@ -20,13 +20,8 @@ namespace API.Data
         public DbSet<Organization> Organizations { get; set; }
 
         
-<<<<<<< Updated upstream
-       // public DbSet<OrgLike> OrgLikes { get; set; }
-      //  public DbSet<OrgPhoto> OrgPhotos { get; set; }
-=======
-       public DbSet<OrgLike> OrgLikes { get; set; }
-       public DbSet<OrgPhoto> OrgPhotos { get; set; }
->>>>>>> Stashed changes
+        public DbSet<OrgLike> OrgLikes { get; set; }
+        public DbSet<OrgPhoto> OrgPhotos { get; set; }
 
 
 

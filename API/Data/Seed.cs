@@ -43,5 +43,21 @@ namespace API.Data
             await userManager.CreateAsync(admin, "Pa$$w0rd");
             await userManager.AddToRolesAsync(admin, new[] {"Admin", "Moderator"});
         }
+
+        public static async Task SeedOrganizations(DataContext context)
+        {
+            if (await context.Organizations.AnyAsync())return; 
+
+            var OrganizationData = await System.IO.File.ReadAllTextAsync("Data/OrgnizationSeedData.json");
+            var organizations = JsonSerializer.Deserialize<List<Organization>>(OrganizationData);
+            
+            foreach(var organization in organizations)
+            {
+                context.Organizations.Add(organization);
+            }
+
+            await context.SaveChangesAsync();
+        }
+
     }
 }
