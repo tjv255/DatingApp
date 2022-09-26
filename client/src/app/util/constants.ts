@@ -76,3 +76,26 @@ export const GENRE_LIST: MultiselectSelectionItem[] = [
         item_text: 'Genre E',
     },
 ];
+
+export const AFFILIATION_LIST: MultiselectSelectionItem[] = [
+    {
+        item_id: 1,
+        item_text: 'Affiliation A',
+    },
+    {
+        item_id: 2,
+        item_text: 'Affiliation B',
+    },
+    {
+        item_id: 3,
+        item_text: 'Affiliation C',
+    },
+    {
+        item_id: 4,
+        item_text: 'Affiliation D',
+    },
+    {
+        item_id: 5,
+        item_text: 'Affiliation E',
+    },
+];

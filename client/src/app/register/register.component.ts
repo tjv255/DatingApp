@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from '../_services/account.service';
-import { GENDER_LIST, SKILL_LIST, GENRE_LIST } from '../util/constants';
+import { GENDER_LIST, SKILL_LIST, GENRE_LIST, AFFILIATION_LIST } from '../util/constants';
 
 @Component({
   selector: 'app-register',
@@ -17,6 +17,7 @@ export class RegisterComponent implements OnInit {
   validationErrors: string[] = [];
   skillList = SKILL_LIST;
   genreList = GENRE_LIST;
+  affiliationList = AFFILIATION_LIST;
 
   constructor(private accountService: AccountService, private toastr: ToastrService, 
     private fb: FormBuilder, private router: Router) { }
@@ -42,7 +43,7 @@ export class RegisterComponent implements OnInit {
       occupation: [''],
       skills: [[]],
       genres: [[]],
-      affiliation: [''],
+      affiliations: [[]],
       password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]],
       confirmPassword: ['', [Validators.required, this.matchValues('password')]]
     });
@@ -61,8 +62,10 @@ export class RegisterComponent implements OnInit {
   register() {
     this.registerForm.patchValue({
         skills: this.registerForm.get('skills').value.flatMap(i => i.item_text),
-        genres: this.registerForm.get('genres').value.flatMap(i => i.item_text)
+        genres: this.registerForm.get('genres').value.flatMap(i => i.item_text),
+        affiliations: this.registerForm.get('affiliations').value.flatMap(i => i.item_text)
     }) 
+    console.log(this.registerForm.value)
     this.accountService.register(this.registerForm.value).subscribe(res => {
       this.router.navigateByUrl('/members');
     }, error => {
