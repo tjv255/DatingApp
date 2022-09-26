@@ -7,6 +7,7 @@ namespace API.Entities
 {
     public class JobSave
     {
+        public int Id{get;set;}
         public Job SavedJob{get;set;}
         public int JobId{get;set;}
 

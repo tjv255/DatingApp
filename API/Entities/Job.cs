@@ -8,7 +8,6 @@ namespace API.Entities
 {
     public class Job
     {
-        [Key]
          public int Id{get;set;}
          public string Title{get;set;}
 
@@ -30,8 +29,7 @@ namespace API.Entities
         public string ApplicationUrl{get;set;}
         public DateTime DateCreated{get;set;} = DateTime.Now;
         public DateTime Deadline{get;set;} = DateTime.Now;
-        public DateTime LastUpdated{get;set;} = DateTime.Now;
-       
-        
+        public DateTime LastUpdated{get;set;} = DateTime.Now; 
+        public ICollection<JobSave> SavedByUsers{get;set;}        
     }
 }

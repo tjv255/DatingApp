@@ -55,7 +55,7 @@ namespace API.Controllers
         return Ok(jobreturn);
     }
 
-
+    //Update existing Job
     // [HttpPut]
     // public async Task<ActionResult> UpdateJob(JobUpdateDto jobUpdateDto)
     //     {
@@ -70,6 +70,19 @@ namespace API.Controllers
 
     //         return BadRequest("Failed to update user");
     //     }
+
+    //Add a new Job
+
+    // [HttpPost("add-job")]
+
+    // public async Task<ActionResult<JobDto>> AddNewJobByPosterId(JobDto jobDto){
+    //     var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+    //     var job = _mapper.Map<Job>(jobDto);
+    //     job.JobPoster = MemberDto;
+
+
+
+    // }
 
     }
 }

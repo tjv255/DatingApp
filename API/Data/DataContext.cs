@@ -23,6 +23,31 @@ namespace API.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Job>()
+              .HasKey(u=>u.Id);
+
+            builder.Entity<JobSave>()
+            .HasKey(k => k.Id);
+
+            builder.Entity<Job>()
+              .HasOne<AppUser>(u => u.JobPoster)
+              .WithMany(j=> j.CreatedJobs)
+              .HasForeignKey(k=>k.JobPosterId)
+              .OnDelete(DeleteBehavior.Restrict);
+
+
+            builder.Entity<JobSave>()
+              .HasOne<AppUser>(u=>u.SavedUser)
+              .WithMany(u=>u.SavedJobs)
+              .HasForeignKey(k=> k.SavedUserId)
+              .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<JobSave>()
+              .HasOne<Job>(u=>u.SavedJob)
+              .WithMany(u=>u.SavedByUsers)
+              .HasForeignKey(k=> k.JobId)
+              .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<Group>()
                 .HasMany(x => x.Connections)
                 .WithOne()

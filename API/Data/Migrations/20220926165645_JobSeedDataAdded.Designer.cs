@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220923105909_AddedJob")]
-    partial class AddedJob
+    [Migration("20220926165645_JobSeedDataAdded")]
+    partial class JobSeedDataAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -245,6 +245,27 @@ namespace API.Data.Migrations
                     b.ToTable("Jobs");
                 });
 
+            modelBuilder.Entity("API.Entities.JobSave", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("JobId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SavedUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JobId");
+
+                    b.HasIndex("SavedUserId");
+
+                    b.ToTable("JobSave");
+                });
+
             modelBuilder.Entity("API.Entities.Message", b =>
                 {
                     b.Property<int>("Id")
@@ -441,12 +462,31 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.Job", b =>
                 {
                     b.HasOne("API.Entities.AppUser", "JobPoster")
-                        .WithMany("SavedJobs")
+                        .WithMany("CreatedJobs")
                         .HasForeignKey("JobPosterId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("JobPoster");
+                });
+
+            modelBuilder.Entity("API.Entities.JobSave", b =>
+                {
+                    b.HasOne("API.Entities.Job", "SavedJob")
+                        .WithMany("SavedByUsers")
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.AppUser", "SavedUser")
+                        .WithMany("SavedJobs")
+                        .HasForeignKey("SavedUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("SavedJob");
+
+                    b.Navigation("SavedUser");
                 });
 
             modelBuilder.Entity("API.Entities.Message", b =>
@@ -541,6 +581,8 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.AppUser", b =>
                 {
+                    b.Navigation("CreatedJobs");
+
                     b.Navigation("LikedByUsers");
 
                     b.Navigation("LikedUsers");
@@ -559,6 +601,11 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.Group", b =>
                 {
                     b.Navigation("Connections");
+                });
+
+            modelBuilder.Entity("API.Entities.Job", b =>
+                {
+                    b.Navigation("SavedByUsers");
                 });
 #pragma warning restore 612, 618
         }
