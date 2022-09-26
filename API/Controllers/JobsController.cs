@@ -1,26 +1,30 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
     public class JobsController : BaseApiController
-    {        
-    private readonly IJobRepository _jobRepository;
-     private readonly IMapper _mapper;
+    { 
+        private readonly IUserRepository _userRepository;       
+        private readonly IJobRepository _jobRepository;
+        private readonly IMapper _mapper;
 
-    public JobsController(IJobRepository jobRepository, IMapper mapper)
+    public JobsController(IUserRepository userRepository, IJobRepository jobRepository, IMapper mapper)
     {
-      _jobRepository = jobRepository;
-       _mapper = mapper;
+        _jobRepository = jobRepository;
+        _mapper = mapper;
+        _userRepository = userRepository;
     }
 
     [HttpGet]
@@ -36,6 +40,36 @@ namespace API.Controllers
         var job = await _jobRepository.GetJobByIdAsync(id);
         return _mapper.Map<JobDto>(job);
     }
+
+     [HttpGet("title/{title}")]
+    public async Task<ActionResult<IEnumerable<JobDto>>> GetJobByTitle(string title){
+        var job = await _jobRepository.GetJobByTitleAsync(title);
+        var jobreturn = _mapper.Map<IEnumerable<JobDto>>(job);
+        return Ok(jobreturn);
+    }
+
+     [HttpGet("job-poster/{id}")]
+    public async Task<ActionResult<IEnumerable<JobDto>>> GetJobsByPosterId(int id){
+        var job = await _jobRepository.GetJobsByPosterIdAsync(id);
+        var jobreturn = _mapper.Map<IEnumerable<JobDto>>(job);
+        return Ok(jobreturn);
+    }
+
+
+    // [HttpPut]
+    // public async Task<ActionResult> UpdateJob(JobUpdateDto jobUpdateDto)
+    //     {
+    //         var sourceUserId = User.GetUserId();
+
+    //         var job = await _jobRepository.GetJobsByPosterIdAsync(sourceUserId);
+
+    //         _mapper.Map(jobUpdateDto, job);
+
+    //         _jobRepository.Update(job);
+    //         if (await _jobRepository.SaveAllAsync()) return NoContent();
+
+    //         return BadRequest("Failed to update user");
+    //     }
 
     }
 }

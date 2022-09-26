@@ -9,14 +9,15 @@ namespace API.Interfaces
 {
     public interface IJobRepository
     {
-       // void Update(Job job);
+        void Update(Job job);
 		Task<bool> SaveAllAsync();
 		Task<IEnumerable<Job>> GetJobsAsync();
 		Task<Job> GetJobByIdAsync(int id);
-        //Task<Job> GetJobByTitleAsync(string title);
+        Task<IEnumerable<Job>> GetJobByTitleAsync(string title);
 		//Task<bool> DeleteJobAsync(int id);
-        //Task<List<Job>> GetJobsByPosterIdAsync(int id);
+        Task<IEnumerable<Job>> GetJobsByPosterIdAsync(int id);
         Task<IEnumerable<JobDto>> GetMemberJobsAsync();
         Task<JobDto> GetMemberJobAsync();
+        Task<AppUser> GetUserByUsernameAsync(string username);
     }
 }

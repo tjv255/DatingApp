@@ -28,10 +28,10 @@ namespace API.Data
       return await _context.Jobs.FindAsync(id);
     }
 
-    // public async Task<IEnumerable<Job>> GetJobByTitleAsync(string title){
-    //   var jobs = await_context.Jobs.Select(e=>e.Title == title).ToListAsync();
-    //   return jobs;
-    // }
+     public async Task<IEnumerable<Job>> GetJobByTitleAsync(string title){
+      var jobs = await _context.Jobs.Where(t=>t.Title.ToLower().Contains(title.ToLower())).ToListAsync();
+      return jobs;
+    }
 
     public async Task<IEnumerable<Job>> GetJobsAsync()
     {
@@ -54,14 +54,20 @@ namespace API.Data
       return await _context.SaveChangesAsync() > 0;
     }
 
-    // public void Update(Job job)
-    // {
-    //   _context.Entry(Jobs).State = EntityState.Modified;
-    //   _context.SaveChangesAsync();
-    // }
+    public void Update(Job job)
+    {
+      _context.Entry(job).State = EntityState.Modified;
+    }
+
+    public async Task<AppUser> GetUserByUsernameAsync(string username)
+    {
+      return await _context.Users
+      .Include(p=>p.Photos).SingleOrDefaultAsync(x=>x.UserName == username);
+    }
     
-    // public async Task<List<Job>> GetJobsByPosterIdAsync(int id){
-    //   return await _context.Jobs.Where(a=> a.JobPosterId==id).ToListAsync();
-    // }
+    public async Task<IEnumerable<Job>> GetJobsByPosterIdAsync(int id){
+      // var jobs = await _context.Jobs.Where(t=>t.JobPosterId.Contains(id)).ToListAsync();
+      return await _context.Jobs.Where(a=> a.JobPosterId==id).ToListAsync();
+    }
   }
 }
