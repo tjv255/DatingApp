@@ -7,7 +7,7 @@ export interface Job {
     //Ogranization which posted this job
     //dependant on cap72
     orgId: number
-    jobPoster: User
+    jobPosterId: number
     logoUrl: string
     description: string
     salary: number
