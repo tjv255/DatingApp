@@ -28,23 +28,30 @@ namespace API.Data
         public async Task<Organization> GetOrganizationByIdAsync(int id)
         {
             return await _context.Organizations.FindAsync(id);
-           // throw new NotImplementedException();
+
         }
 
-        public Task<Organization> GetOrganizationByOrganizationameAsync(string organizationname)
+        public async Task<Organization> GetOrganizationByOrgnameAsync(string orgname)
         {
-            throw new NotImplementedException();
+            return await _context.Organizations
+            .Include(p => p.Photos).
+                SingleOrDefaultAsync(x => x.Name == orgname);  
+                
+        // var organization = await _context.Organizations.Where(o=>o.Name.ToLower().Contains(orgname.ToLower())).ToListAsync();
+        // return  organization;
         }
+        
 
-        public Task<bool> SaveAllAsync()
+        public async Task<bool> SaveAllAsync()
         {
-            throw new NotImplementedException();
+        return await _context.SaveChangesAsync() > 0;
+
         }
 
-        // public void Update(AppUser user)
-        // {
-        //     throw new NotImplementedException();
-        // }
+        public void Update(Organization organization)
+        {
+            _context.Entry(organization).State = EntityState.Modified;
+        }
 
     }
 }

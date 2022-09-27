@@ -7,11 +7,11 @@ namespace API.Interfaces
     public interface IOrganizationRepository
     {
 
-  //  void Update(AppUser organization);
+    void Update(Organization organization);
     Task<bool> SaveAllAsync();
 
     Task<IEnumerable<OrganizationDto>> GetOrganizationsAsync();
-    Task<Organization> GetOrganizationByOrganizationameAsync(string organizationname);
+    Task<Organization> GetOrganizationByOrgnameAsync(string orgname);
     Task<Organization> GetOrganizationByIdAsync(int id);
     }
 }
