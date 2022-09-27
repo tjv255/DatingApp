@@ -25,17 +25,24 @@ namespace API.Data
  
     public async Task<Job> GetJobByIdAsync(int id)
     {
-      return await _context.Jobs.FindAsync(id);
+      return await _context.Jobs
+      .Include(j => j.JobPoster)
+      .SingleOrDefaultAsync(x => x.Id == id);
     }
 
      public async Task<IEnumerable<Job>> GetJobByTitleAsync(string title){
-      var jobs = await _context.Jobs.Where(t=>t.Title.ToLower().Contains(title.ToLower())).ToListAsync();
+      var jobs = await _context.Jobs
+        .Where(t=>t.Title.ToLower().Contains(title.ToLower()))
+        .Include(j => j.JobPoster)
+        .ToListAsync();
       return jobs;
     }
 
     public async Task<IEnumerable<Job>> GetJobsAsync()
     {
-      return await _context.Jobs.ToListAsync();
+      return await _context.Jobs
+      .Include(j => j.JobPoster)
+      .ToListAsync();
     }
 
     public Task<JobDto> GetMemberJobAsync()

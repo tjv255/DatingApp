@@ -28,7 +28,6 @@ namespace API
                 await context.Database.MigrateAsync();
                 await context.SaveChangesAsync();
                 await Seed.SeedUsers(userManager, roleManager);
-                await Seed.SeedJobs(context);
 
             }
             catch (Exception ex)
