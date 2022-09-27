@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from '../_services/account.service';
 import { GENDER_LIST, SKILL_LIST, GENRE_LIST, AFFILIATION_LIST } from '../util/constants';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 @Component({
   selector: 'app-register',
@@ -41,9 +42,9 @@ export class RegisterComponent implements OnInit {
       province: ['', Validators.required],
       country: ['', Validators.required],
       occupation: [''],
-      skills: [[]],
-      genres: [[]],
-      affiliations: [[]],
+      skills: [''],
+      genres: [''],
+      affiliations: [''],
       password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]],
       confirmPassword: ['', [Validators.required, this.matchValues('password')]]
     });
@@ -60,13 +61,17 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    this.registerForm.patchValue({
-        skills: this.registerForm.get('skills').value.flatMap(i => i.item_text),
-        genres: this.registerForm.get('genres').value.flatMap(i => i.item_text),
-        affiliations: this.registerForm.get('affiliations').value.flatMap(i => i.item_text)
-    }) 
-    console.log(this.registerForm.value)
-    this.accountService.register(this.registerForm.value).subscribe(res => {
+    var skills = this.registerForm.get('skills').value.flatMap(i => i.item_text).toString();
+    var genres = this.registerForm.get('genres').value.flatMap(i => i.item_text).toString();
+    var affiliations = this.registerForm.get('affiliations').value.flatMap(i => i.item_text).toString();
+    
+    var data = this.registerForm.value;
+    data["skills"] = skills;
+    data["genres"] = genres;
+    data["affiliations"] = affiliations;
+
+    console.log(data);
+    this.accountService.register(data).subscribe(res => {
       this.router.navigateByUrl('/members');
     }, error => {
       console.log(error);
