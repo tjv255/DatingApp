@@ -3,8 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from '../_services/account.service';
-import { GENDER_LIST, SKILL_LIST, GENRE_LIST, AFFILIATION_LIST } from '../util/constants';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
+import { AFFILIATION_LIST, AFFILIATION_DATA } from '../util/constants';
 
 @Component({
   selector: 'app-register',
@@ -16,14 +15,16 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   maxDate: Date;
   validationErrors: string[] = [];
-  skillList = SKILL_LIST;
-  genreList = GENRE_LIST;
   affiliationList = AFFILIATION_LIST;
 
   constructor(private accountService: AccountService, private toastr: ToastrService, 
+    // orgnizationList!: Orgninzation[] --> See OnInit
+
     private fb: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
+    // GET Organizations list
+    // this.orgnizationList = this.organizationService.getOrganizations() something like that
     this.initializeForm();
     this.maxDate = new Date();
     this.maxDate.setFullYear(this.maxDate.getFullYear() -18);
@@ -44,7 +45,7 @@ export class RegisterComponent implements OnInit {
       occupation: [''],
       skills: [''],
       genres: [''],
-      affiliations: [''],
+      affiliation: [[]],
       password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]],
       confirmPassword: ['', [Validators.required, this.matchValues('password')]]
     });
@@ -61,17 +62,19 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    var skills = this.registerForm.get('skills').value.flatMap(i => i.item_text).toString();
-    var genres = this.registerForm.get('genres').value.flatMap(i => i.item_text).toString();
-    var affiliations = this.registerForm.get('affiliations').value.flatMap(i => i.item_text).toString();
-    
-    var data = this.registerForm.value;
-    data["skills"] = skills;
-    data["genres"] = genres;
-    data["affiliations"] = affiliations;
+    // get OrgID's from from value
+    const selectedOrgs = this.registerForm
+      .get('affiliation')
+      .value.flatMap((i) => i.item_id);
+    // get actual Org objects to be passed into request body
+    const selectedOrgsFinal = AFFILIATION_DATA.filter( (org, i) => org.id === selectedOrgs[i] );
+    // add actual org objects to form value
+    this.registerForm.patchValue({
+        affiliation: selectedOrgsFinal
+    }) 
 
-    console.log(data);
-    this.accountService.register(data).subscribe(res => {
+    console.log(this.registerForm.value)
+    this.accountService.register(this.registerForm.value).subscribe(res => {
       this.router.navigateByUrl('/members');
     }, error => {
       console.log(error);

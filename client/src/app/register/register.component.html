@@ -31,13 +31,11 @@
         <app-text-input [formControl]="$any(registerForm.controls['city'])" [label]="'City'"></app-text-input>
         <app-text-input [formControl]="$any(registerForm.controls['province'])" [label]="'Province'"></app-text-input>
         <app-text-input [formControl]="$any(registerForm.controls['country'])" [label]="'Country'"></app-text-input>
-        <app-text-input [formControl]="$any(registerForm.controls['occupation'])" [label]="'Occupation'"></app-text-input>
-        <app-multiselect [formControl]="$any(registerForm.controls['skills'])" [dropdownList]="skillList"
-            [label]="'Skills'"></app-multiselect>
-        <app-multiselect [formControl]="$any(registerForm.controls['genres'])" [dropdownList]="genreList"
-            [label]="'Genres'"></app-multiselect>
-        <app-multiselect [formControl]="$any(registerForm.controls['affiliations'])" [dropdownList]="affiliationList"
-            [label]="'Affiliations'"></app-multiselect>
+        <app-text-input [formControl]="$any(registerForm.controls['occupation'])" [label]="'Occupation separated by comma'"></app-text-input>
+        <app-text-input [formControl]="$any(registerForm.controls['skills'])" [label]="'Skills separated by comma'"></app-text-input>
+        <app-text-input [formControl]="$any(registerForm.controls['genres'])" [label]="'Genres separated by comma'"></app-text-input>
+        <app-multiselect [formControl]="$any(registerForm.controls['affiliation'])" [dropdownList]="affiliationList"
+            [label]="'Affiliation'"></app-multiselect>
         <app-text-input [formControl]="$any(registerForm.controls['password'])" [label]="'Password'"
             [type]="'password'"></app-text-input>
         <app-text-input [formControl]="$any(registerForm.controls['confirmPassword'])" [label]="'Confirm Password'"
