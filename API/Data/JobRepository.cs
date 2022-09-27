@@ -72,10 +72,11 @@ namespace API.Data
       .Include(p=>p.Photos).SingleOrDefaultAsync(x=>x.UserName == username);
     }
     
-    public async Task<IEnumerable<Job>> GetJobsByPosterIdAsync(int id){
-      // var jobs = await _context.Jobs.Where(t=>t.JobPosterId.Contains(id)).ToListAsync();
-      throw new NotImplementedException();
-     // return await _context.Jobs.Where(a=> a.JobPosterId==id).ToListAsync();
+    public async Task<IEnumerable<Job>> GetJobsByPosterIdAsync(int id){      
+        var user = await _context.Users.Where(t=>t.Id==id)
+        .Select(t=>t.UserName).SingleOrDefaultAsync();
+
+      return  await _context.Jobs.Where(t=>t.JobPoster.UserName==user).ToListAsync();
     }
   }
 }

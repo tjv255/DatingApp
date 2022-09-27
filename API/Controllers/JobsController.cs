@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
+   //  [Authorize]
     public class JobsController : BaseApiController
     { 
         private readonly IUserRepository _userRepository;       
@@ -56,33 +57,37 @@ namespace API.Controllers
     }
 
     //Update existing Job
-    // [HttpPut]
-    // public async Task<ActionResult> UpdateJob(JobUpdateDto jobUpdateDto)
-    //     {
-    //         var sourceUserId = User.GetUserId();
+    [AllowAnonymous]
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateJob(JobUpdateDto jobUpdateDto,int id)
+        {
+            //var sourceUserId = User.GetUserId();
 
-    //         var job = await _jobRepository.GetJobsByPosterIdAsync(sourceUserId);
+            var job = await _jobRepository.GetJobByIdAsync(id);
 
-    //         _mapper.Map(jobUpdateDto, job);
+            _mapper.Map(jobUpdateDto, job);
 
-    //         _jobRepository.Update(job);
-    //         if (await _jobRepository.SaveAllAsync()) return NoContent();
+            _jobRepository.Update(job);
+            if (await _jobRepository.SaveAllAsync()) 
+                return NoContent();
 
-    //         return BadRequest("Failed to update user");
-    //     }
+            return BadRequest("Failed to update user");
+        }
 
-    //Add a new Job
+   // Add a new Job
 
-    // [HttpPost("add-job")]
+    [HttpPost("add")]
 
-    // public async Task<ActionResult<JobDto>> AddNewJobByPosterId(JobDto jobDto){
-    //     var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
-    //     var job = _mapper.Map<Job>(jobDto);
-    //     job.JobPoster = MemberDto;
+    public async Task<ActionResult<JobDto>> AddNewJobByPosterId(JobDto jobDto){
+        var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+        var job = _mapper.Map<Job>(jobDto);
+        job.JobPoster = user;
 
+        if (await _jobRepository.SaveAllAsync()) 
+            return NoContent();
 
-
-    // }
+        return BadRequest("Failed to add user");
+    }
 
     }
 }

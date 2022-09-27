@@ -28,6 +28,7 @@ namespace API.Helpers
              .ForMember(dest => dest.JobPosterName, opt => opt.MapFrom( src =>
              src.JobPoster.KnownAs));
             CreateMap<JobUpdateDto, Job>();
+            CreateMap<JobDto, Job>();
         }
     }
 }
