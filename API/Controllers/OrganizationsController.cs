@@ -52,7 +52,7 @@ namespace API.Controllers
 
             var organization = await _organizationRepository.GetOrganizationByOrgnameAsync("Winterizers");  //GetOrganizationByOrgnameAsync(Organization.Name);
 
-         //   _mapper.Map(organizationUpdateDto , organization);
+            _mapper.Map(organizationUpdateDto , organization);
 
             _organizationRepository.Update(organization);
 
