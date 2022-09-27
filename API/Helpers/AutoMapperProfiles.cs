@@ -22,7 +22,11 @@ namespace API.Helpers
                 .ForMember(dest => dest.RecipientPhotoUrl, opt => opt.MapFrom(src =>
                     src.Recipient.Photos.FirstOrDefault(x => x.IsMain).Url));
             CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
-            CreateMap<Job, JobDto>();
+            CreateMap<Job, JobDto>()
+             .ForMember(dest => dest.JobPosterId, opt => opt.MapFrom(src =>
+             src.JobPoster.Id))
+             .ForMember(dest => dest.JobPosterName, opt => opt.MapFrom( src =>
+             src.JobPoster.KnownAs));
             CreateMap<JobUpdateDto, Job>();
         }
     }
