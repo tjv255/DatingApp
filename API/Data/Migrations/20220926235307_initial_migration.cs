@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace API.Migrations
+namespace API.Data.Migrations
 {
-    public partial class OrganizationEntityAdded : Migration
+    public partial class initial_migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -10,7 +10,7 @@ namespace API.Interfaces
   //  void Update(AppUser organization);
     Task<bool> SaveAllAsync();
 
-    Task<IEnumerable<Organization>> GetOrganizationsAsync();
+    Task<IEnumerable<OrganizationDto>> GetOrganizationsAsync();
     Task<Organization> GetOrganizationByOrganizationameAsync(string organizationname);
     Task<Organization> GetOrganizationByIdAsync(int id);
     }

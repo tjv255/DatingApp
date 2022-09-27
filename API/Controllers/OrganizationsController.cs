@@ -22,9 +22,8 @@ namespace API.Controllers
         public  async Task<ActionResult<IEnumerable<OrganizationDto>>>GetOrganizations()
         {
             var organizations =  await _organizationRepository.GetOrganizationsAsync();
-            var organizationsToReturn = _mapper.Map<IEnumerable<OrganizationDto>>(organizations);
-    
-            return Ok(organizationsToReturn);
+            
+            return Ok(organizations);
 
         }
 

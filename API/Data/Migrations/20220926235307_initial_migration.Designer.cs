@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace API.Migrations
+namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220926213731_OrganizationEntityAdded")]
-    partial class OrganizationEntityAdded
+    [Migration("20220926235307_initial_migration")]
+    partial class initial_migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

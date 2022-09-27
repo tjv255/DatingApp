@@ -18,9 +18,11 @@ namespace API.Data
             _context = context;
         }
 
-        public async Task<IEnumerable<Organization>> GetOrganizationsAsync()
+        public async Task<IEnumerable<OrganizationDto>> GetOrganizationsAsync()
         {
-            return await  _context.Organizations.ToListAsync();;
+            return await  _context.Organizations
+                .ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
         public async Task<Organization> GetOrganizationByIdAsync(int id)
