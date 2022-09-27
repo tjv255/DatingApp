@@ -24,6 +24,36 @@
         "Url": "https://randomuser.me/api/portraits/women/54.jpg",
         "IsMain": true
       }
-    ]
+    ],
+    "CreatedJobs":[
+          {
+            "Title": "Singer",
+            "OrgId": 3,
+            "LogoUrl": "",
+            "Description": "Entertainment company specializing in live bands and performance seeking vocalists.",
+            "Salary": 42000,
+            "City": "Victoria",
+            "ProvinceOrState": "British Columbia",
+            "Country": "Canada",
+            "Genres": "Funk,Soul,Jazz,Motown,Rock,Hip Hop",
+            "JobType": "Part Time",
+            "SkillsRequired": "singing,creativity,Basic French,Basic Spanish,Basic knowledge of IPA,leadership,teamwork",
+            "ApplicationUrl": "https://google.com"
+          },
+          {
+            "Title": "Guitar Artist",
+            "OrgId": 4,
+            "LogoUrl": "",
+            "Description": "Rockstar Music is a network of university educated musicians, teachers and recording industry professionals. We provide private, one-on-one, online and in-home music lessons, as well as community-based music programs, like Rock Bands and Uke jams. We are currently looking for a Guitar Instructor to join our team.",
+            "Salary": 58000,
+            "City": "London",
+            "ProvinceOrState": "Ontario",
+            "Country": "Canada",
+            "Genres": "Funk,Soul,Jazz,Motown,Rock,Hip Hop",
+            "JobType": "Full Time",
+            "SkillsRequired": "rock guitar,creativity,leadership,teamwork",
+            "ApplicationUrl": "https://google.com"
+          }
+        ]
   }
 ]
