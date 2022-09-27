@@ -18,7 +18,7 @@ export interface Member {
     occupation: string;
     skills: string[];
     genres: string[];
-    affiliations: string[];
+    affiliation: string[];
     created: Date;
     lastActive: Date;
     photoUrl: string;
