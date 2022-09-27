@@ -10,6 +10,7 @@ namespace API.Interfaces
     public interface IJobRepository
     {
         void Update(Job job);
+        void Add(Job job);
 		Task<bool> SaveAllAsync();
 		Task<IEnumerable<Job>> GetJobsAsync();
 		Task<Job> GetJobByIdAsync(int id);

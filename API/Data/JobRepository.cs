@@ -66,6 +66,11 @@ namespace API.Data
       _context.Entry(job).State = EntityState.Modified;
     }
 
+    public void Add(Job job)
+        {
+            _context.Jobs.Add(job);
+        }
+
     public async Task<AppUser> GetUserByUsernameAsync(string username)
     {
       return await _context.Users

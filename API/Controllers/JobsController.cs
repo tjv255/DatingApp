@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-   //  [Authorize]
+    [Authorize]
     public class JobsController : BaseApiController
     { 
         private readonly IUserRepository _userRepository;       
@@ -74,14 +74,15 @@ namespace API.Controllers
             return BadRequest("Failed to update user");
         }
 
-   // Add a new Job
-
+    // Add a new Job
     [HttpPost("add")]
 
     public async Task<ActionResult<JobDto>> AddNewJobByPosterId(JobDto jobDto){
         var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
         var job = _mapper.Map<Job>(jobDto);
         job.JobPoster = user;
+
+        _jobRepository.Add(job);
 
         if (await _jobRepository.SaveAllAsync()) 
             return NoContent();
