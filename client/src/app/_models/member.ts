@@ -13,7 +13,7 @@ export interface Member {
     gender: string;
     age: string;
     city: string;
-    province: string;
+    provinceOrState: string;
     country: string;
     occupation: string;
     skills: string[];
