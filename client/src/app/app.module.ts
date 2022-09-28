@@ -33,6 +33,8 @@ import { PhotoManagementComponent } from './admin/photo-management/photo-managem
 import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MultiselectComponent } from './_forms/multiselect/multiselect.component';
+import { LearnMoreComponent } from './learn-more/learn-more.component';
+import { PricingModalComponent } from './modals/pricing-modal/pricing-modal.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +60,9 @@ import { MultiselectComponent } from './_forms/multiselect/multiselect.component
     UserManagementComponent,
     PhotoManagementComponent,
     RolesModalComponent,
-    MultiselectComponent
+    MultiselectComponent,
+    LearnMoreComponent,
+    PricingModalComponent
   ],
   imports: [
     BrowserModule,
