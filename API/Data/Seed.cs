@@ -44,6 +44,20 @@ namespace API.Data
             await userManager.AddToRolesAsync(admin, new[] {"Admin", "Moderator"});
         }
 
+
+        public static async Task SeedJobs(DataContext context)
+        {
+            if( await context.Jobs.AnyAsync()) return;
+
+            var jobData = await System.IO.File.ReadAllTextAsync("Data/JobSeedData.json");
+            var jobs = JsonSerializer.Deserialize<List<Job>>(jobData);
+            foreach(var job in jobs)
+            {
+                context.Jobs.Add(job);
+            }
+            await context.SaveChangesAsync();
+        }
+
         public static async Task SeedOrganizations(DataContext context)
         {
             if (await context.Organizations.AnyAsync())return; 

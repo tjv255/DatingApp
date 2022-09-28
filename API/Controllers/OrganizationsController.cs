@@ -59,40 +59,37 @@ namespace API.Controllers
             return BadRequest("Failed to update user");
         }
 
-        [HttpPost("add-photo")]
-        public async Task<ActionResult<OrgPhotoDto>>AddPhoto(IFormFile file, int id)
-        {
-        var organization = await _organizationRepository.GetOrganizationByIdAsync(id); 
-        var result = await _photoService.AddPhotoAsync(file);
+    //     [HttpPost("add-photo")]
+    //     public async Task<ActionResult<OrgPhotoDto>>AddPhoto(IFormFile file, int id)
+    //     {
+    //     var organization = await _organizationRepository.GetOrganizationByIdAsync(id); 
+    //     var result = await _photoService.AddPhotoAsync(file);
 
-        if (result.Error != null) return BadRequest(result.Error.Message);
-        var photo = new OrgPhoto
-        {
-        Url = result.SecureUrl.AbsoluteUri,
-        PublicId = result.PublicId
-        };
+    //     if (result.Error != null) return BadRequest(result.Error.Message);
+    //     var photo = new OrgPhoto
+    //     {
+    //     Url = result.SecureUrl.AbsoluteUri,
+    //     PublicId = result.PublicId
+    //     };
 
-        if (organization.Photos.Count == 0)
-        {
-        photo.IsMain = true;
-        }
+    //     if (organization.Photos.Count == 0)
+    //     {
+    //     photo.IsMain = true;
+    //     }
 
-        organization.Photos.Add(photo);
-        if (await _organizationRepository.SaveAllAsync())
-        {
-      //  return CreatedAtRoute("GetOrganization", new { orgname = organization.Name },          
-            return   _mapper.Map<OrgPhotoDto>(photo);
-        }
-        return BadRequest("Problem addding photo");
-    }
+    //     organization.Photos.Add(photo);
+    //     if (await _organizationRepository.SaveAllAsync())
+    //     {
+    //   //  return CreatedAtRoute("GetOrganization", new { orgname = organization.Name },          
+    //         return   _mapper.Map<OrgPhotoDto>(photo);
+    //     }
+    //     return BadRequest("Problem addding photo");
+    // }
 
 
         [HttpPost("add")]
-        public async Task<ActionResult<OrganizationDto>> AddNewOrganizationById(OrganizationDto organizationDto)       
+        public async Task<ActionResult<OrganizationDto>> AddNewOrganization(OrganizationDto organizationDto)       
         {
-
-        var user = await _organizationRepository.GetOrganizationByIdAsync(id); 
-
 
         var organization = _mapper.Map<Organization>(organizationDto);
 
@@ -103,6 +100,23 @@ namespace API.Controllers
         return BadRequest("Failed to add user");
         
     }
+        [Authorize]
+        [HttpPost("add-member/{id}")]
+        public async Task<ActionResult<OrganizationDto>> AddMember(MemberDto memberDto, int id)
+        {
+
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            AppUser returnUser = _mapper.Map<AppUser>(memberDto);
+            Organization org = await _organizationRepository.GetOrganizationByIdAsync(id);
+
+            org.Members.Add(returnUser);
+
+            if (await _organizationRepository.SaveAllAsync())
+                return NoContent();
+
+            return BadRequest("Failed to add member");
+
+        }
 
 
 
