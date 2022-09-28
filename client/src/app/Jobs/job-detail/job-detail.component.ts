@@ -12,7 +12,7 @@ import { take } from 'rxjs/operators';
 import { Job } from 'src/app/_models/job';
 import { Organization } from 'src/app/_models/organization';
 import { MembersService } from 'src/app/_services/members.service';
-import { OrganizationsService } from 'src/app/_services/organizations.service';
+import { OrganizationsService } from 'src/app/_services/serv/organizations.service';
 
 @Component({
   selector: 'app-job-detail',
