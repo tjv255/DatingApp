@@ -4,8 +4,8 @@ import { of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Job } from '../_models/job';
-import { JobsParams } from '../_models/jobsParams';
 import { User } from '../_models/user';
+import { UserParams } from '../_models/userParams';
 import { AccountService } from './account.service';
 import { getPaginatedResult, getPaginationHeaders } from './paginationHelper';
 
@@ -17,42 +17,42 @@ export class JobsService {
   jobs: Job[] = [];
   jobCache = new Map();
   user: User;
-  jobsParams: JobsParams;
+  userParams: UserParams;
 
   getUserParams() {
-    return this.jobsParams
+    return this.userParams
   }
 
-  setUserParams(params: JobsParams) {
-    this.jobsParams = params;
+  setUserParams(params: UserParams) {
+    this.userParams = params;
   }
 
   resetUserParams() {
-    this.jobsParams = new JobsParams();
-    return this.jobsParams;
+    this.userParams = new UserParams(this.user);
+    return this.userParams;
   }
 
   constructor(private http: HttpClient, private accountService: AccountService) {
     this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
       this.user = user;
-      this.jobsParams = new JobsParams();
+      this.userParams = new UserParams(user);
     })
   }
 
-  getJobs(jobsParams: JobsParams) {
-    var response = this.jobCache.get(Object.values(jobsParams).join('-'));
+  getJobs(userParams: UserParams) {
+    var response = this.jobCache.get(Object.values(userParams).join('-'));
     if (response) {
       return of(response);
     }
 
-    let params = getPaginationHeaders(jobsParams.pageNumber, jobsParams.pageSize);
+    let params = getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
 
-    params = params.append('jobType', jobsParams.jobType);
-    params = params.append('orderBy', jobsParams.orderBy);
+    params = params.append('jobType', userParams.jobType);
+    params = params.append('orderBy', userParams.orderBy);
 
     return getPaginatedResult<Job[]>(this.baseUrl + 'jobs', params, this.http)
       .pipe(map(response => {
-        this.jobCache.set(Object.values(jobsParams).join('-'), response);
+        this.jobCache.set(Object.values(userParams).join('-'), response);
         return response;
       }));
   }
@@ -68,11 +68,16 @@ export class JobsService {
     return this.http.get<Job>(this.baseUrl + 'jobs/' + id);
   }
 
-  //Need to be worked out with back end
   getJobsByPosterId(id: number) {
     const job = this.jobs.filter(x => x.jobPosterId === id);
     if (job !== undefined) return of(job);
-    return this.http.get<Job>(this.baseUrl + 'poster/' + id);
+    return this.http.get<Job>(this.baseUrl + 'jobs/poster/' + id);
+  }
+
+  getJobsByTitle(title: string) {
+    const job = this.jobs.filter(x => x.title.includes(title));
+    if (job !== undefined) return of(job);
+    return this.http.get<Job>(this.baseUrl + 'jobs/title/' + title);
   }
 
   updateJob(job: Job) {
@@ -85,17 +90,12 @@ export class JobsService {
   }
 
   saveJob(id: number) {
-    return this.http.post(this.baseUrl + 'likes/' + id, {});
+    return this.http.post(this.baseUrl + 'saved/' + id, {});
   }
 
   getSavedJobs(predicate: string, pageNumber, pageSize) {
     let params = getPaginationHeaders(pageNumber, pageSize);
     params = params.append('predicate', predicate);
-    return getPaginatedResult<Partial<Job[]>>(this.baseUrl + 'likes', params, this.http);
-  }
-
-  //Needs Delete job 
-  deleteJob(id: number) {                  //waiting for end point
-    return this.http.delete(this.baseUrl + 'likes/' + id);
+    return getPaginatedResult<Partial<Job[]>>(this.baseUrl + 'saved', params, this.http);
   }
 }
