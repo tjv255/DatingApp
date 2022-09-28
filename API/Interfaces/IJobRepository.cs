@@ -15,7 +15,7 @@ namespace API.Interfaces
 		Task<IEnumerable<Job>> GetJobsAsync();
 		Task<Job> GetJobByIdAsync(int id);
         Task<IEnumerable<Job>> GetJobByTitleAsync(string title);
-		//Task<bool> DeleteJobAsync(int id);
+		Task<bool> DeleteJobAsync(int id);
         Task<IEnumerable<Job>> GetJobsByPosterIdAsync(int id);
         Task<IEnumerable<JobDto>> GetMemberJobsAsync();
         Task<JobDto> GetMemberJobAsync();

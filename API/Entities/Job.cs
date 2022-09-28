@@ -29,6 +29,7 @@ namespace API.Entities
         public DateTime Deadline{get;set;} = DateTime.Now;
         public DateTime LastUpdated{get;set;} = DateTime.Now; 
         public ICollection<JobSave> SavedByUsers{get;set;}
+        
         // [ForeignKey("JobPosterId")]
         public AppUser JobPoster { get; set; }
         //public int JobPosterId { get; set; }     

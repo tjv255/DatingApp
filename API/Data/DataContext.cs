@@ -18,21 +18,11 @@ namespace API.Data
         public DbSet<Group> Groups { get; set; }
         public DbSet<Connection> Connections { get; set; }
         public DbSet<Job> Jobs { get; set; }
+        public DbSet<JobSave> SavedJobs {get;set;}
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            // builder.Entity<Job>()
-            //   .HasOne(u => u.AppUser)
-            //   .WithMany(j=> j.CreatedJobs)
-            //   .HasForeignKey(k=>k.PosterId)
-            //   .OnDelete(DeleteBehavior.Cascade);
-
-            // builder.Entity<AppUser>()
-            //     .HasMany(ur => ur.CreatedJobs)
-            //     .WithOne()
-            //     .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<JobSave>()
               .HasKey(k => new { k.JobId, k.SavedUserId });
