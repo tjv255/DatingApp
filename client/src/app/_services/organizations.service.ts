@@ -1,25 +1,28 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
 import { Organization } from '../_models/organization';
-import { OrgParams } from '../_models/OrgParams';
+import { User } from '../_models/user';
+import { OrgParams } from '../_models/orgParams';
+
 import { getPaginationHeaders, getPaginatedResult } from './paginationHelper';
+import { AccountService } from './account.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrganizationsService {
 
-  baseUrl = environment.apiUrl;
+    baseUrl = environment.apiUrl;
     organizations: Organization[] = [];
     organizationCache = new Map();
     orgParams: OrgParams;
 
     getOrgParams() {
-        return this.orgParams
+        return this.orgParams;
     }
 
     setOrgParams(params: OrgParams) {
@@ -32,22 +35,22 @@ export class OrganizationsService {
     }
 
     constructor(private http: HttpClient) {
-        this.orgParams = new OrgParams();
+            this.orgParams = new OrgParams();
     }
 
-    getOrganizations(OrgParams: OrgParams) {
+    getOrganizations(orgParams: OrgParams) {
         var response = this.organizationCache.get(Object.values(OrgParams).join('-'));
         if (response) {
             return of(response);
         }
 
-        let params = getPaginationHeaders(OrgParams.pageNumber, OrgParams.pageSize);
+        let params = getPaginationHeaders(orgParams.pageNumber, orgParams.pageSize);
 
-        params = params.append('orderBy', OrgParams.orderBy);
+        params = params.append('orderBy', orgParams.orderBy);
 
         return getPaginatedResult<Member[]>(this.baseUrl + 'users', params, this.http)
             .pipe(map(response => {
-                this.organizationCache.set(Object.values(OrgParams).join('-'), response);
+                this.organizationCache.set(Object.values(orgParams).join('-'), response);
                 return response;
             }));
     }

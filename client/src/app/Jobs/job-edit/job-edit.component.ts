@@ -66,9 +66,9 @@ export class JobEditComponent implements OnInit {
     })
   }
 
-  DeleteJob(jobid: number) {
+  /*DeleteJob(jobid: number) {
     this.jobService.deleteJob(jobid).subscribe(() => {
       this.toastr.success('Job Deleted successfully');
     })
-  }
+  }*/
 }

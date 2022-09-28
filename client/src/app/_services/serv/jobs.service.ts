@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+/*import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
@@ -92,4 +92,4 @@ export class JobsService {
     params = params.append('predicate', predicate);
     return getPaginatedResult<Partial<Job[]>>(this.baseUrl + 'likes', params, this.http);
   }
-}
+}*/

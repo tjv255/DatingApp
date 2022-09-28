@@ -4,7 +4,7 @@ import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov
 import { FileUploader } from 'ng2-file-upload';
 import { ToastrService } from 'ngx-toastr';
 import { Member } from 'src/app/_models/member';
-import { Ogranization } from 'src/app/_models/ogranization';
+import { Organization } from 'src/app/_models/organization';
 import { Pagination } from 'src/app/_models/pagination';
 import { UserParams } from 'src/app/_models/userParams';
 import { MembersService } from 'src/app/_services/members.service';
@@ -107,7 +107,7 @@ export class OrganizationDetailComponent implements OnInit {
     });
   }
 
-  addLike(organization: Ogranization) {
+  addLike(organization: Organization) {
     this.toastr.success('You have liked ');
     //add addLike method in organization service
     // this.memberService.addLike(member.username).subscribe(() => {

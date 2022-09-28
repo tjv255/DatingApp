@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Job } from '../_models/job';
+import { JobsParams } from '../_models/jobParams';
 import { User } from '../_models/user';
 import { UserParams } from '../_models/userParams';
 import { AccountService } from './account.service';
@@ -16,43 +17,42 @@ export class JobsService {
   baseUrl = environment.apiUrl;
   jobs: Job[] = [];
   jobCache = new Map();
-  user: User;
-  userParams: UserParams;
+  //user: User;
+  jobsParams: JobsParams;
 
   getUserParams() {
-    return this.userParams
+    return this.jobsParams
   }
 
-  setUserParams(params: UserParams) {
-    this.userParams = params;
+  setUserParams(params: JobsParams) {
+    this.jobsParams = params;
   }
 
   resetUserParams() {
-    this.userParams = new UserParams(this.user);
-    return this.userParams;
+    this.jobsParams = new JobsParams();
+    return this.jobsParams;
   }
+
 
   constructor(private http: HttpClient, private accountService: AccountService) {
-    this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
-      this.user = user;
-      this.userParams = new UserParams(user);
-    })
+
+      this.jobsParams = new JobsParams();
   }
 
-  getJobs(userParams: UserParams) {
-    var response = this.jobCache.get(Object.values(userParams).join('-'));
+  getJobs(jobsParams: JobsParams) {
+    var response = this.jobCache.get(Object.values(jobsParams).join('-'));
     if (response) {
       return of(response);
     }
 
-    let params = getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
+    let params = getPaginationHeaders(jobsParams.pageNumber, jobsParams.pageSize);
 
-    params = params.append('jobType', userParams.jobType);
-    params = params.append('orderBy', userParams.orderBy);
+    params = params.append('jobType', jobsParams.jobType);
+    params = params.append('orderBy', jobsParams.orderBy);
 
     return getPaginatedResult<Job[]>(this.baseUrl + 'jobs', params, this.http)
       .pipe(map(response => {
-        this.jobCache.set(Object.values(userParams).join('-'), response);
+        this.jobCache.set(Object.values(jobsParams).join('-'), response);
         return response;
       }));
   }
