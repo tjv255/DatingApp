@@ -8,6 +8,7 @@ namespace API.Interfaces
     {
 
     void Update(Organization organization);
+    void Add(Organization organization);
     Task<bool> SaveAllAsync();
 
     Task<IEnumerable<OrganizationDto>> GetOrganizationsAsync();

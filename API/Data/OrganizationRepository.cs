@@ -24,11 +24,9 @@ namespace API.Data
                 .ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
-
         public async Task<Organization> GetOrganizationByIdAsync(int id)
         {
             return await _context.Organizations.FindAsync(id);
-
         }
 
         public async Task<Organization> GetOrganizationByOrgnameAsync(string orgname)
@@ -39,13 +37,17 @@ namespace API.Data
                 
         // var organization = await _context.Organizations.Where(o=>o.Name.ToLower().Contains(orgname.ToLower())).ToListAsync();
         // return  organization;
-        }
-        
+        }        
 
         public async Task<bool> SaveAllAsync()
         {
         return await _context.SaveChangesAsync() > 0;
+        }
 
+
+        public void Add(Organization organization)
+        {
+            _context.Organizations.Add(organization);
         }
 
         public void Update(Organization organization)

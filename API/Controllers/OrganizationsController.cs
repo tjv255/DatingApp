@@ -45,22 +45,40 @@ namespace API.Controllers
 
         // }
 
-        [HttpPut]
-        public async Task<ActionResult> UpdateOrganization(OrganizationUpdateDto organizationUpdateDto)
+        [HttpPut ("{id}")]
+        public async Task<ActionResult> UpdateOrganization( OrganizationUpdateDto organizationUpdateDto , int id)
         {
-          //  var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
 
-            var organization = await _organizationRepository.GetOrganizationByOrgnameAsync("Winterizers");  //GetOrganizationByOrgnameAsync(Organization.Name);
+            var organization = await _organizationRepository.GetOrganizationByIdAsync(id); 
 
             _mapper.Map(organizationUpdateDto , organization);
 
             _organizationRepository.Update(organization);
 
 
-            if (await _organizationRepository.SaveAllAsync()) return NoContent();
+            if (await _organizationRepository.SaveAllAsync()) 
+            
+            return NoContent();
 
             return BadRequest("Failed to update user");
         }
+
+
+        [HttpPost("add")]
+
+        public async Task<ActionResult<OrganizationDto>> AddNewOrganizationById(OrganizationDto organizationDto)
+        
+        {
+
+        var organization = _mapper.Map<Organization>(organizationDto);
+
+        _organizationRepository.Add(organization);
+
+        if (await _organizationRepository.SaveAllAsync()) 
+            return NoContent();
+
+        return BadRequest("Failed to add user");
+    }
 
 
 
