@@ -23,17 +23,6 @@ namespace API.Data
         {
             base.OnModelCreating(builder);
 
-            // builder.Entity<Job>()
-            //   .HasOne(u => u.AppUser)
-            //   .WithMany(j=> j.CreatedJobs)
-            //   .HasForeignKey(k=>k.PosterId)
-            //   .OnDelete(DeleteBehavior.Cascade);
-
-            // builder.Entity<AppUser>()
-            //     .HasMany(ur => ur.CreatedJobs)
-            //     .WithOne()
-            //     .OnDelete(DeleteBehavior.Cascade);
-
             builder.Entity<JobSave>()
               .HasKey(k => new { k.JobId, k.SavedUserId });
 
