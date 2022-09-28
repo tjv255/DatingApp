@@ -34,12 +34,30 @@ export class RegisterComponent implements OnInit {
       dateOfBirth: ['', Validators.required],
       city: ['', Validators.required],
       country: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]],
+      password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8), this.strong()]],
       confirmPassword: ['', [Validators.required, this.matchValues('password')]]
     });
     this.registerForm.controls.password.valueChanges.subscribe(() => {
       this.registerForm.controls.confirmPassword.updateValueAndValidity();
     })
+  }
+
+  strong(): ValidatorFn {
+    return (control: AbstractControl) => {
+      let hasNumber = /\d/.test(control?.value);
+      let hasUpper = /[A-Z]/.test(control.value);
+      let hasLower = /[a-z]/.test(control.value);
+      // console.log('Num, Upp, Low', hasNumber, hasUpper, hasLower);
+      const valid = hasNumber && hasUpper && hasLower;
+      if (!valid) {
+          // return what´s not valid
+          return { strong: true };
+      }
+      return null;
+    }
+    
+    
+    
   }
 
   matchValues(matchTo: string): ValidatorFn {

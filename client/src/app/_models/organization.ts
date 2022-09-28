@@ -2,7 +2,7 @@ import { Job } from "./job"
 import { Member } from "./member"
 import { Photo } from "./photo"
 
-export interface Ogranization {
+export interface Organization {
     id: number
     name: string
     introduction: string
