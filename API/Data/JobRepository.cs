@@ -82,7 +82,8 @@ namespace API.Data
         .Select(t=>t.UserName).SingleOrDefaultAsync();
 
       return  await _context.Jobs.Where(t=>t.JobPoster.UserName==user)
-      .Include(j => j.JobPoster).ToListAsync();
+      .Include(j => j.JobPoster)
+      .ToListAsync();
     }
   }
 }
