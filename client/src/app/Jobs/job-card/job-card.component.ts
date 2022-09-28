@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { Job } from 'src/app/_models/job';
 import { Member } from 'src/app/_models/member';
+import { JobsService } from 'src/app/_services/jobs.service';
 import { MembersService } from 'src/app/_services/members.service';
 import { PresenceService } from 'src/app/_services/presence.service';
 
@@ -10,17 +12,17 @@ import { PresenceService } from 'src/app/_services/presence.service';
   styleUrls: ['./job-card.component.css']
 })
 export class JobCardComponent implements OnInit {
-  @Input() member: Member;
+  @Input() job: Job;
 
-  constructor(private memberService: MembersService, private toastr: ToastrService, 
+  constructor(private jobsService: JobsService, private toastr: ToastrService, 
     public presence: PresenceService) { }
 
   ngOnInit(): void {
   }
 
-  addLike(member: Member) {
-    this.memberService.addLike(member.username).subscribe(() => {
-      this.toastr.success('You have liked ' + member.knownAs);
+  addLike(job: Job) {
+    this.jobsService.saveJob(job.id).subscribe(() => {
+      this.toastr.success('You have liked ' + job.title);
     })
   }
 

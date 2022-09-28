@@ -1,5 +1,7 @@
+  <!--  
 <div class="container mt-3 bg-light my-3 pt-3 rounded">
-    <form #form="ngForm" class="form-inline mb-3" (ngSubmit)="loadMembers()" autocomplete="off">
+
+  <form #form="ngForm" class="form-inline mb-3" (ngSubmit)="loadMembers()" autocomplete="off">
       <div class="form-group">
         <label class="text-primary">Age from: </label>
         <input type="number" class="form-control ml-1" style="width: 5.5rem;" 
@@ -49,10 +51,10 @@
             <p>{{pagination?.totalItems}} results found</p>
           </div>
   </div>
-  
+  -->
   <div class="d-flex flex-wrap px-3 justify-content-center">
-    <div *ngFor="let member of members" class="col-2" style="min-width: 187px;">
-      <app-member-card [member]="member"></app-member-card>
+    <div *ngFor="let job of jobs" class="col-2" style="min-width: 187px;">
+      <app-job-card [job]="job"></app-job-card>
     </div>
   </div>
   

@@ -71,6 +71,19 @@ export class MembersService {
         return this.http.get<Member>(this.baseUrl + 'users/' + username);
     }
 
+    //Make sure its supported by back end
+    getMemberbyId(id: number) {
+        const member = [...this.memberCache.values()]
+            .reduce((arr, elem) => arr.concat(elem.result), [])
+            .find((member: Member) => member.id === id);
+
+        if (member) {
+            return of(member);
+        }
+        return this.http.get<Member>(this.baseUrl + 'users/' + id);
+    }
+
+
     updateMember(member: Member) {
         return this.http.put(this.baseUrl + 'users', member).pipe(
             map(() => {

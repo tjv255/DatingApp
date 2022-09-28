@@ -8,6 +8,9 @@ import { UserParams } from 'src/app/_models/userParams';
 import { AccountService } from 'src/app/_services/account.service';
 import { MembersService } from 'src/app/_services/members.service';
 import { GENDER_LIST } from 'src/app/util/constants';
+import { Job } from 'src/app/_models/job';
+import { JobsParams } from 'src/app/_models/jobParams';
+import { JobsService } from 'src/app/_services/jobs.service';
 
 @Component({
   selector: 'app-job-list',
@@ -15,36 +18,61 @@ import { GENDER_LIST } from 'src/app/util/constants';
   styleUrls: ['./job-list.component.css']
 })
 export class JobListComponent implements OnInit {
-  members: Member[];
+  jobs: Job [];
   pagination: Pagination;
-  userParams: UserParams;
-  user: User;
+
+  jobParams: JobsParams;
+
   genderList = GENDER_LIST;
 
-  constructor(private memberService: MembersService) {
-    this.userParams = this.memberService.getUserParams();
+  constructor(private memberService: MembersService, private jobsService: JobsService) {
+    this.jobParams = this.jobsService.getUserParams();
+
   }
 
   ngOnInit(): void {
-    this.loadMembers();
+    this.jobs = [{
+      id: 10,
+      title: "Hello",
+      orgId: 12,
+      jobPosterId: 1,
+      logoUrl: "https://randomuser.me/api/portraits/men/93.jpg",
+      description: "Need farm work who can feed cows",
+      salary: 2,
+      city: "Pizza Land",
+      province: "Vegas",
+      country: "Italy",
+      genres: "Strong, Talented",
+      jobType: "Hard",
+      skillsRequired: "Farming, Mooing, Grass eating",
+      applicationUrl: "https://randomuser.me/api/portraits/men/93.jpg",
+      dateCreated: new Date(Date.now()),
+      deadline: new Date(Date.now()),
+      lastUpdated: new Date(Date.now())
+    }]
+    //this.loadMembers();
   }
 
   loadMembers() {
-    this.memberService.setUserParams(this.userParams);
-    this.memberService.getMembers(this.userParams).subscribe((response) => {
-      this.members = response.result;
+    this.jobsService.setUserParams(this.jobParams);
+
+    this.jobsService.getJobs(this.jobParams).subscribe((response) => {
+      this.jobs = response.result;
       this.pagination = response.pagination;
     });
+
+
+
   }
 
   resetFilters() {
-    this.userParams = this.memberService.resetUserParams();
+    this.jobParams = this.jobsService.resetUserParams();
     this.loadMembers();
   }
 
   pageChanged(event: any) {
-    this.userParams.pageNumber = event.page;
-    this.memberService.setUserParams(this.userParams);
+    this.jobParams.pageNumber = event.page;
+    this.jobsService.setUserParams(this.jobParams);
     this.loadMembers();
   }
 }

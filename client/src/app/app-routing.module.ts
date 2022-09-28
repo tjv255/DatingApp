@@ -5,6 +5,7 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
 import { HomeComponent } from './home/home.component';
+import { JobDetailComponent } from './Jobs/job-detail/job-detail.component';
 import { JobEditComponent } from './Jobs/job-edit/job-edit.component';
 import { JobListComponent } from './Jobs/job-list/job-list.component';
 import { ListsComponent } from './lists/lists.component';
@@ -30,6 +31,7 @@ const routes: Routes = [
       {path: 'members/:username', component: MemberDetailComponent, resolve: {member: MemberDetailedResolver}},
       {path: 'member/edit', component: MemberEditComponent, canDeactivate: [PreventUnsavedChangesGuard]},
       {path: 'member/job_edit', component: JobEditComponent},
+      {path: 'jobs/:id', component: JobDetailComponent},
       {path: 'member/org_edit', component: OrganizationEditComponent},
       {path: 'lists', component: ListsComponent},
       {path: 'messages', component: MessagesComponent},

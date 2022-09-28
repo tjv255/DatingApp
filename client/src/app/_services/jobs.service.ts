@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Job } from '../_models/job';
-import { JobsParams } from '../_models/jobsParams';
+import { JobsParams } from '../_models/jobParams';
 import { User } from '../_models/user';
 import { AccountService } from './account.service';
 import { getPaginatedResult, getPaginationHeaders } from './paginationHelper';
@@ -16,7 +16,7 @@ export class JobsService {
   baseUrl = environment.apiUrl;
   jobs: Job[] = [];
   jobCache = new Map();
-  user: User;
+  //user: User;
   jobsParams: JobsParams;
 
   getUserParams() {
@@ -32,11 +32,10 @@ export class JobsService {
     return this.jobsParams;
   }
 
-  constructor(private http: HttpClient, private accountService: AccountService) {
-    this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
-      this.user = user;
-      this.jobsParams = new JobsParams();
-    })
+  constructor(private http: HttpClient) {
+
+    this.jobsParams = new JobsParams();
+    
   }
 
   getJobs(jobsParams: JobsParams) {
