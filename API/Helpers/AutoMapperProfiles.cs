@@ -28,6 +28,8 @@ namespace API.Helpers
                     src.Photos.FirstOrDefault(x => x.IsMain).Url));
             CreateMap<OrgPhoto, OrgPhotoDto>();
             CreateMap<OrganizationUpdateDto, Organization>();
+
+            CreateMap<OrgPhotoDto, Organization>();
             
 
             

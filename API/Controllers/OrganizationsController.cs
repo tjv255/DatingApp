@@ -10,11 +10,15 @@ namespace API.Controllers
     public class OrganizationsController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
-
         private readonly IOrganizationRepository _organizationRepository;
         private readonly IMapper _mapper;
-        public OrganizationsController(IUserRepository userRepository, IOrganizationRepository organizationRepository, IMapper mapper)
+        public readonly IPhotoService _photoService;
+
+        public OrganizationsController(IUserRepository userRepository, IOrganizationRepository organizationRepository,
+                                        IMapper mapper, IPhotoService photoService)
+
         {
+            _photoService = photoService;
             _userRepository = userRepository;
             _organizationRepository = organizationRepository;
             _mapper = mapper;
@@ -25,14 +29,12 @@ namespace API.Controllers
         public async Task<ActionResult<IEnumerable<OrganizationDto>>> GetOrganizations()
         {
             var organizations = await _organizationRepository.GetOrganizationsAsync();
-
             return Ok(organizations);
 
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Organization>> GetOrganizationsById(int id)
-
         {
             return await _organizationRepository.GetOrganizationByIdAsync(id);
         }
@@ -48,27 +50,49 @@ namespace API.Controllers
         [HttpPut ("{id}")]
         public async Task<ActionResult> UpdateOrganization( OrganizationUpdateDto organizationUpdateDto , int id)
         {
-
             var organization = await _organizationRepository.GetOrganizationByIdAsync(id); 
-
             _mapper.Map(organizationUpdateDto , organization);
-
             _organizationRepository.Update(organization);
 
-
-            if (await _organizationRepository.SaveAllAsync()) 
-            
+            if (await _organizationRepository.SaveAllAsync())            
             return NoContent();
-
             return BadRequest("Failed to update user");
         }
 
+        [HttpPost("add-photo")]
+        public async Task<ActionResult<OrgPhotoDto>>AddPhoto(IFormFile file, int id)
+        {
+        var organization = await _organizationRepository.GetOrganizationByIdAsync(id); 
+        var result = await _photoService.AddPhotoAsync(file);
+
+        if (result.Error != null) return BadRequest(result.Error.Message);
+        var photo = new OrgPhoto
+        {
+        Url = result.SecureUrl.AbsoluteUri,
+        PublicId = result.PublicId
+        };
+
+        if (organization.Photos.Count == 0)
+        {
+        photo.IsMain = true;
+        }
+
+        organization.Photos.Add(photo);
+        if (await _organizationRepository.SaveAllAsync())
+        {
+      //  return CreatedAtRoute("GetOrganization", new { orgname = organization.Name },          
+            return   _mapper.Map<OrgPhotoDto>(photo);
+        }
+        return BadRequest("Problem addding photo");
+    }
+
 
         [HttpPost("add")]
-
-        public async Task<ActionResult<OrganizationDto>> AddNewOrganizationById(OrganizationDto organizationDto)
-        
+        public async Task<ActionResult<OrganizationDto>> AddNewOrganizationById(OrganizationDto organizationDto)       
         {
+
+        var user = await _organizationRepository.GetOrganizationByIdAsync(id); 
+
 
         var organization = _mapper.Map<Organization>(organizationDto);
 
@@ -76,8 +100,8 @@ namespace API.Controllers
 
         if (await _organizationRepository.SaveAllAsync()) 
             return NoContent();
-
         return BadRequest("Failed to add user");
+        
     }
 
 
