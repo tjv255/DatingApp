@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Job } from 'src/app/_models/job';
 import { Member } from 'src/app/_models/member';
-import { JobsService } from 'src/app/_services/jobs.service';
+import { JobsService } from 'src/app/_services/serv/jobs.service';
 import { MembersService } from 'src/app/_services/members.service';
 import { PresenceService } from 'src/app/_services/presence.service';
 

@@ -10,7 +10,7 @@ import { MembersService } from 'src/app/_services/members.service';
 import { GENDER_LIST } from 'src/app/util/constants';
 import { Job } from 'src/app/_models/job';
 import { JobsParams } from 'src/app/_models/jobParams';
-import { JobsService } from 'src/app/_services/jobs.service';
+import { JobsService } from 'src/app/_services/serv/jobs.service';
 
 @Component({
   selector: 'app-job-list',

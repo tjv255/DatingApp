@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { Job } from '../_models/job';
-import { JobsParams } from '../_models/jobParams';
-import { User } from '../_models/user';
-import { AccountService } from './account.service';
-import { getPaginatedResult, getPaginationHeaders } from './paginationHelper';
+import { Job } from '../../_models/job';
+import { JobsParams } from '../../_models/jobParams';
+import { User } from '../../_models/user';
+import { AccountService } from '../account.service';
+import { getPaginatedResult, getPaginationHeaders } from '../paginationHelper';
 
 @Injectable({
   providedIn: 'root'
