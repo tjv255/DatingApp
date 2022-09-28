@@ -34,7 +34,7 @@ import { RolesModalComponent } from './modals/roles-modal/roles-modal.component'
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MultiselectComponent } from './_forms/multiselect/multiselect.component';
 import { LearnMoreComponent } from './learn-more/learn-more.component';
-import { PricingModalComponent } from './modals/pricing-modal/pricing-modal.component';
+import { PricingComponent } from './pricing/pricing.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +62,7 @@ import { PricingModalComponent } from './modals/pricing-modal/pricing-modal.comp
     RolesModalComponent,
     MultiselectComponent,
     LearnMoreComponent,
-    PricingModalComponent
+    PricingComponent
   ],
   imports: [
     BrowserModule,

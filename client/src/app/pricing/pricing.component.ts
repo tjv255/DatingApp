@@ -2,10 +2,10 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-pricing',
-  templateUrl: './pricing-modal.component.html',
-  styleUrls: ['./pricing-modal.component.css']
+  templateUrl: './pricing.component.html',
+  styleUrls: ['./pricing.component.css']
 })
-export class PricingModalComponent implements OnInit {
+export class PricingComponent implements OnInit {
     @Output() registerToggle = new EventEmitter();
 
   constructor() { }
