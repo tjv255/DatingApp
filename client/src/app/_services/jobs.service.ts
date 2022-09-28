@@ -93,4 +93,9 @@ export class JobsService {
     params = params.append('predicate', predicate);
     return getPaginatedResult<Partial<Job[]>>(this.baseUrl + 'likes', params, this.http);
   }
+
+  //Needs Delete job 
+  deleteJob(id: number) {                  //waiting for end point
+    return this.http.delete(this.baseUrl + 'likes/' + id);
+  }
 }
