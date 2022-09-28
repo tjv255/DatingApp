@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'api/',
-  hubUrl: 'hubs/'
+  apiUrl: 'https://harmonix-be.azurewebsites.net/api/',
+  hubUrl: 'https://harmonix-be.azurewebsites.net/hubs/'
 };
+
