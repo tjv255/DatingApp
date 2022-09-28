@@ -19,7 +19,7 @@ namespace API.DTOs
         public string Country { get; set; }
         public ICollection<PhotoDto> Photos { get; set; }
         public ICollection<JobDto> CreatedJobs { get; set; }
-        public ICollection<int> AffiliationIds {get; set;}
+        public ICollection<OrganizationDto> Affiliation {get; set;}
 
         
     }

@@ -102,15 +102,12 @@ namespace API.Controllers
     }
         [Authorize]
         [HttpPost("add-member/{id}")]
-        public async Task<ActionResult<OrganizationDto>> AddMember(MemberDto memberDto, int id)
+        public async Task<ActionResult<OrganizationDto>> AddMember(string username, int id)
         {
-
-            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
-            AppUser returnUser = _mapper.Map<AppUser>(memberDto);
-            Organization org = await _organizationRepository.GetOrganizationByIdAsync(id);
-
+            var user = await _userRepository.GetUserByUsernameAsync(username);
+            var returnUser = _mapper.Map<AppUser>(user);
+            var org = await _organizationRepository.GetOrganizationByIdAsync(id);
             org.Members.Add(returnUser);
-
             if (await _organizationRepository.SaveAllAsync())
                 return NoContent();
 
