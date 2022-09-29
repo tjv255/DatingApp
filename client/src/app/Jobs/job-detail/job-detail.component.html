@@ -61,8 +61,8 @@
 </div>
 -->
 <div class="container">
-<div class="row">
-    <div class="col-3">
+
+    <!--<div class="col-3">
         <div class="card border-secondary">
             <div class="card-body">
               <h4 class="card-title">Secondary card title</h4>
@@ -70,7 +70,9 @@
             </div>
         </div>        
     </div>   
+-->
     <div class="col">
+    
     <div class="glass-container p-4">
         <div class="row">
             <h1>{{job.title}}</h1>
@@ -110,11 +112,44 @@
                 <span class="badge bg-primary ml-1" *ngFor="let a of job.skillsRequired.split(', ')" >{{a}}</span>
             </div>
         </div>
+
+        <div class="card mt-2 pt-3 pb-3">
+            <div class="card-body">
+                <h5>Get in touch with the recruiter</h5>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-3">
+                            <img src="{{job.logoUrl || './assets/user.png'}}" alt="{{job.description}}" class="rounded-circle">
+                        </div>
+                        <div class="col">
+                            <p>Member First Name, Member last name</p>
+                            <div class="container pl-0">
+                                <div class="row">
+                                    <div class="col">
+                                        <p>Occupation</p>
+                                    </div>
+                                    <div class="col">
+                                        <button class="btn btn-primary">Message</button>
+                                    </div>
+                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
     <div class="glass-container mt-2 p-4">
         <h2>Orgination template holder</h2>
+            <div class="d-flex flex-wrap px-3 justify-content-center">
+                <div *ngFor="let org of orgs" class="col-2" style="min-width: 187px;">
+                  <app-organization-card [org]="org"></app-organization-card>
+                </div>
+            </div>
     </div>
     </div>
 
-    </div>  
+
 </div>

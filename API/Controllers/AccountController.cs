@@ -34,6 +34,8 @@ namespace API.Controllers
 
             var user = _mapper.Map<AppUser>(registerDto);
 
+            Console.WriteLine(user);
+
             user.UserName = registerDto.Username.ToLower();
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);

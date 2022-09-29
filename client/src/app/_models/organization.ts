@@ -4,6 +4,7 @@ import { Photo } from "./photo"
 
 export interface Organization {
     id: number
+    orgPosterId: number
     name: string
     introduction: string
     photoUrl: string

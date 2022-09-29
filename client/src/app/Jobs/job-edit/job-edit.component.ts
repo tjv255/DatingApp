@@ -30,27 +30,25 @@ export class JobEditComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.job = 
-
-    {
-        id: 0,
-        title: "Lisa",
-        orgId: 1,
-        jobPosterId: 1,
-        logoUrl: "Lissy",
-        description: "Here is the Description",
-        salary:500,
-        city: "Calgary",
-        province: "Alberta",
-        country: "Canada",
-        genres: "Drummer,Guitarist,Male Singer",
-        jobType: "Piano",
-        skillsRequired: "Professional",
-        applicationUrl: "https://randomuser.me/api/portraits/women/54.jpg",
-        dateCreated: new Date(),
-        deadline: new Date(),
-        lastUpdated: new Date()
-      }
+    this.job = {
+      id: 10,
+      title: "Hello",
+      orgId: 12,
+      jobPosterId: 1,
+      logoUrl: "https://randomuser.me/api/portraits/men/93.jpg",
+      description: "Need farm work who can feed cows",
+      salary: 20000,
+      city: "Pizza Land",
+      province: "Vegas",
+      country: "Italy",
+      genres: "Strong, Talented",
+      jobType: "Hard",
+      skillsRequired: "Farming, Mooing, Grass eating",
+      applicationUrl: "https://randomuser.me/api/portraits/men/93.jpg",
+      dateCreated: new Date(Date.now()),
+      deadline: new Date(Date.now()),
+      lastUpdated: new Date(Date.now())
+    }
 
       
   }

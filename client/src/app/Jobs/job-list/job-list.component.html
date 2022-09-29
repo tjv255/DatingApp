@@ -1,7 +1,7 @@
-  <!--  
+
 <div class="container mt-3 bg-light my-3 pt-3 rounded">
 
-  <form #form="ngForm" class="form-inline mb-3" (ngSubmit)="loadMembers()" autocomplete="off">
+  <!--<form #form="ngForm" class="form-inline mb-3" (ngSubmit)="loadMembers()" autocomplete="off">
       <div class="form-group">
         <label class="text-primary">Age from: </label>
         <input type="number" class="form-control ml-1" style="width: 5.5rem;" 
@@ -24,34 +24,28 @@
       <button class="btn btn-primary ml-1" type="submit">Apply Filters</button>
       <button (click)="resetFilters()" class="btn btn-info ml-1" type="submit">Reset Filters</button>
   
-      <div class="col">
-        <div class="btn-group float-right">
-          <button 
-            type="button"
-            class="btn btn-primary" 
-            name="orderBy" 
-            [(ngModel)]="userParams.orderBy"
-            (click)="loadMembers()"
-            btnRadio="lastActive">Last Active</button>
-    
-          <button 
-            type="button"
-            class="btn btn-primary" 
-            name="orderBy" 
-            [(ngModel)]="userParams.orderBy"
-            (click)="loadMembers()"
-            btnRadio="created"
-          >
-            Newest Members
-          </button>
-        </div>
+
       </div>
-    </form>
+    </form>-->
+    <div class="col">
+      <div class="btn-group float-right">
+          <a routerLink="/job/new_post"><button class="btn btn-primary pull-right" > Post job</button></a>
+        <button 
+          type="button"
+          class="btn btn-primary" 
+          name="orderBy" 
+          (click)="loadJobsByUserId(this.member.id)"
+          btnRadio="created">Posted by me</button>
+      </div>
+      </div>
     <div class="row text-center">
             <p>{{pagination?.totalItems}} results found</p>
           </div>
   </div>
-  -->
+
+
+
+
   <div class="d-flex flex-wrap px-3 justify-content-center">
     <div *ngFor="let job of jobs" class="col-2" style="min-width: 187px;">
       <app-job-card [job]="job"></app-job-card>
