@@ -18,22 +18,35 @@ namespace API.Data
             _context = context;
         }
 
-        public async Task<IEnumerable<OrganizationDto>> GetOrganizationsAsync()
+        public async Task<IEnumerable<Organization>> GetOrganizationsAsync()
         {
             return await  _context.Organizations
+                .Include(p => p.Photos)
+                .Include(m => m.Members)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<OrganizationDto>> GetCompactOrganizationsAsync()
+        {
+            return await _context.Organizations
                 .ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
+
         public async Task<Organization> GetOrganizationByIdAsync(int id)
         {
-            return await _context.Organizations.FindAsync(id);
+            return await _context.Organizations
+                    .Include(p => p.Photos)
+                    .Include(m => m.Members)
+                    .SingleOrDefaultAsync(o => o.Id == id);
         }
 
         public async Task<Organization> GetOrganizationByOrgnameAsync(string orgname)
         {
             return await _context.Organizations
-            .Include(p => p.Photos).
-                SingleOrDefaultAsync(x => x.Name == orgname);  
+                    .Include(p => p.Photos)
+                    .Include(m => m.Members)
+                    .SingleOrDefaultAsync(x => x.Name == orgname);  
                 
         // var organization = await _context.Organizations.Where(o=>o.Name.ToLower().Contains(orgname.ToLower())).ToListAsync();
         // return  organization;
