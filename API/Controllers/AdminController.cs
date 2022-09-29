@@ -56,7 +56,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{username}")]
-        public async Task<ActionResult> DeleteAppUser(string username)
+        public async Task<ActionResult> DeleteUser(string username)
         {
             var user = await _userManager.FindByNameAsync(username);
             await _userManager.DeleteAsync(user);
