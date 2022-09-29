@@ -48,7 +48,7 @@ export class OrganizationsService {
 
         params = params.append('orderBy', orgParams.orderBy);
 
-        return getPaginatedResult<Member[]>(this.baseUrl + 'users', params, this.http)
+        return getPaginatedResult<Member[]>(this.baseUrl + 'organizations', params, this.http)
             .pipe(map(response => {
                 this.organizationCache.set(Object.values(orgParams).join('-'), response);
                 return response;
