@@ -9,10 +9,13 @@ namespace API.Interfaces
 {
     public interface IJobSaveRepository
     {
-        Task<JobSave> GetSavedJob(int sourceUserId, int savedJobId);
-        Task<AppUser> GetUserWithSavedJobs(int id);
+        //specific saved job
+        Task<JobSave> GetSavedJob(int savedUserId, int jobId);
 
-        Task<IEnumerable<JobSaveDto>>  GetSavedJobs(string predicate, int userId);
+        //list of saved job that the user has saved
+        Task<AppUser> GetUserWithSavedJobs(int userId);
+
+        Task<List<JobSaveDto>>  GetSavedJobs(string predicate, int userId);
 
         
     }

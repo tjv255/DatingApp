@@ -23,9 +23,8 @@ namespace API.Entities
     public ICollection<Message> MessagesSent { get; set; }
     public ICollection<Message> MessagesReceived { get; set; }
     public ICollection<AppUserRole> UserRoles { get; set; }
-    //job ssaved by current user
+    //job saved by current user
     public ICollection<JobSave> SavedJobs{get; set;}
-    //this job? saved by other users
     public ICollection<Job> CreatedJobs{get; set;}
     
   }
