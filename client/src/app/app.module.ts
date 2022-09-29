@@ -31,8 +31,6 @@ import { HasRoleDirective } from './_directives/has-role.directive';
 import { UserManagementComponent } from './admin/user-management/user-management.component';
 import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
 import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { MultiselectComponent } from './_forms/multiselect/multiselect.component';
 import { JobCardComponent } from './Jobs/job-card/job-card.component';
 import { JobDetailComponent } from './Jobs/job-detail/job-detail.component';
 import { JobListComponent } from './Jobs/job-list/job-list.component';
@@ -42,6 +40,8 @@ import { OrganizationCardComponent } from './organization/organization-card/orga
 import { OrganizationDetailComponent } from './organization/organization-detail/organization-detail.component';
 import { OrganizationListComponent } from './organization/organization-list/organization-list.component';
 import { JobRegisterComponent } from './Jobs/job-register/job-register.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { MultiselectComponent } from './_forms/multiselect/multiselect.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +67,6 @@ import { JobRegisterComponent } from './Jobs/job-register/job-register.component
     UserManagementComponent,
     PhotoManagementComponent,
     RolesModalComponent,
-    MultiselectComponent,
     JobCardComponent,
     JobDetailComponent,
     JobListComponent,
@@ -76,7 +75,8 @@ import { JobRegisterComponent } from './Jobs/job-register/job-register.component
     OrganizationCardComponent,
     OrganizationDetailComponent,
     OrganizationListComponent,
-    JobRegisterComponent
+    JobRegisterComponent,
+    MultiselectComponent
   ],
   imports: [
     BrowserModule,
