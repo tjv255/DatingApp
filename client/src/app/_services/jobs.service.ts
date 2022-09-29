@@ -5,6 +5,7 @@ import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Job } from '../_models/job';
 import { JobsParams } from '../_models/jobParams';
+import { JobUpdate } from '../_models/jobUpdate';
 import { User } from '../_models/user';
 import { UserParams } from '../_models/userParams';
 import { AccountService } from './account.service';
@@ -90,13 +91,14 @@ export class JobsService {
             }));
   }
 
-  updateJob(job: Job) {
-    return this.http.put(this.baseUrl + 'jobs', job).pipe(
+  updateJob(jobUpdate: JobUpdate, id: number) {
+    return this.http.put(this.baseUrl + 'jobs/' + id, jobUpdate);
+    /*.pipe(
       map(() => {
-        const index = this.jobs.indexOf(job);
-        this.jobs[index] = job;
+        const index = this.jobUpdate.indexOf(jobUpdate);
+        this.jobs[index] = jobUpdate;
       })
-    );
+    );*/
   }
 
   saveJob(id: number) {

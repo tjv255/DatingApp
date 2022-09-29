@@ -4,17 +4,17 @@ import { Photo } from "./photo"
 
 export interface Organization {
     id: number
-    orgPosterId: number
+    //orgOwnerId: number
     name: string
     introduction: string
     photoUrl: string
     established: number
     created: Date
     lastUpdated: Date
-    //backend returns list of members who work for the org
-    members: Member[]
-    jobs: Job[]
+    //Maybe implement in next sprint
+    //jobs: Job[]
     //backend returns memebers who liked the org
-    memberswholiked: Member []
+
     photos: Photo[]
+    members: Member[]
 }

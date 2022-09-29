@@ -39,7 +39,7 @@ export class JobEditComponent implements OnInit {
       description: "Need farm work who can feed cows",
       salary: 20000,
       city: "Pizza Land",
-      province: "Vegas",
+      provinceOrState: "Vegas",
       country: "Italy",
       genres: "Strong, Talented",
       jobType: "Hard",
@@ -54,7 +54,7 @@ export class JobEditComponent implements OnInit {
   }
  /* UpdateJob(Job: job)
   {
-    this.jobService.updateJob(job);
+    this.jobService.updateJob(job, id);
   }
   */
   UpdateJob() {

@@ -8,11 +8,12 @@ export interface Job {
     //dependant on cap72
     orgId: number
     jobPosterId: number
+    jobPosterName: string
     logoUrl: string
     description: string
     salary: number
     city: string
-    province: string
+    provinceOrState: string
     country: string
     genres: string
     jobType: string
