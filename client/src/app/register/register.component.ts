@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from '../_services/account.service';
-import { AFFILIATION_LIST, AFFILIATION_DATA } from '../util/constants';
+import {  GENDER_LIST, AFFILIATION_LIST, AFFILIATION_DATA } from '../util/constants';
 
 @Component({
   selector: 'app-register',
@@ -16,6 +16,7 @@ export class RegisterComponent implements OnInit {
   maxDate: Date;
   validationErrors: string[] = [];
   affiliationList = AFFILIATION_LIST;
+  genderList = GENDER_LIST;
 
   constructor(private accountService: AccountService, private toastr: ToastrService, 
     // orgnizationList!: Orgninzation[] --> See OnInit
