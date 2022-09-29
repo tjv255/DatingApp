@@ -41,37 +41,7 @@ export class OrganizationListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.orgs = 
-
-    [{
-        id: 0,
-        name: "Lisa",
-        orgPosterId: 7,
-        introduction: "strong",
-        photoUrl: "https://randomuser.me/api/portraits/women/54.jpg",
-        established: 1998,
-        created: new Date(),
-        lastUpdated: new Date(),
-        members: [],
-        jobs: [],
-        memberswholiked: [],
-        photos: []
-      }, {
-        id: 0,
-        name: "pisa",
-        orgPosterId: 7,
-        introduction: "Whoop",
-        photoUrl: "https://randomuser.me/api/portraits/women/55.jpg",
-        established: 1998,
-        created: new Date(),
-        lastUpdated: new Date(),
-        members: [],
-        jobs: [],
-        memberswholiked: [],
-        photos: []
-      }];
-
-    //this.loadMembers();
+    this.loadMembers();
   }
 
   loadMembers() {

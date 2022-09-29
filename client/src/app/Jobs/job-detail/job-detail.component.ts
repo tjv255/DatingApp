@@ -28,66 +28,17 @@ export class JobDetailComponent implements OnInit {
   galleryImages: NgxGalleryImage[];
   activeTab: TabDirective;
 
-  constructor(private route: ActivatedRoute, private memberService: MembersService, private organizationsService: OrganizationsService ) { 
+  constructor(private route: ActivatedRoute, private memberService: MembersService, private organizationsService: OrganizationsService, private router: Router ) { 
   //Load member and load Organization objects from server 
+  this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 
   }
 
   ngOnInit(): void {
 
-    this.job = {
-      id: 10,
-      title: "Hello",
-      orgId: 12,
-      jobPosterId: 1,
-      logoUrl: "https://randomuser.me/api/portraits/men/93.jpg",
-      description: "Need farm work who can feed cows",
-      salary: 20000,
-      city: "Pizza Land",
-      province: "Vegas",
-      country: "Italy",
-      genres: "Strong, Talented",
-      jobType: "Hard",
-      skillsRequired: "Farming, Mooing, Grass eating",
-      applicationUrl: "https://randomuser.me/api/portraits/men/93.jpg",
-      dateCreated: new Date(Date.now()),
-      deadline: new Date(Date.now()),
-      lastUpdated: new Date(Date.now())
-    }
-
-    this.orgs = 
-    [{
-        id: 0,
-        orgPosterId: 7,
-        name: "Lisa",
-        introduction: "strong",
-        photoUrl: "https://randomuser.me/api/portraits/women/54.jpg",
-        established: 1998,
-        created: new Date(),
-        lastUpdated: new Date(),
-        members: [],
-        jobs: [],
-        memberswholiked: [],
-        photos: []
-      }, {
-        id: 0,
-        orgPosterId: 7,
-        name: "pisa",
-        introduction: "Whoop",
-        photoUrl: "https://randomuser.me/api/portraits/women/55.jpg",
-        established: 1998,
-        created: new Date(),
-        lastUpdated: new Date(),
-        members: [],
-        jobs: [],
-        memberswholiked: [],
-        photos: []
-      }];
-    
-
     /*this.memberService.getMemberbyId(this.job.jobPosterId).subscribe((response) => {
       this.member = response;
-    });*/ 
+    });*/
 
     /*this.organizationService.getMemberbyId(this.job.jobPosterId).subscribe((response) => {
       this.orgs = response;

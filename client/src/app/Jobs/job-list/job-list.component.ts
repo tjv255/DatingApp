@@ -39,47 +39,7 @@ export class JobListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.jobs = 
-
-    [{
-        id: 0,
-        title: "Lisa",
-        orgId: 1,
-        jobPosterId: 1,
-        logoUrl: "https://randomuser.me/api/portraits/women/54.jpg",
-        description: "Here is the Description",
-        salary:500,
-        city: "Calgary",
-        province: "Alberta",
-        country: "Canada",
-        genres: "Drummer,Guitarist,Male Singer",
-        jobType: "Piano",
-        skillsRequired: "Professional",
-        applicationUrl: "lool",
-        dateCreated: new Date(),
-        deadline: new Date(),
-        lastUpdated: new Date()
-      }, {
-        id: 0,
-        title: "Pisa",
-        orgId: 2,
-        jobPosterId: 2,
-        logoUrl: "https://randomuser.me/api/portraits/women/59.jpg",
-        description: "Here is the Description",
-        salary:500,
-        city: "Calgary",
-        province: "Alberta",
-        country: "Canada",
-        genres: "Drummer,Guitarist,Male Singer",
-        jobType: "Piano",
-        skillsRequired: "Professional",
-        applicationUrl: "lool",
-        dateCreated: new Date(),
-        deadline: new Date(),
-        lastUpdated: new Date()
-      }];
-
-    //this.loadMembers();
+    this.loadMembers();
   }
 
   loadMembers() {

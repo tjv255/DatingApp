@@ -35,6 +35,7 @@ export class JobEditComponent implements OnInit {
       title: "Hello",
       orgId: 12,
       jobPosterId: 1,
+      jobPosterName: "lisa",
       logoUrl: "https://randomuser.me/api/portraits/men/93.jpg",
       description: "Need farm work who can feed cows",
       salary: 20000,

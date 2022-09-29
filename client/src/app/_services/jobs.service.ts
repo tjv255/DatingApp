@@ -5,7 +5,6 @@ import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Job } from '../_models/job';
 import { JobsParams } from '../_models/jobParams';
-import { JobUpdate } from '../_models/jobUpdate';
 import { User } from '../_models/user';
 import { UserParams } from '../_models/userParams';
 import { AccountService } from './account.service';
@@ -91,8 +90,8 @@ export class JobsService {
             }));
   }
 
-  updateJob(jobUpdate: JobUpdate, id: number) {
-    return this.http.put(this.baseUrl + 'jobs/' + id, jobUpdate);
+  updateJob(job: Job) {
+    return this.http.put(this.baseUrl + 'jobs/' + job.id, job);
     /*.pipe(
       map(() => {
         const index = this.jobUpdate.indexOf(jobUpdate);
