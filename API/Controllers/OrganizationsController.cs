@@ -55,7 +55,7 @@ namespace API.Controllers
 
         [HttpPost("add-photo")]
         public async Task<ActionResult<OrgPhotoDto>>AddPhoto(IFormFile file, int id)
-        {
+    {
         var organization = await _organizationRepository.GetOrganizationByIdAsync(id); 
         var result = await _photoService.AddPhotoAsync(file);
 
@@ -77,6 +77,24 @@ namespace API.Controllers
             return   _mapper.Map<OrgPhotoDto>(photo);
         }
         return BadRequest("Problem addding photo");
+    }
+
+        [HttpPut("set-main-photo/{photoId}")]
+        public async Task<ActionResult> SetMainPhoto(int photoId, int id)
+    {
+        var organization = await _organizationRepository.GetOrganizationByIdAsync(id); 
+
+        var photo = organization.Photos.FirstOrDefault(x => x.Id == photoId);
+
+        if (photo.IsMain) return BadRequest("This is already your main photo");
+
+        var currentMain = organization.Photos.FirstOrDefault(x => x.IsMain);
+        if (currentMain != null) currentMain.IsMain = false;
+        photo.IsMain = true;
+
+        if (await _organizationRepository.SaveAllAsync()) return NoContent();
+
+        return BadRequest("Failed to set main photo");
     }
 
 
