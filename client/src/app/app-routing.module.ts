@@ -9,6 +9,7 @@ import { JobDetailComponent } from './Jobs/job-detail/job-detail.component';
 import { JobEditComponent } from './Jobs/job-edit/job-edit.component';
 import { JobListComponent } from './Jobs/job-list/job-list.component';
 import { JobRegisterComponent } from './Jobs/job-register/job-register.component';
+import { JobSavedComponent } from './Jobs/job-saved/job-saved.component';
 import { ListsComponent } from './lists/lists.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
@@ -41,6 +42,7 @@ const routes: Routes = [
       {path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard]},
       {path: 'jobs', component: JobListComponent},
       {path: 'job/new_post', component: JobRegisterComponent},
+      {path: 'jobs_saved', component: JobSavedComponent},
       {path: 'organizations', component: OrganizationListComponent}
     ]
   },

@@ -112,4 +112,9 @@ export class JobsService {
   registerJob(model: any) {
     return this.http.post(this.baseUrl + 'jobs/', model);
   }
+
+  removeSaveJob(id: number) {
+    return this.http.delete(this.baseUrl + 'savedJobs/delete-savedJob/' + id, {});
+};
+
 }
