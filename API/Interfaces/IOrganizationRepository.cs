@@ -11,7 +11,8 @@ namespace API.Interfaces
     void Add(Organization organization);
     Task<bool> SaveAllAsync();
 
-    Task<IEnumerable<OrganizationDto>> GetOrganizationsAsync();
+    Task<IEnumerable<Organization>> GetOrganizationsAsync();
+    Task<IEnumerable<OrganizationDto>> GetCompactOrganizationsAsync();
     Task<Organization> GetOrganizationByOrgnameAsync(string orgname);
     Task<Organization> GetOrganizationByIdAsync(int id);
     }

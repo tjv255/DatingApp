@@ -28,7 +28,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrganizationDto>>> GetOrganizations()
         {
-            var organizations = await _organizationRepository.GetOrganizationsAsync();
+            var organizations = await _organizationRepository.GetCompactOrganizationsAsync();
             return Ok(organizations);
 
         }
@@ -102,12 +102,12 @@ namespace API.Controllers
     }
         [Authorize]
         [HttpPost("add-member/{id}")]
-        public async Task<ActionResult<OrganizationDto>> AddMember(string username, int id)
+        public async Task<ActionResult<Organization>> AddMember(string username, int id)
         {
             var user = await _userRepository.GetUserByUsernameAsync(username);
-            var returnUser = _mapper.Map<AppUser>(user);
+            _mapper.Map<AppUser>(user);
             var org = await _organizationRepository.GetOrganizationByIdAsync(id);
-            org.Members.Add(returnUser);
+            org.Members.Add(user);
             if (await _organizationRepository.SaveAllAsync())
                 return NoContent();
 
