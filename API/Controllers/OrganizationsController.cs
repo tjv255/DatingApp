@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
+
+    [Authorize]
     public class OrganizationsController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
@@ -38,14 +40,6 @@ namespace API.Controllers
         {
             return await _organizationRepository.GetOrganizationByIdAsync(id);
         }
-
-        // [HttpGet("{orgname}")]
-        // public async Task<ActionResult<Organization>> GetOrganizationByName(string orgName)
-        // {
-
-        //     return  await _organizationRepository.GetOrganizationByOrgnameAsync(orgName);
-
-        // }
 
         [HttpPut ("{id}")]
         public async Task<ActionResult> UpdateOrganization( OrganizationUpdateDto organizationUpdateDto , int id)
@@ -80,7 +74,6 @@ namespace API.Controllers
         organization.Photos.Add(photo);
         if (await _organizationRepository.SaveAllAsync())
         {
-      //  return CreatedAtRoute("GetOrganization", new { orgname = organization.Name },          
             return   _mapper.Map<OrgPhotoDto>(photo);
         }
         return BadRequest("Problem addding photo");
@@ -100,7 +93,8 @@ namespace API.Controllers
         return BadRequest("Failed to add user");
         
     }
-        [Authorize]
+        
+
         [HttpPost("add-member/{id}")]
         public async Task<ActionResult<Organization>> AddMember(string username, int id)
         {
