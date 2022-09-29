@@ -55,6 +55,7 @@ export class OrganizationsService {
             }));
     }
 
+    //Change to ID
     getOrganization(orgName: string) {
         const member = [...this.organizationCache.values()]
             .reduce((arr, elem) => arr.concat(elem.result), [])
@@ -67,7 +68,7 @@ export class OrganizationsService {
     }
 
     ////Check with nathan
-    getJobsByPosterId(id: number, orgParams: OrgParams) {
+    getOrgByPosterId(id: number, orgParams: OrgParams) {
         let params = getPaginationHeaders(orgParams.pageNumber, orgParams.pageSize);
     
     
@@ -104,4 +105,10 @@ export class OrganizationsService {
         params = params.append('predicate', predicate);
         return getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params, this.http);
     }
+
+    //Add new organization
+
+    //Add Member
+
+    
 }
