@@ -15,7 +15,7 @@ namespace API.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
 
             modelBuilder.Entity("API.Entities.AppRole", b =>
                 {
@@ -245,20 +245,15 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.JobSave", b =>
                 {
-                    b.Property<int>("SavedJobId")
+                    b.Property<int>("JobId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("SourceUserId")
+                    b.Property<int>("SavedUserId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("AppUserId")
-                        .HasColumnType("INTEGER");
+                    b.HasKey("JobId", "SavedUserId");
 
-                    b.HasKey("SavedJobId", "SourceUserId");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("SourceUserId");
+                    b.HasIndex("SavedUserId");
 
                     b.ToTable("SavedJobs");
                 });
@@ -467,25 +462,21 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.JobSave", b =>
                 {
-                    b.HasOne("API.Entities.AppUser", null)
-                        .WithMany("SavedJobsByUsers")
-                        .HasForeignKey("AppUserId");
-
                     b.HasOne("API.Entities.Job", "SavedJob")
                         .WithMany("SavedByUsers")
-                        .HasForeignKey("SavedJobId")
+                        .HasForeignKey("JobId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Entities.AppUser", "SourceUser")
+                    b.HasOne("API.Entities.AppUser", "SavedUser")
                         .WithMany("SavedJobs")
-                        .HasForeignKey("SourceUserId")
+                        .HasForeignKey("SavedUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("SavedJob");
 
-                    b.Navigation("SourceUser");
+                    b.Navigation("SavedUser");
                 });
 
             modelBuilder.Entity("API.Entities.Message", b =>
@@ -593,8 +584,6 @@ namespace API.Data.Migrations
                     b.Navigation("Photos");
 
                     b.Navigation("SavedJobs");
-
-                    b.Navigation("SavedJobsByUsers");
 
                     b.Navigation("UserRoles");
                 });

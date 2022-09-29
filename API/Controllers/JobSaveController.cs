@@ -36,11 +36,11 @@ namespace API.Controllers
             if(savedJob==null) return NotFound();
 
             // implement check - job poster cannot save their own posted job
-            if(sourceUserId==id) return BadRequest("You cannot save your posted Job");
+            if(sourceUserId==id) return BadRequest("You cannot save the Job you posted.");
 
             var jobSaved = await _jobSaveRepository.GetSavedJob(sourceUserId, savedJob.Id);
 
-            if(jobSaved != null) BadRequest("You have already saved this job.");
+            if(jobSaved != null) return BadRequest("You have already saved this job.");
 
             jobSaved = new JobSave
             {

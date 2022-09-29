@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Data.Migrations
 {
-    public partial class AddedJobs : Migration
+    public partial class AddedJob : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -43,7 +43,7 @@ namespace API.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "JobSave",
+                name: "SavedJobs",
                 columns: table => new
                 {
                     JobId = table.Column<int>(type: "INTEGER", nullable: false),
@@ -51,15 +51,15 @@ namespace API.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobSave", x => new { x.JobId, x.SavedUserId });
+                    table.PrimaryKey("PK_SavedJobs", x => new { x.JobId, x.SavedUserId });
                     table.ForeignKey(
-                        name: "FK_JobSave_AspNetUsers_SavedUserId",
+                        name: "FK_SavedJobs_AspNetUsers_SavedUserId",
                         column: x => x.SavedUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_JobSave_Jobs_JobId",
+                        name: "FK_SavedJobs_Jobs_JobId",
                         column: x => x.JobId,
                         principalTable: "Jobs",
                         principalColumn: "Id",
@@ -72,15 +72,15 @@ namespace API.Data.Migrations
                 column: "JobPosterId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobSave_SavedUserId",
-                table: "JobSave",
+                name: "IX_SavedJobs_SavedUserId",
+                table: "SavedJobs",
                 column: "SavedUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "JobSave");
+                name: "SavedJobs");
 
             migrationBuilder.DropTable(
                 name: "Jobs");

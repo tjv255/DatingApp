@@ -17,12 +17,7 @@ namespace API.Data
     public JobRepository(DataContext context){
       _context = context;
         
-    }
-    public async Task<bool> DeleteJobAsync(int id)
-    {
-      throw new NotImplementedException();
-    }
- 
+    } 
     public async Task<Job> GetJobByIdAsync(int id)
     {
       return await _context.Jobs

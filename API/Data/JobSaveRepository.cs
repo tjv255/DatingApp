@@ -21,7 +21,7 @@ namespace API.Data
     }
     public async Task<JobSave> GetSavedJob(int savedUserId, int jobId)
     {
-        return await _context.SavedJobs.FindAsync(savedUserId,jobId);
+        return await _context.SavedJobs.FindAsync(jobId,savedUserId);
     }
 
     //list of jobs that the user has saved
@@ -35,14 +35,16 @@ namespace API.Data
       if (predicate == "saved") 
       {
         savedjobs = savedjobs.Where(user => user.SavedUserId == userId);
-        users = savedjobs.Select(save => save.SavedUser);
-      }
-
-      if (predicate == "savedBy")
-      {
-        savedjobs = savedjobs.Where(job => job.JobId == userId);
         jobs = savedjobs.Select(save => save.SavedJob);
       }
+
+    //   if (predicate == "savedBy")
+    //   {
+        
+    //     savedjobs = savedjobs.Where(job => job.JobId == userId);
+    //     users = savedjobs.Select(save => save.SavedUser);
+    //  //   jobs = savedjobs.Where(job => job.JobId == userId)
+    //   }
 
       return await  jobs.Select(job=> new JobSaveDto{
         Id=job.Id,
