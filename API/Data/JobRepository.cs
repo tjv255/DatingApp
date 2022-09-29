@@ -1,16 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
-  public class JobRepository : IJobRepository
+    public class JobRepository : IJobRepository
   {
     private readonly DataContext _context;
 
@@ -27,6 +22,7 @@ namespace API.Data
     {
       return await _context.Jobs
       .Include(j => j.JobPoster)
+      .Include(j => j.Organization)
       .SingleOrDefaultAsync(x => x.Id == id);
     }
 
@@ -34,6 +30,7 @@ namespace API.Data
       var jobs = await _context.Jobs
         .Where(t=>t.Title.ToLower().Contains(title.ToLower()))
         .Include(j => j.JobPoster)
+        .Include(j => j.Organization)
         .ToListAsync();
       return jobs;
     }
@@ -42,6 +39,7 @@ namespace API.Data
     {
       return await _context.Jobs
       .Include(j => j.JobPoster)
+      .Include(j => j.Organization)
       .ToListAsync();
     }
 
@@ -83,6 +81,7 @@ namespace API.Data
 
       return  await _context.Jobs.Where(t=>t.JobPoster.UserName==user)
       .Include(j => j.JobPoster)
+      .Include(j => j.Organization)
       .ToListAsync();
     }
   }

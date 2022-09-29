@@ -13,11 +13,12 @@ namespace API.DTOs
 
        //  public Organization Organization{get;set;}
         public int OrgId{get;set;}
+        public string Organization { get; set; }
 
         public int JobPosterId{get;set;}
         public string JobPosterName { get; set; }
 
-        public string LogoUrl{get;set;}
+        public string LogoUrl {get;set;}
         public string Description{get;set;}
         public int Salary{get;set;}
         public string City{set;get;}

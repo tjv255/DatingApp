@@ -1,6 +1,7 @@
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -39,6 +40,17 @@ namespace API.Controllers
         public async Task<ActionResult<Organization>> GetOrganizationsById(int id)
         {
             return await _organizationRepository.GetOrganizationByIdAsync(id);
+        }
+
+        [HttpGet("{id}/users")]
+        public async Task<ActionResult<IEnumerable<OrgMemberDto>>> GetMembersByOrganizationId([FromQuery]UserParams userParams, int id)
+        {
+            var members = await _organizationRepository.GetMembersByOrganizationIdAsync(userParams, id);
+            
+            Response.AddPaginationHeader(members.CurrentPage, members.PageSize,
+        members.TotalCount, members.TotalPages);
+
+            return Ok(members);
         }
 
         [HttpPut ("{id}")]
