@@ -40,6 +40,7 @@ import { OrganizationCardComponent } from './organization/organization-card/orga
 import { OrganizationDetailComponent } from './organization/organization-detail/organization-detail.component';
 import { OrganizationListComponent } from './organization/organization-list/organization-list.component';
 import { JobRegisterComponent } from './Jobs/job-register/job-register.component';
+import { OrganizationRegisterComponent } from './organization/organization-register/organization-register.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { JobRegisterComponent } from './Jobs/job-register/job-register.component
     OrganizationCardComponent,
     OrganizationDetailComponent,
     OrganizationListComponent,
-    JobRegisterComponent
+    JobRegisterComponent,
+    OrganizationRegisterComponent
   ],
   imports: [
     BrowserModule,
