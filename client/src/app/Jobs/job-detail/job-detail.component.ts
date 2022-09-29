@@ -22,7 +22,7 @@ import { OrganizationsService } from 'src/app/_services/organizations.service';
 export class JobDetailComponent implements OnInit {
   @ViewChild('jobTabs', {static: true}) jobTabs: TabsetComponent;
   job: Job;
-  org: Organization;
+  orgs: Organization[];
   member: Member;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
@@ -54,15 +54,43 @@ export class JobDetailComponent implements OnInit {
       deadline: new Date(Date.now()),
       lastUpdated: new Date(Date.now())
     }
+
+    this.orgs = 
+    [{
+        id: 0,
+        orgPosterId: 7,
+        name: "Lisa",
+        introduction: "strong",
+        photoUrl: "https://randomuser.me/api/portraits/women/54.jpg",
+        established: 1998,
+        created: new Date(),
+        lastUpdated: new Date(),
+        members: [],
+        jobs: [],
+        memberswholiked: [],
+        photos: []
+      }, {
+        id: 0,
+        orgPosterId: 7,
+        name: "pisa",
+        introduction: "Whoop",
+        photoUrl: "https://randomuser.me/api/portraits/women/55.jpg",
+        established: 1998,
+        created: new Date(),
+        lastUpdated: new Date(),
+        members: [],
+        jobs: [],
+        memberswholiked: [],
+        photos: []
+      }];
     
-    console.log(this.job);
 
     /*this.memberService.getMemberbyId(this.job.jobPosterId).subscribe((response) => {
       this.member = response;
     });*/ 
 
     /*this.organizationService.getMemberbyId(this.job.jobPosterId).subscribe((response) => {
-      this.member = response;
+      this.orgs = response;
     }); 
     */
   }

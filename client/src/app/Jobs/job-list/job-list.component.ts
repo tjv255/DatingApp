@@ -11,6 +11,7 @@ import { GENDER_LIST } from 'src/app/util/constants';
 import { Job } from 'src/app/_models/job';
 import { JobsParams } from 'src/app/_models/jobParams';
 import { JobsService } from 'src/app/_services/jobs.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-job-list',
@@ -19,37 +20,65 @@ import { JobsService } from 'src/app/_services/jobs.service';
 })
 export class JobListComponent implements OnInit {
   jobs: Job [];
+  user: User;
+  member: Member;
   pagination: Pagination;
-
+  postedByUser: Boolean;
   jobParams: JobsParams;
 
   genderList = GENDER_LIST;
 
-  constructor(private memberService: MembersService, private jobsService: JobsService) {
+  constructor(private memberService: MembersService, private jobsService: JobsService, private accountService: AccountService) {
     this.jobParams = this.jobsService.getUserParams();
+    this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
+    this.memberService.getMember(this.user.username).subscribe(member => {
+      this.member = member;
+    });
+
 
   }
 
   ngOnInit(): void {
-    this.jobs = [{
-      id: 10,
-      title: "Hello",
-      orgId: 12,
-      jobPosterId: 1,
-      logoUrl: "https://randomuser.me/api/portraits/men/93.jpg",
-      description: "Need farm work who can feed cows",
-      salary: 2,
-      city: "Pizza Land",
-      province: "Vegas",
-      country: "Italy",
-      genres: "Strong, Talented",
-      jobType: "Hard",
-      skillsRequired: "Farming, Mooing, Grass eating",
-      applicationUrl: "https://randomuser.me/api/portraits/men/93.jpg",
-      dateCreated: new Date(Date.now()),
-      deadline: new Date(Date.now()),
-      lastUpdated: new Date(Date.now())
-    }]
+    this.jobs = 
+
+    [{
+        id: 0,
+        title: "Lisa",
+        orgId: 1,
+        jobPosterId: 1,
+        logoUrl: "https://randomuser.me/api/portraits/women/54.jpg",
+        description: "Here is the Description",
+        salary:500,
+        city: "Calgary",
+        province: "Alberta",
+        country: "Canada",
+        genres: "Drummer,Guitarist,Male Singer",
+        jobType: "Piano",
+        skillsRequired: "Professional",
+        applicationUrl: "lool",
+        dateCreated: new Date(),
+        deadline: new Date(),
+        lastUpdated: new Date()
+      }, {
+        id: 0,
+        title: "Pisa",
+        orgId: 2,
+        jobPosterId: 2,
+        logoUrl: "https://randomuser.me/api/portraits/women/59.jpg",
+        description: "Here is the Description",
+        salary:500,
+        city: "Calgary",
+        province: "Alberta",
+        country: "Canada",
+        genres: "Drummer,Guitarist,Male Singer",
+        jobType: "Piano",
+        skillsRequired: "Professional",
+        applicationUrl: "lool",
+        dateCreated: new Date(),
+        deadline: new Date(),
+        lastUpdated: new Date()
+      }];
+
     //this.loadMembers();
   }
 
@@ -62,6 +91,31 @@ export class JobListComponent implements OnInit {
     });
 
 
+
+  }
+
+  btnClick()
+  {
+
+  }
+
+  loadJobsByUserId(id: number)
+  {
+    this.jobsService.setUserParams(this.jobParams);
+    this.jobsService.getJobsByPosterId(id, this.jobParams).subscribe((response) => {
+      this.jobs = response.result;
+      this.pagination = response.pagination;
+    });
+
+  }
+
+  loadJobsByTitle(title: string)
+  {
+    this.jobsService.setUserParams(this.jobParams);
+    this.jobsService.getJobsByTitle(title, this.jobParams).subscribe((response) => {
+      this.jobs = response.result;
+      this.pagination = response.pagination;
+    });
 
   }
 

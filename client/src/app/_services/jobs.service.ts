@@ -17,8 +17,8 @@ export class JobsService {
   baseUrl = environment.apiUrl;
   jobs: Job[] = [];
   jobCache = new Map();
-  //user: User;
   jobsParams: JobsParams;
+
 
   getUserParams() {
     return this.jobsParams
@@ -68,16 +68,26 @@ export class JobsService {
     return this.http.get<Job>(this.baseUrl + 'jobs/' + id);
   }
 
-  getJobsByPosterId(id: number) {
-    const job = this.jobs.filter(x => x.jobPosterId === id);
-    if (job !== undefined) return of(job);
-    return this.http.get<Job>(this.baseUrl + 'jobs/poster/' + id);
+  getJobsByPosterId(id: number, jobsParams: JobsParams) {
+    let params = getPaginationHeaders(jobsParams.pageNumber, jobsParams.pageSize);
+
+
+    return getPaginatedResult<Job[]>(this.baseUrl+'jobs/poster/'+id, params, this.http)
+            .pipe(map(response => {
+                //this.jobCache.set(Object.values(jobsParams).join('-'), response);
+                return response;
+            }));
   }
 
-  getJobsByTitle(title: string) {
-    const job = this.jobs.filter(x => x.title.includes(title));
-    if (job !== undefined) return of(job);
-    return this.http.get<Job>(this.baseUrl + 'jobs/title/' + title);
+  getJobsByTitle(title: string, jobsParams: JobsParams) {
+    let params = getPaginationHeaders(jobsParams.pageNumber, jobsParams.pageSize);
+
+
+    return getPaginatedResult<Job[]>(this.baseUrl + 'jobs/title/' + title, params, this.http)
+            .pipe(map(response => {
+                //this.jobCache.set(Object.values(jobsParams).join('-'), response);
+                return response;
+            }));
   }
 
   updateJob(job: Job) {
@@ -97,5 +107,9 @@ export class JobsService {
     let params = getPaginationHeaders(pageNumber, pageSize);
     params = params.append('predicate', predicate);
     return getPaginatedResult<Partial<Job[]>>(this.baseUrl + 'saved', params, this.http);
+  }
+
+  registerJob(model: any) {
+    return this.http.post(this.baseUrl + 'jobs/', model);
   }
 }

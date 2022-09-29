@@ -66,6 +66,18 @@ export class OrganizationsService {
         return this.http.get<Member>(this.baseUrl + 'organizations/' + orgName);
     }
 
+    ////Check with nathan
+    getJobsByPosterId(id: number, orgParams: OrgParams) {
+        let params = getPaginationHeaders(orgParams.pageNumber, orgParams.pageSize);
+    
+    
+        return getPaginatedResult<Organization[]>(this.baseUrl+'jobs/poster/'+id, params, this.http)
+                .pipe(map(response => {
+                    //this.jobCache.set(Object.values(jobsParams).join('-'), response);
+                    return response;
+                }));
+      }
+
     updateOrganization(organization: Organization) {
         return this.http.put(this.baseUrl + 'organizations', organization).pipe(
             map(() => {
