@@ -26,7 +26,6 @@ namespace API.Controllers
 
     public IUserRepository UserRepository { get; }
 
-    [Authorize(Policy = "RequireFortissimoMembershipRole")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
     {

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220929202323_updated AppUser and RegisterDto fields2")]
-    partial class updatedAppUserandRegisterDtofields2
+    [Migration("20220930194815_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -275,7 +275,7 @@ namespace API.Data.Migrations
 
                     b.HasIndex("SavedUserId");
 
-                    b.ToTable("JobSave");
+                    b.ToTable("SavedJobs");
                 });
 
             modelBuilder.Entity("API.Entities.Message", b =>
