@@ -107,6 +107,7 @@ export class OrganizationsService {
     }
 
     //Add new organization
+    //please add method call in addOrganization() method in the organization-register.ts component
 
     //Add Member
 

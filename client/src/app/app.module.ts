@@ -40,6 +40,7 @@ import { OrganizationCardComponent } from './organization/organization-card/orga
 import { OrganizationDetailComponent } from './organization/organization-detail/organization-detail.component';
 import { OrganizationListComponent } from './organization/organization-list/organization-list.component';
 import { JobRegisterComponent } from './Jobs/job-register/job-register.component';
+import { OrganizationRegisterComponent } from './organization/organization-register/organization-register.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MultiselectComponent } from './_forms/multiselect/multiselect.component';
 
@@ -76,6 +77,7 @@ import { MultiselectComponent } from './_forms/multiselect/multiselect.component
     OrganizationDetailComponent,
     OrganizationListComponent,
     JobRegisterComponent,
+    OrganizationRegisterComponent,
     MultiselectComponent
   ],
   imports: [
