@@ -15,7 +15,7 @@ namespace API.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
 
             modelBuilder.Entity("API.Entities.AppRole", b =>
                 {
@@ -255,7 +255,7 @@ namespace API.Data.Migrations
 
                     b.HasIndex("SavedUserId");
 
-                    b.ToTable("JobSave");
+                    b.ToTable("SavedJobs");
                 });
 
             modelBuilder.Entity("API.Entities.Message", b =>
@@ -340,21 +340,20 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.OrgLike", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("OrgId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("LikedUserId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("OrgId")
+                    b.Property<int?>("OrganizationId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("OrgId", "LikedUserId");
 
                     b.HasIndex("LikedUserId");
 
-                    b.HasIndex("OrgId");
+                    b.HasIndex("OrganizationId");
 
                     b.ToTable("OrgLikes");
                 });
@@ -622,16 +621,20 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.OrgLike", b =>
                 {
                     b.HasOne("API.Entities.AppUser", "LikedUser")
-                        .WithMany()
+                        .WithMany("LikedByOrganizations")
                         .HasForeignKey("LikedUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("API.Entities.Organization", "Org")
-                        .WithMany("LikedByUser")
+                        .WithMany("LikedOrganizations")
                         .HasForeignKey("OrgId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("API.Entities.Organization", null)
+                        .WithMany("LikedByUser")
+                        .HasForeignKey("OrganizationId");
 
                     b.Navigation("LikedUser");
 
@@ -758,6 +761,8 @@ namespace API.Data.Migrations
                 {
                     b.Navigation("CreatedJobs");
 
+                    b.Navigation("LikedByOrganizations");
+
                     b.Navigation("LikedByUsers");
 
                     b.Navigation("LikedUsers");
@@ -789,10 +794,13 @@ namespace API.Data.Migrations
                 {
                     b.Navigation("LikedByUser");
 
+                    b.Navigation("LikedOrganizations");
+
                     b.Navigation("OwnedByUser");
 
                     b.Navigation("Photos");
                 });
+#pragma warning restore 612, 618
         }
     }
 }
