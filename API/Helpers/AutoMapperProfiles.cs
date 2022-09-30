@@ -10,10 +10,11 @@ namespace API.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<AppUser, MemberDto>()
-              .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
+            .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
                 src.Photos.FirstOrDefault(x => x.IsMain).Url))
-              .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
+            .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
             CreateMap<Photo, PhotoDto>();
+            CreateMap<MemberDto, AppUser>();
             CreateMap<MemberUpdateDto, AppUser>();
             CreateMap<RegisterDto, AppUser>();
             CreateMap<Message, MessageDto>()
@@ -23,12 +24,13 @@ namespace API.Helpers
                     src.Recipient.Photos.FirstOrDefault(x => x.IsMain).Url));
             CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
             CreateMap<Job, JobDto>()
-             .ForMember(dest => dest.JobPosterId, opt => opt.MapFrom(src =>
-             src.JobPoster.Id))
-             .ForMember(dest => dest.JobPosterName, opt => opt.MapFrom( src =>
-             src.JobPoster.KnownAs));
+            .ForMember(dest => dest.JobPosterId, opt => opt.MapFrom(src =>
+            src.JobPoster.Id))
+            .ForMember(dest => dest.JobPosterName, opt => opt.MapFrom( src =>
+            src.JobPoster.KnownAs));
             CreateMap<JobUpdateDto, Job>();
             CreateMap<JobDto, Job>();
+
             CreateMap<JobSave, JobSaveDto>()
             //  .ForMember(dest => dest.JobId, opt => opt.MapFrom(src =>
             //     src.SavedJob.Id))
@@ -66,6 +68,27 @@ namespace API.Helpers
                 src.SavedJob.Deadline))
              .ForMember(dest => dest.LastUpdated, opt => opt.MapFrom(src =>
                 src.SavedJob.LastUpdated));
+
+            CreateMap<Organization, OrganizationDto>()
+                .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
+                    src.Photos.FirstOrDefault(x => x.IsMain).Url));
+            CreateMap<AppUser, OrgMemberDto>();
+            CreateMap<OrgPhoto, OrgPhotoDto>();
+            CreateMap<OrganizationUpdateDto, Organization>();
+            CreateMap<OrgPhotoDto, Organization>();
+            CreateMap<OrgLike, OrgLikeDto>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
+                    src.Org.Name))
+                .ForMember(dest => dest.Introduction, opt => opt.MapFrom(src =>
+                    src.Org.Introduction))
+                .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
+                    src.Org.Photos.FirstOrDefault(x => x.IsMain).Url))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src =>
+                    src.Org.City))
+                .ForMember(dest => dest.ProvinceOrState, opt => opt.MapFrom(src =>
+                    src.Org.ProvinceOrState))
+                .ForMember(dest => dest.Country, opt => opt.MapFrom(src =>
+                    src.Org.Country));
         }
     }
 }

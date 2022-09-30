@@ -19,6 +19,9 @@ namespace API.Data
         public DbSet<Connection> Connections { get; set; }
         public DbSet<Job> Jobs { get; set; }
         public DbSet<JobSave> SavedJobs {get;set;}
+        public DbSet<Organization> Organizations { get; set; }
+        public DbSet<OrgLike> OrgLikes { get; set; }
+        public DbSet<OrgPhoto> OrgPhotos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -71,6 +74,21 @@ namespace API.Data
               .HasForeignKey(s => s.LikedUserId)
               .OnDelete(DeleteBehavior.Cascade);
 
+              builder.Entity<OrgLike>()
+              .HasKey(k => new { k.OrgId, k.LikedUserId });
+
+            builder.Entity<OrgLike>()
+              .HasOne(s => s.Org)
+              .WithMany(l => l.LikedOrganizations)
+              .HasForeignKey(s => s.OrgId)
+              .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<OrgLike>()
+              .HasOne(s => s.LikedUser)
+              .WithMany(l => l.LikedByOrganizations)
+              .HasForeignKey(s => s.LikedUserId)
+              .OnDelete(DeleteBehavior.Cascade);
+
             builder.Entity<Message>()
               .HasOne(u => u.Recipient)
               .WithMany(m => m.MessagesReceived)
@@ -80,6 +98,7 @@ namespace API.Data
               .HasOne(u => u.Sender)
               .WithMany(m => m.MessagesSent)
               .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

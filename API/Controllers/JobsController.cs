@@ -42,14 +42,14 @@ namespace API.Controllers
         return _mapper.Map<JobDto>(job);
     }
 
-     [HttpGet("title/{title}")]
+    [HttpGet("title/{title}")]
     public async Task<ActionResult<IEnumerable<JobDto>>> GetJobByTitle(string title){
         var job = await _jobRepository.GetJobByTitleAsync(title);
         var jobreturn = _mapper.Map<IEnumerable<JobDto>>(job);
         return Ok(jobreturn);
     }
 
-     [HttpGet("poster/{id}")]
+    [HttpGet("poster/{id}")]
     public async Task<ActionResult<IEnumerable<JobDto>>> GetJobsByPosterId(int id){
         var job = await _jobRepository.GetJobsByPosterIdAsync(id);
         var jobreturn = _mapper.Map<IEnumerable<JobDto>>(job);
