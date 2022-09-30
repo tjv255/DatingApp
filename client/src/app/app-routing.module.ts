@@ -17,6 +17,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { OrganizationDetailComponent } from './organization/organization-detail/organization-detail.component';
 import { OrganizationEditComponent } from './organization/organization-edit/organization-edit.component';
 import { OrganizationListComponent } from './organization/organization-list/organization-list.component';
+import { OrganizationRegisterComponent } from './organization/organization-register/organization-register.component';
 import { AdminGuard } from './_guards/admin.guard';
 import { AuthGuard } from './_guards/auth.guard';
 import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
@@ -36,6 +37,7 @@ const routes: Routes = [
       {path: 'jobs/:id', component: JobDetailComponent},
       {path: 'member/org_edit', component: OrganizationEditComponent},
       {path: 'member/org_detail', component: OrganizationDetailComponent},
+      {path: 'member/org_register', component: OrganizationRegisterComponent},
       {path: 'lists', component: ListsComponent},
       {path: 'messages', component: MessagesComponent},
       {path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard]},
