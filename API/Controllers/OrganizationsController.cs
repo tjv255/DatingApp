@@ -45,7 +45,7 @@ namespace API.Controllers
         public async Task<ActionResult> UpdateOrganization( OrganizationUpdateDto organizationUpdateDto , int id)
         {
             var organization = await _organizationRepository.GetOrganizationByIdAsync(id); 
-            _mapper.Map(organizationUpdateDto , organization);
+            _mapper.Map<Organization>(organization);
             _organizationRepository.Update(organization);
 
             if (await _organizationRepository.SaveAllAsync())            

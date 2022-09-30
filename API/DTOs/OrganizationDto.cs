@@ -11,5 +11,6 @@ namespace API.DTOs
         public DateTime LastUpdated { get; set; }
         public ICollection<OrgPhotoDto> Photos { get; set; }
         public ICollection<OrgMemberDto> Members { get; set; }
+        public ICollection<JobDto> Jobs { get; set; }
     }
 }

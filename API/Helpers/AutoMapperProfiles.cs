@@ -27,17 +27,23 @@ namespace API.Helpers
             .ForMember(dest => dest.JobPosterId, opt => opt.MapFrom(src =>
             src.JobPoster.Id))
             .ForMember(dest => dest.JobPosterName, opt => opt.MapFrom( src =>
-            src.JobPoster.KnownAs));
+            src.JobPoster.KnownAs))
+            .ForMember(dest => dest.OrgId, opt => opt.MapFrom(src =>
+             src.Organization.Id))
+             .ForMember(dest => dest.Organization, opt => opt.MapFrom(src =>
+             src.Organization == null ? "Private Event" : src.Organization.Name))
+             .ForMember(dest => dest.LogoUrl, opt => opt.MapFrom(src =>
+             src.Organization == null ? src.JobPoster.Photos.FirstOrDefault(p => p.IsMain).Url
+             : src.Organization.Photos.FirstOrDefault(x => x.IsMain).Url));
             CreateMap<JobUpdateDto, Job>();
-            CreateMap<JobDto, Job>();
+            //CreateMap<JobDto, Job>();
+            CreateMap<JobRegisterDto, Job>();
 
             CreateMap<JobSave, JobSaveDto>()
-            //  .ForMember(dest => dest.JobId, opt => opt.MapFrom(src =>
-            //     src.SavedJob.Id))
              .ForMember(dest => dest.Title, opt => opt.MapFrom(src =>
                 src.SavedJob.Title))
              .ForMember(dest => dest.OrgId, opt => opt.MapFrom(src =>
-                src.SavedJob.OrgId))
+                src.SavedJob.Organization.Id))
              .ForMember(dest => dest.JobPosterId, opt => opt.MapFrom(src =>
                 src.SavedJob.JobPoster.Id))
              .ForMember(dest => dest.JobPosterName, opt => opt.MapFrom(src =>
@@ -71,7 +77,9 @@ namespace API.Helpers
 
             CreateMap<Organization, OrganizationDto>()
                 .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
-                    src.Photos.FirstOrDefault(x => x.IsMain).Url));
+                    src.Photos.FirstOrDefault(x => x.IsMain).Url))
+                .ForMember(dest => dest.Jobs, opt => opt.MapFrom(src => 
+                     src.Jobs.ToList()));
             CreateMap<AppUser, OrgMemberDto>();
             CreateMap<OrgPhoto, OrgPhotoDto>();
             CreateMap<OrganizationUpdateDto, Organization>();

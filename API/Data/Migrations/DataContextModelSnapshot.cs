@@ -194,6 +194,9 @@ namespace API.Data.Migrations
                     b.Property<string>("City")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("ConfirmedOrgId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Country")
                         .HasColumnType("TEXT");
 
@@ -218,10 +221,7 @@ namespace API.Data.Migrations
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("LogoUrl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("OrgId")
+                    b.Property<int?>("OrganizationId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ProvinceOrState")
@@ -239,6 +239,8 @@ namespace API.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("JobPosterId");
+
+                    b.HasIndex("OrganizationId");
 
                     b.ToTable("Jobs");
                 });
@@ -577,7 +579,13 @@ namespace API.Data.Migrations
                         .WithMany("CreatedJobs")
                         .HasForeignKey("JobPosterId");
 
+                    b.HasOne("API.Entities.Organization", "Organization")
+                        .WithMany("Jobs")
+                        .HasForeignKey("OrganizationId");
+
                     b.Navigation("JobPoster");
+
+                    b.Navigation("Organization");
                 });
 
             modelBuilder.Entity("API.Entities.JobSave", b =>
@@ -792,6 +800,8 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.Organization", b =>
                 {
+                    b.Navigation("Jobs");
+
                     b.Navigation("LikedByUser");
 
                     b.Navigation("LikedOrganizations");
