@@ -30,13 +30,13 @@ namespace API.Controllers
         public async Task<ActionResult> SaveJob(int id){
             var sourceUserId = User.GetUserId();
             var savedJob = await _jobRepository.GetJobByIdAsync(id);
+            if(savedJob==null) return NotFound();
+            
             var savedJobUsername = await _jobRepository.GetUserByUsernameAsync(savedJob.JobPoster.UserName);
             var sourceUser = await _jobSaveRepository.GetUserWithSavedJobs(sourceUserId);
 
-            if(savedJob==null) return NotFound();
-
             // implement check - job poster cannot save their own posted job
-            if(sourceUserId==id) return BadRequest("You cannot save the Job you posted.");
+            if(sourceUserId==savedJob.JobPoster.Id) return BadRequest("You cannot save the Job you posted.");
 
             var jobSaved = await _jobSaveRepository.GetSavedJob(sourceUserId, savedJob.Id);
 

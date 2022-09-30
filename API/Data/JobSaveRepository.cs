@@ -27,7 +27,7 @@ namespace API.Data
     //list of jobs that the user has saved
     public async Task<List<JobSaveDto>> GetSavedJobs(string predicate, int userId)
     {
-      var users = _context.Users.OrderBy(u => u.UserName).AsQueryable();
+     // var users = _context.Users.OrderBy(u => u.UserName).AsQueryable();
       var jobs = _context.Jobs.AsQueryable();
       var savedjobs = _context.SavedJobs.AsQueryable();
 
