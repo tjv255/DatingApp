@@ -103,7 +103,7 @@ namespace API.Data
         public async Task<PagedList<JobDto>> GetJobsByOrganizationIdAsync(JobParams jobParams, int id)
         {
             var org = _context.Organizations.SingleOrDefault(o => o.Id == id);
-            var query = _context.Jobs.AsQueryable();
+            var query = _context.Jobs.Where(j => j.Organization.Equals(org));
 
             query = jobParams.OrderBy switch
             {
