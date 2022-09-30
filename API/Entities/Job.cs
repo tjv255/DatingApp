@@ -12,9 +12,10 @@ namespace API.Entities
     {
          public int Id{get;set;}
          public string Title{get;set;}
-       public Organization Organization{get;set;}
-        //public int OrgId{get;set;}
-       // public string LogoUrl{get;set;} = null;
+
+       //  public Organization Organization{get;set;}
+        public int OrgId{get;set;}
+        public string LogoUrl{get;set;} = null;
         public string Description{get;set;}
         public int Salary{get;set;}
         public string City{set;get;}

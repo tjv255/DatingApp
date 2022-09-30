@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace API.Migrations
+namespace API.Data.Migrations
 {
-    public partial class ReformDatabasewithJobAndOrg : Migration
+    public partial class initial_migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -81,11 +81,7 @@ namespace API.Migrations
                     Introduction = table.Column<string>(type: "TEXT", nullable: true),
                     Established = table.Column<int>(type: "INTEGER", nullable: false),
                     Created = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    LastUpdated = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    City = table.Column<string>(type: "TEXT", nullable: true),
-                    ProvinceOrState = table.Column<string>(type: "TEXT", nullable: true),
-                    Country = table.Column<string>(type: "TEXT", nullable: true),
-                    OwnerId = table.Column<int>(type: "INTEGER", nullable: false)
+                    LastUpdated = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -321,43 +317,6 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Jobs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", nullable: true),
-                    OrganizationId = table.Column<int>(type: "INTEGER", nullable: true),
-                    Description = table.Column<string>(type: "TEXT", nullable: true),
-                    Salary = table.Column<int>(type: "INTEGER", nullable: false),
-                    City = table.Column<string>(type: "TEXT", nullable: true),
-                    ProvinceOrState = table.Column<string>(type: "TEXT", nullable: true),
-                    Country = table.Column<string>(type: "TEXT", nullable: true),
-                    Genres = table.Column<string>(type: "TEXT", nullable: true),
-                    JobType = table.Column<string>(type: "TEXT", nullable: true),
-                    SkillsRequired = table.Column<string>(type: "TEXT", nullable: true),
-                    ApplicationUrl = table.Column<string>(type: "TEXT", nullable: true),
-                    DateCreated = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Deadline = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    LastUpdated = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    JobPosterId = table.Column<int>(type: "INTEGER", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Jobs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Jobs_AspNetUsers_JobPosterId",
-                        column: x => x.JobPosterId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Jobs_Organizations_OrganizationId",
-                        column: x => x.OrganizationId,
-                        principalTable: "Organizations",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "OrgLikes",
                 columns: table => new
                 {
@@ -401,56 +360,6 @@ namespace API.Migrations
                         name: "FK_OrgPhotos_Organizations_OrganizationId",
                         column: x => x.OrganizationId,
                         principalTable: "Organizations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OwnedOrganization",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    AppUserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    OrganizationId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OwnedOrganization", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OwnedOrganization_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OwnedOrganization_Organizations_OrganizationId",
-                        column: x => x.OrganizationId,
-                        principalTable: "Organizations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "JobSave",
-                columns: table => new
-                {
-                    JobId = table.Column<int>(type: "INTEGER", nullable: false),
-                    SavedUserId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_JobSave", x => new { x.JobId, x.SavedUserId });
-                    table.ForeignKey(
-                        name: "FK_JobSave_AspNetUsers_SavedUserId",
-                        column: x => x.SavedUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_JobSave_Jobs_JobId",
-                        column: x => x.JobId,
-                        principalTable: "Jobs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -503,21 +412,6 @@ namespace API.Migrations
                 column: "GroupName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Jobs_JobPosterId",
-                table: "Jobs",
-                column: "JobPosterId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Jobs_OrganizationId",
-                table: "Jobs",
-                column: "OrganizationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_JobSave_SavedUserId",
-                table: "JobSave",
-                column: "SavedUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Likes_LikedUserId",
                 table: "Likes",
                 column: "LikedUserId");
@@ -546,17 +440,6 @@ namespace API.Migrations
                 name: "IX_OrgPhotos_OrganizationId",
                 table: "OrgPhotos",
                 column: "OrganizationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OwnedOrganization_AppUserId",
-                table: "OwnedOrganization",
-                column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OwnedOrganization_OrganizationId",
-                table: "OwnedOrganization",
-                column: "OrganizationId",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photos_AppUserId",
@@ -588,9 +471,6 @@ namespace API.Migrations
                 name: "Connections");
 
             migrationBuilder.DropTable(
-                name: "JobSave");
-
-            migrationBuilder.DropTable(
                 name: "Likes");
 
             migrationBuilder.DropTable(
@@ -603,9 +483,6 @@ namespace API.Migrations
                 name: "OrgPhotos");
 
             migrationBuilder.DropTable(
-                name: "OwnedOrganization");
-
-            migrationBuilder.DropTable(
                 name: "Photos");
 
             migrationBuilder.DropTable(
@@ -615,13 +492,10 @@ namespace API.Migrations
                 name: "Groups");
 
             migrationBuilder.DropTable(
-                name: "Jobs");
+                name: "Organizations");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Organizations");
         }
     }
 }

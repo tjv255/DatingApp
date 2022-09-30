@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace API.Migrations
+namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
@@ -15,7 +15,7 @@ namespace API.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
 
             modelBuilder.Entity("API.Entities.AppRole", b =>
                 {
@@ -218,7 +218,10 @@ namespace API.Migrations
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("OrganizationId")
+                    b.Property<string>("LogoUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("OrgId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ProvinceOrState")
@@ -236,8 +239,6 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("JobPosterId");
-
-                    b.HasIndex("OrganizationId");
 
                     b.ToTable("Jobs");
                 });
@@ -579,13 +580,7 @@ namespace API.Migrations
                         .WithMany("CreatedJobs")
                         .HasForeignKey("JobPosterId");
 
-                    b.HasOne("API.Entities.Organization", "Organization")
-                        .WithMany()
-                        .HasForeignKey("OrganizationId");
-
                     b.Navigation("JobPoster");
-
-                    b.Navigation("Organization");
                 });
 
             modelBuilder.Entity("API.Entities.JobSave", b =>
@@ -808,7 +803,6 @@ namespace API.Migrations
 
                     b.Navigation("Photos");
                 });
-#pragma warning restore 612, 618
         }
     }
 }
