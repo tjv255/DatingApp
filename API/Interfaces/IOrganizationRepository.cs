@@ -14,7 +14,6 @@ namespace API.Interfaces
     Task<IEnumerable<Organization>> GetOrganizationsAsync();
     Task<IEnumerable<OrganizationDto>> GetCompactOrganizationsAsync();
     Task<Organization> GetOrganizationByOrgnameAsync(string orgname);
-    Task<OrganizationDto> GetOrganizationByIdAsyncDto(int id);
     Task<Organization> GetOrganizationByIdAsync(int id);
     Task<OrganizationDto> GetCompactOrganizationByIdAsync(int id);
     Task<PagedList<OrgMemberDto>> GetMembersByOrganizationIdAsync(UserParams userParams, int id);

@@ -37,7 +37,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<OrganizationDtoDto>> GetOrganizationsById(int id)
+        public async Task<ActionResult<OrganizationDto>> GetOrganizationsById(int id)
         {
             return await _organizationRepository.GetCompactOrganizationByIdAsync(id);
         }

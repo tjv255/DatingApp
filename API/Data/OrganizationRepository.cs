@@ -34,7 +34,7 @@ namespace API.Data
                 .ToListAsync();
         }
 
-        public async Task<OrganizationDto> GetOrganizationByIdAsyncDto(int id)
+        public async Task<Organization> GetOrganizationByIdAsync(int id)
         {
             return await _context.Organizations
                     .Include(p => p.Photos)
@@ -117,5 +117,6 @@ namespace API.Data
                     jobParams.PageSize
                 );
         }
+
     }
 }
