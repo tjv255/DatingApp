@@ -273,7 +273,7 @@ namespace API.Data.Migrations
 
                     b.HasIndex("SavedUserId");
 
-                    b.ToTable("JobSave");
+                    b.ToTable("SavedJobs");
                 });
 
             modelBuilder.Entity("API.Entities.Message", b =>

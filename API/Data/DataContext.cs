@@ -18,6 +18,7 @@ namespace API.Data
         public DbSet<Group> Groups { get; set; }
         public DbSet<Connection> Connections { get; set; }
         public DbSet<Job> Jobs { get; set; }
+        public DbSet<JobSave> SavedJobs {get;set;}
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

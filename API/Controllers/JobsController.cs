@@ -57,14 +57,14 @@ namespace API.Controllers
     }
 
     //Update existing Job
-    [AllowAnonymous]
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateJob(JobUpdateDto jobUpdateDto,int id)
         {
-            //var sourceUserId = User.GetUserId();
-
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             var job = await _jobRepository.GetJobByIdAsync(id);
-
+            
+            if(job.JobPoster != user) return BadRequest("Job Not Found");
+            
             _mapper.Map(jobUpdateDto, job);
 
             _jobRepository.Update(job);
@@ -76,18 +76,33 @@ namespace API.Controllers
 
     // Add a new Job
     [HttpPost("add")]
-
     public async Task<ActionResult<JobDto>> AddNewJobByPosterId(JobDto jobDto){
         var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
         var job = _mapper.Map<Job>(jobDto);
         job.JobPoster = user;
 
         _jobRepository.Add(job);
-
         if (await _jobRepository.SaveAllAsync()) 
             return NoContent();
 
         return BadRequest("Failed to add user");
+    }
+
+    //Delete a Job
+    [HttpDelete("delete/{id}")]
+    public async Task<ActionResult> DeleteJob(int id)
+    {
+      var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+
+      var job = user.CreatedJobs.FirstOrDefault(x=>x.Id == id);
+
+      if (job == null) return NotFound();
+
+      user.CreatedJobs.Remove(job);
+
+      if (await _userRepository.SaveAllAsync()) return Ok();
+
+      return BadRequest("Failed to delete the photo");
     }
 
     }
