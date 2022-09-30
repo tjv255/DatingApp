@@ -40,12 +40,14 @@ namespace API.Controllers
 
             var jobSaved = await _jobSaveRepository.GetSavedJob(sourceUserId, savedJob.Id);
 
-            if(jobSaved != null) return BadRequest("You have already saved this job.");
+            if(jobSaved != null) return BadRequest("This job has been saved by this user.");
 
             jobSaved = new JobSave
             {
-                SavedUserId = sourceUserId,
-                JobId = savedJob.Id
+                SavedJob = savedJob,
+                JobId = savedJob.Id,
+                SavedUser = sourceUser,
+                SavedUserId = sourceUserId
                 
             };
 

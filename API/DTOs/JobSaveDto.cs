@@ -7,8 +7,8 @@ namespace API.DTOs
 {
     public class JobSaveDto
     {
-        public int Id{get;set;}
-         public string Title{get;set;}
+        public int JobId{get;set;}
+        public string Title{get;set;}
         public int OrgId{get;set;}
 
         public int JobPosterId{get;set;}

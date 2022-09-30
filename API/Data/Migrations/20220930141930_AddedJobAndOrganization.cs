@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Data.Migrations
 {
-    public partial class AddedJob : Migration
+    public partial class AddedJobAndOrganization : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -61,6 +61,7 @@ namespace API.Data
       return await _context.Users
         .Include(p => p.Photos)
         .Include(j => j.CreatedJobs)
+        .Include(j => j.SavedJobs)
         .SingleOrDefaultAsync(x => x.UserName == username);
     }
 
@@ -69,6 +70,7 @@ namespace API.Data
       return await _context.Users
         .Include(p => p.Photos)
         .Include(j => j.CreatedJobs)
+        .Include(j => j.SavedJobs)
         .ToListAsync();
     }
 
