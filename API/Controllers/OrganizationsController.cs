@@ -1,6 +1,7 @@
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -36,16 +37,38 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<OrganizationDto>> GetOrganizationsById(int id)
+        public async Task<ActionResult<OrganizationDtoDto>> GetOrganizationsById(int id)
         {
-            return await _organizationRepository.GetOrganizationByIdAsyncDto(id);
+            return await _organizationRepository.GetCompactOrganizationByIdAsync(id);
+        }
+
+        [HttpGet("{id}/users")]
+        public async Task<ActionResult<IEnumerable<OrgMemberDto>>> GetMembersByOrganizationId([FromQuery] UserParams userParams, int id)
+        {
+            var members = await _organizationRepository.GetMembersByOrganizationIdAsync(userParams, id);
+
+            Response.AddPaginationHeader(members.CurrentPage, members.PageSize,
+        members.TotalCount, members.TotalPages);
+
+            return Ok(members);
+        }
+
+        [HttpGet("{id}/jobs")]
+        public async Task<ActionResult<IEnumerable<OrgMemberDto>>> GetJobsByOrganizationId([FromQuery] JobParams jobParams, int id)
+        {
+            var jobs = await _organizationRepository.GetJobsByOrganizationIdAsync(jobParams, id);
+
+            Response.AddPaginationHeader(jobs.CurrentPage, jobs.PageSize,
+        jobs.TotalCount, jobs.TotalPages);
+
+            return Ok(jobs);
         }
 
         [HttpPut ("{id}")]
         public async Task<ActionResult> UpdateOrganization( OrganizationUpdateDto organizationUpdateDto , int id)
         {
             var organization = await _organizationRepository.GetOrganizationByIdAsync(id); 
-            _mapper.Map(organizationUpdateDto , organization);
+            _mapper.Map<Organization>(organization);
             _organizationRepository.Update(organization);
 
             if (await _organizationRepository.SaveAllAsync())            

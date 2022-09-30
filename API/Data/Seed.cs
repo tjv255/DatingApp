@@ -49,7 +49,7 @@ namespace API.Data
         {
             if( await context.Jobs.AnyAsync()) return;
 
-            var jobData = await System.IO.File.ReadAllTextAsync("Data/JobSeedData.json");
+            var jobData = await System.IO.File.ReadAllTextAsync("Data/JobSeedDataUpdated.json");
             var jobs = JsonSerializer.Deserialize<List<Job>>(jobData);
             foreach(var job in jobs)
             {

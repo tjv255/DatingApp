@@ -29,6 +29,7 @@ namespace API
                 await context.SaveChangesAsync();
                 await Seed.SeedUsers(userManager, roleManager);
                 await Seed.SeedOrganizations(context);
+                await Seed.SeedJobs(context);
 
             }
             catch (Exception ex)

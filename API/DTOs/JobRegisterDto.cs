@@ -1,15 +1,9 @@
 namespace API.DTOs
 {
-    public class JobDto
+    public class JobRegisterDto
     {
-        public int Id { get; set; }
         public string Title { get; set; }
-        public int OrgId { get; set; }
-        public string Organization { get; set; }
-
-        public int JobPosterId { get; set; }
-        public string JobPosterName { get; set; }
-
+        public int ConfirmedOrgId { get; set; }
         public string LogoUrl { get; set; }
         public string Description { get; set; }
         public int Salary { get; set; }
@@ -20,9 +14,7 @@ namespace API.DTOs
         public string JobType { get; set; }
         public string SkillsRequired { get; set; }
         public string ApplicationUrl { get; set; }
-        public DateTime DateCreated { get; set; }
         public DateTime Deadline { get; set; }
-        public DateTime LastUpdated { get; set; }
 
     }
 }
