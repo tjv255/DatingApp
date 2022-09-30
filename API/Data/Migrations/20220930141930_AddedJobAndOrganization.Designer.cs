@@ -11,13 +11,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220926234230_AddedJobs")]
-    partial class AddedJobs
+    [Migration("20220930141930_AddedJobAndOrganization")]
+    partial class AddedJobAndOrganization
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
 
             modelBuilder.Entity("API.Entities.AppRole", b =>
                 {
@@ -257,7 +257,7 @@ namespace API.Data.Migrations
 
                     b.HasIndex("SavedUserId");
 
-                    b.ToTable("JobSave");
+                    b.ToTable("SavedJobs");
                 });
 
             modelBuilder.Entity("API.Entities.Message", b =>

@@ -17,5 +17,6 @@ namespace API.DTOs
         public string Country { get; set; }
         public ICollection<PhotoDto> Photos { get; set; }
         public ICollection<JobDto> CreatedJobs { get; set; }
+        public ICollection<JobSaveDto> SavedJobs { get; set; }
     }
 }
