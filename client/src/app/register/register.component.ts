@@ -41,7 +41,7 @@ export class RegisterComponent implements OnInit {
       email: ['', Validators.required],
       dateOfBirth: ['', Validators.required],
       city: ['', Validators.required],
-      province: ['', Validators.required],
+      provinceOrState: ['', Validators.required],
       country: ['', Validators.required],
       occupation: [''],
       skills: [''],
