@@ -31,6 +31,44 @@ namespace API.Helpers
             CreateMap<JobUpdateDto, Job>();
             CreateMap<JobDto, Job>();
 
+            CreateMap<JobSave, JobSaveDto>()
+            //  .ForMember(dest => dest.JobId, opt => opt.MapFrom(src =>
+            //     src.SavedJob.Id))
+             .ForMember(dest => dest.Title, opt => opt.MapFrom(src =>
+                src.SavedJob.Title))
+             .ForMember(dest => dest.OrgId, opt => opt.MapFrom(src =>
+                src.SavedJob.OrgId))
+             .ForMember(dest => dest.JobPosterId, opt => opt.MapFrom(src =>
+                src.SavedJob.JobPoster.Id))
+             .ForMember(dest => dest.JobPosterName, opt => opt.MapFrom(src =>
+                src.SavedJob.JobPoster.KnownAs))
+             .ForMember(dest => dest.LogoUrl, opt => opt.MapFrom(src =>
+                src.SavedJob.JobPoster.Photos.FirstOrDefault(x => x.IsMain).Url))
+             .ForMember(dest => dest.Description, opt => opt.MapFrom(src =>
+                src.SavedJob.Description))
+             .ForMember(dest => dest.Salary, opt => opt.MapFrom(src =>
+                src.SavedJob.Salary))
+             .ForMember(dest => dest.City, opt => opt.MapFrom(src =>
+                src.SavedJob.City))
+             .ForMember(dest => dest.ProvinceOrState, opt => opt.MapFrom(src =>
+                src.SavedJob.ProvinceOrState))
+             .ForMember(dest => dest.Country, opt => opt.MapFrom(src =>
+                src.SavedJob.Country))
+             .ForMember(dest => dest.Genres, opt => opt.MapFrom(src =>
+                src.SavedJob.Genres))
+             .ForMember(dest => dest.JobType, opt => opt.MapFrom(src =>
+                src.SavedJob.JobType))
+             .ForMember(dest => dest.SkillsRequired, opt => opt.MapFrom(src =>
+                src.SavedJob.SkillsRequired))
+             .ForMember(dest => dest.ApplicationUrl, opt => opt.MapFrom(src =>
+                src.SavedJob.ApplicationUrl))
+             .ForMember(dest => dest.DateCreated, opt => opt.MapFrom(src =>
+                src.SavedJob.DateCreated))
+             .ForMember(dest => dest.Deadline, opt => opt.MapFrom(src =>
+                src.SavedJob.Deadline))
+             .ForMember(dest => dest.LastUpdated, opt => opt.MapFrom(src =>
+                src.SavedJob.LastUpdated));
+
             CreateMap<Organization, OrganizationDto>()
                 .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
                     src.Photos.FirstOrDefault(x => x.IsMain).Url));
@@ -51,9 +89,6 @@ namespace API.Helpers
                     src.Org.ProvinceOrState))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src =>
                     src.Org.Country));
-            
-
-            
         }
     }
 }

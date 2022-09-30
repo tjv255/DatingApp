@@ -90,20 +90,20 @@ namespace API.Controllers
 
     //Delete a Job
     [HttpDelete("delete/{id}")]
-        public async Task<ActionResult> DeleteJob(int id)
-        {
-        var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+    public async Task<ActionResult> DeleteJob(int id)
+    {
+      var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
 
-        var job = user.CreatedJobs.FirstOrDefault(x=>x.Id == id);
+      var job = user.CreatedJobs.FirstOrDefault(x=>x.Id == id);
 
-        if (job == null) return NotFound();
+      if (job == null) return NotFound();
 
-        user.CreatedJobs.Remove(job);
+      user.CreatedJobs.Remove(job);
 
-        if (await _userRepository.SaveAllAsync()) return Ok();
+      if (await _userRepository.SaveAllAsync()) return Ok();
 
-        return BadRequest("Failed to delete the photo");
-        }
+      return BadRequest("Failed to delete the photo");
+    }
 
-        }
+    }
 }
