@@ -122,16 +122,16 @@ namespace API.Controllers
 
 
         [HttpPost("add")]
-        public async Task<ActionResult<OrganizationDto>> AddNewOrganization(OrganizationDto organizationDto)       
+        public async Task<ActionResult<OrganizationRegisterDto>> AddNewOrganization(OrganizationRegisterDto organizationRegisterDto)       
         {
 
-        var organization = _mapper.Map<Organization>(organizationDto);
+        var organization = _mapper.Map<Organization>(organizationRegisterDto);
 
         _organizationRepository.Add(organization);
 
         if (await _organizationRepository.SaveAllAsync()) 
             return NoContent();
-        return BadRequest("Failed to add user");
+        return BadRequest("Failed to add organization");
         
     }
         

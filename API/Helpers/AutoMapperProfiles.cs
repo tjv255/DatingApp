@@ -93,7 +93,7 @@ namespace API.Helpers
 
             CreateMap<OrgPhoto, OrgPhotoDto>();
             CreateMap<OrganizationUpdateDto, Organization>();
-            CreateMap<OrgPhotoDto, Organization>();
+            CreateMap<OrganizationRegisterDto, Organization>();
             CreateMap<OrgLike, OrgLikeDto>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
                     src.Org.Name))
