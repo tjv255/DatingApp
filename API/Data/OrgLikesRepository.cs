@@ -37,7 +37,7 @@ namespace API.Data
                 return await organizations.Select(organization => new OrgLikeDto
                 {
                     
-                    Id = organization.Id,
+                    OrgId = organization.Id,
                     Name = organization.Name,
                     Introduction = organization.Introduction,
                     PhotoUrl = organization.Photos.FirstOrDefault(p => p.IsMain).Url ,

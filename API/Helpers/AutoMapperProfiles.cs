@@ -38,6 +38,19 @@ namespace API.Helpers
             CreateMap<OrgPhoto, OrgPhotoDto>();
             CreateMap<OrganizationUpdateDto, Organization>();
             CreateMap<OrgPhotoDto, Organization>();
+            CreateMap<OrgLike, OrgLikeDto>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
+                    src.Org.Name))
+                .ForMember(dest => dest.Introduction, opt => opt.MapFrom(src =>
+                    src.Org.Introduction))
+                .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
+                    src.Org.Photos.FirstOrDefault(x => x.IsMain).Url))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src =>
+                    src.Org.City))
+                .ForMember(dest => dest.ProvinceOrState, opt => opt.MapFrom(src =>
+                    src.Org.ProvinceOrState))
+                .ForMember(dest => dest.Country, opt => opt.MapFrom(src =>
+                    src.Org.Country));
             
 
             

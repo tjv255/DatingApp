@@ -2,7 +2,7 @@ namespace API.DTOs
 {
     public class OrgLikeDto
     {
-        public int Id { get; set; }
+        public int OrgId { get; set; }
         public string Name { get; set; }
         public string Introduction { get; set; }
         public string PhotoUrl { get; set; }
