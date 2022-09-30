@@ -28,8 +28,7 @@ namespace API.Entities
     
     public ICollection<Organization> Affiliation { get; set; }
     public ICollection<OwnedOrganization> OwnedOrganizations { get; set; }
-
-
+    public ICollection<OrgLike> LikedByOrganizations { get; set; }
 
   }
 }

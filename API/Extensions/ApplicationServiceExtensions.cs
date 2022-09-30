@@ -21,6 +21,7 @@ namespace API.Extensions
             services.AddScoped<IUserRepository, UserRepository>();            
             services.AddScoped<IJobRepository, JobRepository>();
             services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+            services.AddScoped<IOrgLikesRepository, OrgLikesRepository>();
 
 
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
