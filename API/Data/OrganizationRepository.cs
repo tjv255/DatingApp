@@ -33,12 +33,12 @@ namespace API.Data
                 .ToListAsync();
         }
 
-        public async Task<Organization> GetOrganizationByIdAsync(int id)
+        public async Task<OrganizationDto> GetOrganizationByIdAsyncDto(int id)
         {
             return await _context.Organizations
-                    .Include(p => p.Photos)
-                    .Include(m => m.Members)
-                    .SingleOrDefaultAsync(o => o.Id == id);
+                .Where(o => o.Id == id)
+                .ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync();
         }
 
         public async Task<Organization> GetOrganizationByOrgnameAsync(string orgname)
@@ -68,5 +68,9 @@ namespace API.Data
             _context.Entry(organization).State = EntityState.Modified;
         }
 
+        Task<Organization> IOrganizationRepository.GetOrganizationByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
