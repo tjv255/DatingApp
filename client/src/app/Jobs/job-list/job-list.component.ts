@@ -60,6 +60,10 @@ export class JobListComponent implements OnInit {
         this.title = this.title.replace(" ", "%20");
         this.loadJobsByTitle(this.title);
       }
+      else
+      {
+        this.loadMembers();
+      }
     }  
   }
 
