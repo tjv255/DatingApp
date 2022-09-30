@@ -12,10 +12,9 @@ namespace API.Entities
     {
          public int Id{get;set;}
          public string Title{get;set;}
-
-       //  public Organization Organization{get;set;}
-        public int OrgId{get;set;}
-        public string LogoUrl{get;set;} = null;
+        public int ConfirmedOrgId {get;set;}
+        public Organization Organization{get;set;}
+        public AppUser JobPoster { get; set; }
         public string Description{get;set;}
         public int Salary{get;set;}
         public string City{set;get;}
@@ -28,8 +27,6 @@ namespace API.Entities
         public DateTime DateCreated{get;set;} = DateTime.Now;
         public DateTime Deadline{get;set;} = DateTime.Now;
         public DateTime LastUpdated{get;set;} = DateTime.Now;
-        //this job? saved by other users
-        public ICollection<JobSave> SavedByUsers{get;set;}
-        public AppUser JobPoster { get; set; }   
+        public ICollection<JobSave> SavedByUsers{get;set;}  
     }
 }

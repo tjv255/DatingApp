@@ -458,3 +458,6 @@ appsettings.json
 harmonix.db
 harmonix.db.shm
 harmonix.db.wal
+
+API/Migrations
+API/Data/Migrations

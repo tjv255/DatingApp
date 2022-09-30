@@ -27,11 +27,13 @@ namespace API.Entities
     public ICollection<Message> MessagesSent { get; set; }
     public ICollection<Message> MessagesReceived { get; set; }
     public ICollection<AppUserRole> UserRoles { get; set; }
-    //job saved by current user
+
     public ICollection<JobSave> SavedJobs{get; set;}
     public ICollection<Job> CreatedJobs{get; set;}
-    // public ICollection<Organization>? Affiliation { get; set; }
-    // public ICollection<OwnedOrganization>? OwnedOrganizations { get; set; }
-    
+
+    public ICollection<Organization> Affiliation { get; set; }
+    public ICollection<OwnedOrganization> OwnedOrganizations { get; set; }
+    public ICollection<OrgLike> LikedByOrganizations { get; set; }
+
   }
 }

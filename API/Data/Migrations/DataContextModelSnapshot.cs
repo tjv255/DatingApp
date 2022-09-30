@@ -212,6 +212,9 @@ namespace API.Data.Migrations
                     b.Property<string>("City")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("ConfirmedOrgId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Country")
                         .HasColumnType("TEXT");
 
@@ -236,10 +239,7 @@ namespace API.Data.Migrations
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("LogoUrl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("OrgId")
+                    b.Property<int?>("OrganizationId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ProvinceOrState")
@@ -257,6 +257,8 @@ namespace API.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("JobPosterId");
+
+                    b.HasIndex("OrganizationId");
 
                     b.ToTable("Jobs");
                 });
@@ -318,6 +320,111 @@ namespace API.Data.Migrations
                     b.ToTable("Messages");
                 });
 
+            modelBuilder.Entity("API.Entities.Organization", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("City")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Established")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Introduction")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ProvinceOrState")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Organizations");
+                });
+
+            modelBuilder.Entity("API.Entities.OrgLike", b =>
+                {
+                    b.Property<int>("OrgId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("LikedUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("OrganizationId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("OrgId", "LikedUserId");
+
+                    b.HasIndex("LikedUserId");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.ToTable("OrgLikes");
+                });
+
+            modelBuilder.Entity("API.Entities.OrgPhoto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.ToTable("OrgPhotos");
+                });
+
+            modelBuilder.Entity("API.Entities.OwnedOrganization", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("OrganizationId")
+                        .IsUnique();
+
+                    b.ToTable("OwnedOrganization");
+                });
+
             modelBuilder.Entity("API.Entities.Photo", b =>
                 {
                     b.Property<int>("Id")
@@ -356,6 +463,21 @@ namespace API.Data.Migrations
                     b.HasIndex("LikedUserId");
 
                     b.ToTable("Likes");
+                });
+
+            modelBuilder.Entity("AppUserOrganization", b =>
+                {
+                    b.Property<int>("AffiliationId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MembersId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("AffiliationId", "MembersId");
+
+                    b.HasIndex("MembersId");
+
+                    b.ToTable("AppUserOrganization");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -475,7 +597,13 @@ namespace API.Data.Migrations
                         .WithMany("CreatedJobs")
                         .HasForeignKey("JobPosterId");
 
+                    b.HasOne("API.Entities.Organization", "Organization")
+                        .WithMany("Jobs")
+                        .HasForeignKey("OrganizationId");
+
                     b.Navigation("JobPoster");
+
+                    b.Navigation("Organization");
                 });
 
             modelBuilder.Entity("API.Entities.JobSave", b =>
@@ -516,6 +644,59 @@ namespace API.Data.Migrations
                     b.Navigation("Sender");
                 });
 
+            modelBuilder.Entity("API.Entities.OrgLike", b =>
+                {
+                    b.HasOne("API.Entities.AppUser", "LikedUser")
+                        .WithMany("LikedByOrganizations")
+                        .HasForeignKey("LikedUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.Organization", "Org")
+                        .WithMany("LikedOrganizations")
+                        .HasForeignKey("OrgId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.Organization", null)
+                        .WithMany("LikedByUser")
+                        .HasForeignKey("OrganizationId");
+
+                    b.Navigation("LikedUser");
+
+                    b.Navigation("Org");
+                });
+
+            modelBuilder.Entity("API.Entities.OrgPhoto", b =>
+                {
+                    b.HasOne("API.Entities.Organization", "Organization")
+                        .WithMany("Photos")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("API.Entities.OwnedOrganization", b =>
+                {
+                    b.HasOne("API.Entities.AppUser", "AppUser")
+                        .WithMany("OwnedOrganizations")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.Organization", "Organization")
+                        .WithOne("OwnedByUser")
+                        .HasForeignKey("API.Entities.OwnedOrganization", "OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Organization");
+                });
+
             modelBuilder.Entity("API.Entities.Photo", b =>
                 {
                     b.HasOne("API.Entities.AppUser", "AppUser")
@@ -544,6 +725,21 @@ namespace API.Data.Migrations
                     b.Navigation("LikedUser");
 
                     b.Navigation("SourceUser");
+                });
+
+            modelBuilder.Entity("AppUserOrganization", b =>
+                {
+                    b.HasOne("API.Entities.Organization", null)
+                        .WithMany()
+                        .HasForeignKey("AffiliationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("MembersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -591,6 +787,8 @@ namespace API.Data.Migrations
                 {
                     b.Navigation("CreatedJobs");
 
+                    b.Navigation("LikedByOrganizations");
+
                     b.Navigation("LikedByUsers");
 
                     b.Navigation("LikedUsers");
@@ -598,6 +796,8 @@ namespace API.Data.Migrations
                     b.Navigation("MessagesReceived");
 
                     b.Navigation("MessagesSent");
+
+                    b.Navigation("OwnedOrganizations");
 
                     b.Navigation("Photos");
 
@@ -614,6 +814,19 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.Job", b =>
                 {
                     b.Navigation("SavedByUsers");
+                });
+
+            modelBuilder.Entity("API.Entities.Organization", b =>
+                {
+                    b.Navigation("Jobs");
+
+                    b.Navigation("LikedByUser");
+
+                    b.Navigation("LikedOrganizations");
+
+                    b.Navigation("OwnedByUser");
+
+                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }

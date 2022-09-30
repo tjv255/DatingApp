@@ -32,7 +32,6 @@ namespace API.Controllers
             var savedJob = await _jobRepository.GetJobByIdAsync(id);
             if(savedJob==null) return NotFound();
             
-            var savedJobUsername = await _jobRepository.GetUserByUsernameAsync(savedJob.JobPoster.UserName);
             var sourceUser = await _jobSaveRepository.GetUserWithSavedJobs(sourceUserId);
 
             // implement check - job poster cannot save their own posted job

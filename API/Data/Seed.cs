@@ -54,7 +54,7 @@ namespace API.Data
         {
             if( await context.Jobs.AnyAsync()) return;
 
-            var jobData = await System.IO.File.ReadAllTextAsync("Data/JobSeedData.json");
+            var jobData = await System.IO.File.ReadAllTextAsync("Data/JobSeedDataUpdated.json");
             var jobs = JsonSerializer.Deserialize<List<Job>>(jobData);
             foreach(var job in jobs)
             {
@@ -62,5 +62,21 @@ namespace API.Data
             }
             await context.SaveChangesAsync();
         }
+
+        public static async Task SeedOrganizations(DataContext context)
+        {
+            if (await context.Organizations.AnyAsync())return; 
+
+            var OrganizationData = await System.IO.File.ReadAllTextAsync("Data/OrgnizationSeedData.json");
+            var organizations = JsonSerializer.Deserialize<List<Organization>>(OrganizationData);
+            
+            foreach(var organization in organizations)
+            {
+                context.Organizations.Add(organization);
+            }
+
+            await context.SaveChangesAsync();
+        }
+
     }
 }

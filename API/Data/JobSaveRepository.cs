@@ -49,10 +49,9 @@ namespace API.Data
       return await  jobs.Select(job=> new JobSaveDto{
         JobId=job.Id,
         Title=job.Title,
-        OrgId = job.OrgId,
+        OrgId = job.Organization.Id,
         JobPosterId = job.JobPoster.Id,
         JobPosterName = job.JobPoster.UserName,
-        LogoUrl=job.LogoUrl,
         Description=job.Description,
         Salary=job.Salary,
         City=job.City,
