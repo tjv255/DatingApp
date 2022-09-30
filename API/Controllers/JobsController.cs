@@ -20,9 +20,11 @@ namespace API.Controllers
         private readonly IUserRepository _userRepository;       
         private readonly IJobRepository _jobRepository;
         private readonly IMapper _mapper;
+        private readonly IOrganizationRepository _organizationRepository;
 
-    public JobsController(IUserRepository userRepository, IJobRepository jobRepository, IMapper mapper)
+    public JobsController(IUserRepository userRepository, IJobRepository jobRepository, IOrganizationRepository organizationRepository, IMapper mapper)
     {
+            _organizationRepository = organizationRepository;
         _jobRepository = jobRepository;
         _mapper = mapper;
         _userRepository = userRepository;
@@ -42,14 +44,14 @@ namespace API.Controllers
         return _mapper.Map<JobDto>(job);
     }
 
-     [HttpGet("title/{title}")]
+    [HttpGet("title/{title}")]
     public async Task<ActionResult<IEnumerable<JobDto>>> GetJobByTitle(string title){
         var job = await _jobRepository.GetJobByTitleAsync(title);
         var jobreturn = _mapper.Map<IEnumerable<JobDto>>(job);
         return Ok(jobreturn);
     }
 
-     [HttpGet("poster/{id}")]
+    [HttpGet("poster/{id}")]
     public async Task<ActionResult<IEnumerable<JobDto>>> GetJobsByPosterId(int id){
         var job = await _jobRepository.GetJobsByPosterIdAsync(id);
         var jobreturn = _mapper.Map<IEnumerable<JobDto>>(job);
@@ -76,10 +78,13 @@ namespace API.Controllers
 
     // Add a new Job
     [HttpPost("add")]
-    public async Task<ActionResult<JobDto>> AddNewJobByPosterId(JobDto jobDto){
+    public async Task<ActionResult<JobRegisterDto>> AddNewJobByPosterId(JobRegisterDto jobRegisterDto){
         var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
-        var job = _mapper.Map<Job>(jobDto);
+        var id = jobRegisterDto.ConfirmedOrgId;
+        var org = await _organizationRepository.GetOrganizationByIdAsync(id);
+        var job = _mapper.Map<Job>(jobRegisterDto);
         job.JobPoster = user;
+        job.Organization = org;
 
         _jobRepository.Add(job);
         if (await _jobRepository.SaveAllAsync()) 
