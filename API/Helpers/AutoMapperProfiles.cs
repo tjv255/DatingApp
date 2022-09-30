@@ -13,11 +13,11 @@ namespace API.Helpers
               .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
                 src.Photos.FirstOrDefault(x => x.IsMain).Url))
               .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()))
-              .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.Genres == null ? null: src.Genres
+              .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.Genres == null ? new() : src.Genres
                     .Replace(" ", "")
                     .Split(',', System.StringSplitOptions.None)
                     .ToList()))
-              .ForMember(dest => dest.Skills, opt => opt.MapFrom(src => src.Skills == null ? null: src.Skills
+              .ForMember(dest => dest.Skills, opt => opt.MapFrom(src => src.Skills == null ? new() : src.Skills
                     .Replace(" ", "")
                     .Split(',', System.StringSplitOptions.None)
                     .ToList()));
