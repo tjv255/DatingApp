@@ -19,6 +19,7 @@ export class MembersService {
     memberCache = new Map();
     user: User;
     userParams: UserParams;
+    currMem: Member;
 
     getUserParams() {
         return this.userParams
@@ -37,7 +38,12 @@ export class MembersService {
         this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
             this.user = user;
             this.userParams = new UserParams(user);
+            this.getMember(user.username).subscribe(member =>{
+                this.currMem = member;
+            });
         })
+
+        
     }
 
     getMembers(userParams: UserParams) {

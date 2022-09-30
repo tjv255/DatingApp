@@ -60,7 +60,7 @@
     </div>
 </div>
 -->
-<div class="container">
+<div *ngIf="job" class="container">
 
     <!--<div class="col-3">
         <div class="card border-secondary">
@@ -71,67 +71,69 @@
         </div>        
     </div>   
 -->
+<div class="row">
     <div class="col">
     
-    <div class="glass-container p-4">
-        <div class="row">
-            <h1>{{job.title}}</h1>
-        </div>
-        <div class="row">
-            <p class="mycol">{{job.orgId}} {{job.city}}, {{job.country}} <i>{{job.dateCreated | timeago}}</i></p>
-            <p class="mycol">{{job.jobType}}</p>
-            <p class="mycol">${{job.salary}}</p>
-            <p class="mycol"><button class="btn-primary">Apply</button><button class="btn-primary">Save</button></p>
-        </div>
-        <div class="row  mt-2">
-            <h5>Musical genres we work with</h5>
-            <div class="col" >
-                <span class="badge bg-primary ml-1" *ngFor="let a of job.genres.split(', ')" >{{a}}</span>
+        <div class="glass-container p-4">
+            <div class="row">
+                <h1>{{job.title}}</h1>
+            </div>
+            <div class="row">
+                <p class="mycol">{{job.orgId}} {{job.city}}, {{job.country}} <i>{{job.dateCreated | timeago}}</i></p>
+                <p class="mycol">{{job.jobType}}</p>
+                <p class="mycol">${{job.salary}}</p>
+                <p class="mycol"><button class="btn-primary">Apply</button><button class="btn-primary">Save</button></p>
+            </div>
+            <div class="row  mt-2">
+                <h5>Musical genres we work with</h5>
+                <div class="col" >
+                    <span class="badge bg-primary ml-1" *ngFor="let a of job.genres.split(',')" >{{a}}</span>
+                </div>
+
+
             </div>
 
-
-        </div>
-
-        <div class="card mt-2 pt-3 pb-3">
-            <div class="card-body">
-                <h5>Job Description</h5>
-                <p class="card-text">{{job.description}}</p>
+            <div class="card mt-2 pt-3 pb-3">
+                <div class="card-body">
+                    <h5>Job Description</h5>
+                    <p class="card-text">{{job.description}}</p>
+                </div>
             </div>
-        </div>
 
-        <div class="row  mt-2">
-            <h5>Desired Skills</h5>
-            <div class="col" >
-                <span class="badge bg-primary ml-1" *ngFor="let a of job.skillsRequired.split(', ')" >{{a}}</span>
+            <div class="row  mt-2">
+                <h5>Desired Skills</h5>
+                <div class="col" >
+                    <span class="badge bg-primary ml-1" *ngFor="let a of job.skillsRequired.split(',')" >{{a}}</span>
+                </div>
             </div>
-        </div>
 
-        <div class="row mt-2">
-            <h5>Your Skills</h5>
-            <div class="col" >
-                <span class="badge bg-primary ml-1" *ngFor="let a of job.skillsRequired.split(', ')" >{{a}}</span>
+            <div class="row mt-2">
+                <h5>Your Skills</h5>
+                <div class="col" >
+                    <span class="badge bg-primary ml-1" *ngFor="let a of memberService.currMem.interests.split(',')" >{{a}}</span>
+                </div>
             </div>
-        </div>
 
-        <div class="card mt-2 pt-3 pb-3">
-            <div class="card-body">
-                <h5>Get in touch with the recruiter</h5>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-3">
-                            <img src="{{job.logoUrl || './assets/user.png'}}" alt="{{job.description}}" class="rounded-circle">
-                        </div>
-                        <div class="col">
-                            <p>Member First Name, Member last name</p>
-                            <div class="container pl-0">
-                                <div class="row">
-                                    <div class="col">
-                                        <p>Occupation</p>
+            <div *ngIf="member" class="card mt-2 pt-3 pb-3">
+                <div class="card-body">
+                    <h5>Get in touch with the recruiter</h5>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-3">
+                                <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.username}}" class="rounded-circle img-thumbnail">
+                            </div>
+                            <div class="col">
+                                <p>{{member.username}}, {{member.knownAs}}</p>
+                                <div class="container pl-0">
+                                    <div class="row">
+                                        <div class="col">
+                                            <p>{{member.age}}</p>
+                                        </div>
+                                        <div class="col">
+                                            <button class="btn btn-primary">Message</button>
+                                        </div>
+                    
                                     </div>
-                                    <div class="col">
-                                        <button class="btn btn-primary">Message</button>
-                                    </div>
-                
                                 </div>
                             </div>
                         </div>
@@ -139,17 +141,17 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="glass-container mt-2 p-4">
-        <h2>Orgination template holder</h2>
-            <div class="d-flex flex-wrap px-3 justify-content-center">
-                <div *ngFor="let org of orgs" class="col-2" style="min-width: 187px;">
-                  <app-organization-card [org]="org"></app-organization-card>
+        <div *ngIf="org" class="glass-container mt-2 p-4" >
+
+
+            <h2>Orgination template holder</h2>
+                <div class="d-flex flex-wrap px-3 justify-content-center">
+                    <app-organization-card [org]="org"></app-organization-card>
                 </div>
-            </div>
+        </div>
     </div>
-    </div>
+</div>
 
 
 </div>

@@ -56,15 +56,15 @@ export class OrganizationsService {
     }
 
     //Change to ID
-    getOrganization(orgName: string) {
+    getOrganization(orgId: number) {
         const member = [...this.organizationCache.values()]
             .reduce((arr, elem) => arr.concat(elem.result), [])
-            .find((organization: Organization) => organization.name === orgName);
+            .find((organization: Organization) => organization.id === orgId);
 
         if (member) {
             return of(member);
         }
-        return this.http.get<Member>(this.baseUrl + 'organizations/' + orgName);
+        return this.http.get<Member>(this.baseUrl + 'organizations/' + orgId);
     }
 
     ////Check with nathan

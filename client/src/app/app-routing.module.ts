@@ -36,7 +36,7 @@ const routes: Routes = [
       {path: 'member/job_edit', component: JobEditComponent},
       {path: 'jobs/:id', component: JobDetailComponent},
       {path: 'member/org_edit', component: OrganizationEditComponent},
-      {path: 'member/org_detail', component: OrganizationDetailComponent},
+      {path: 'organizations/:id', component: OrganizationDetailComponent},
       {path: 'lists', component: ListsComponent},
       {path: 'messages', component: MessagesComponent},
       {path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard]},
