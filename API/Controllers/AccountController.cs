@@ -32,7 +32,25 @@ namespace API.Controllers
         {
             if (await UserExists(registerDto.Username)) return BadRequest("Username is taken");
 
-            var user = _mapper.Map<AppUser>(registerDto);
+            var user = _mapper.Map<AppUser>(new RegisterDto {
+                Username = registerDto.Username,
+                KnownAs = registerDto.KnownAs,
+                Email = registerDto.Email,
+                Gender = registerDto.Gender,
+                DateOfBirth = registerDto.DateOfBirth,
+                City = registerDto.City,
+                ProvinceOrState = registerDto.ProvinceOrState,
+                Country = registerDto.Country,
+                Occupation = registerDto.Occupation,
+                Skills = registerDto.Skills,
+                Genres = registerDto.Genres,
+                Password = registerDto.Password
+            });
+
+            // foreach (var org in registerDto.AffiliationIds)
+            // {
+                
+            // }
 
             user.UserName = registerDto.Username.ToLower();
 

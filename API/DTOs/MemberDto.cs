@@ -21,7 +21,7 @@ namespace API.DTOs
         public ICollection<string> Genres { get; set; }
         // public ICollection<OrganizationDTO>? Affiliation { get; set; }
         public string City { get; set; }
-        public string CityOrState { get; set; }
+        public string ProvinceOrState { get; set; }
         public string Country { get; set; }
         public ICollection<PhotoDto> Photos { get; set; }
         public ICollection<JobDto> CreatedJobs { get; set; }

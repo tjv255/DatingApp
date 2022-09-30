@@ -13,9 +13,9 @@ namespace API.DTOs
         [Required] public string ProvinceOrState { get; set; }
         [Required] public string Country { get; set; }
         [Required] public string Occupation { get; set; }
-        [Required] public string Skills { get; set; }
-        [Required] public string Genres { get; set; }
-        // [Required] public ICollection<OrganizationDto> Affiliation { get; set; }
+        public string Skills { get; set; }
+        public string Genres { get; set; }
+        public int[] AffiliationIds { get; set; }
 
         [Required]
         [StringLength(8, MinimumLength = 4)]
