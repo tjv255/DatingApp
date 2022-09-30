@@ -15,7 +15,8 @@ namespace API.DTOs
         [Required] public string Occupation { get; set; }
         public string Skills { get; set; }
         public string Genres { get; set; }
-        public int[] AffiliationIds { get; set; }
+        //public int[] AffiliationIds { get; set; }
+        //public ICollection<AffiliationDto> Affiliation { get; set; }
 
         [Required]
         [StringLength(8, MinimumLength = 4)]

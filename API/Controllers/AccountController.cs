@@ -32,6 +32,8 @@ namespace API.Controllers
         {
             if (await UserExists(registerDto.Username)) return BadRequest("Username is taken");
 
+            //var user = _mapper.Map<AppUser>(registerDto);
+
             var user = _mapper.Map<AppUser>(new RegisterDto {
                 Username = registerDto.Username,
                 KnownAs = registerDto.KnownAs,

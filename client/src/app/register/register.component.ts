@@ -46,7 +46,7 @@ export class RegisterComponent implements OnInit {
       occupation: [''],
       skills: [''],
       genres: [''],
-      affiliation: [[]],
+      //affiliation: [[]],
       password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]],
       confirmPassword: ['', [Validators.required, this.matchValues('password')]]
     });
@@ -63,16 +63,16 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    // get OrgID's from from value
-    const selectedOrgs = this.registerForm
-      .get('affiliation')
-      .value.flatMap((i) => i.item_id);
-    // get actual Org objects to be passed into request body
-    const selectedOrgsFinal = AFFILIATION_DATA.filter( (org, i) => org.id === selectedOrgs[i] );
-    // add actual org objects to form value
-    this.registerForm.patchValue({
-        affiliation: selectedOrgsFinal
-    }) 
+    // // get OrgID's from from value
+    // const selectedOrgs = this.registerForm
+    //   .get('affiliation')
+    //   .value.flatMap((i) => i.item_id);
+    // // get actual Org objects to be passed into request body
+    // const selectedOrgsFinal = AFFILIATION_DATA.filter( (org, i) => org.id === selectedOrgs[i] );
+    // // add actual org objects to form value
+    // this.registerForm.patchValue({
+    //     affiliation: selectedOrgsFinal
+    // }) 
 
     console.log(this.registerForm.value)
     this.accountService.register(this.registerForm.value).subscribe(res => {
