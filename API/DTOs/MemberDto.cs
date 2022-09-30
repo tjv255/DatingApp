@@ -20,6 +20,6 @@ namespace API.DTOs
         public ICollection<PhotoDto> Photos { get; set; }
         public ICollection<JobDto> CreatedJobs { get; set; }
         public ICollection<JobSaveDto> SavedJobs { get; set; }
-        public ICollection<OrganizationDto> Affiliation {get; set;}
+        public ICollection<AffiliationDto> Affiliation {get; set;}
     }
 }

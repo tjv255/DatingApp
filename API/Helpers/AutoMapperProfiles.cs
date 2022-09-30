@@ -79,9 +79,16 @@ namespace API.Helpers
                     src.Photos.FirstOrDefault(x => x.IsMain).Url))
                 .ForMember(dest => dest.Jobs, opt => opt.MapFrom(src => 
                      src.Jobs.ToList()));
+
+            CreateMap<Organization, AffiliationDto>()
+                .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
+                    src.Photos.FirstOrDefault(x => x.IsMain).Url));
+
             CreateMap<AppUser, OrgMemberDto>()
             .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
                     src.Photos.FirstOrDefault(x => x.IsMain).Url));
+
+
             CreateMap<OrgPhoto, OrgPhotoDto>();
             CreateMap<OrganizationUpdateDto, Organization>();
             CreateMap<OrgPhotoDto, Organization>();
