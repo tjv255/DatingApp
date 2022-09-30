@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore.Internal;
+
 namespace API.DTOs
 {
     public class MemberDto
@@ -16,5 +18,9 @@ namespace API.DTOs
         public string City { get; set; }
         public string Country { get; set; }
         public ICollection<PhotoDto> Photos { get; set; }
+        public ICollection<JobDto> CreatedJobs { get; set; }
+        public ICollection<OrganizationDto> Affiliation {get; set;}
+
+        
     }
 }
