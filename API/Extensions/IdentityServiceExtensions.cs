@@ -52,6 +52,8 @@ namespace API.Extensions
             {
                 opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
                 opt.AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
+                opt.AddPolicy("RequireFortissimoMembershipRole", policy => policy.RequireRole("Fortissimo", "Pianissimo"));
+                opt.AddPolicy("RequireForteMembershipRole", policy => policy.RequireRole("Fortissimo", "Forte", "Pianissimo"));
             });
 
             return services;

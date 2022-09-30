@@ -43,6 +43,7 @@ namespace API.Controllers
       return Ok(users);
     }
 
+    [Authorize(Policy = "RequireForteMembershipRole")]
     [HttpGet("{username}", Name = "GetUser")]
     public async Task<ActionResult<MemberDto>> GetUser(string username)
     {
