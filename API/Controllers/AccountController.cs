@@ -32,7 +32,27 @@ namespace API.Controllers
         {
             if (await UserExists(registerDto.Username)) return BadRequest("Username is taken");
 
-            var user = _mapper.Map<AppUser>(registerDto);
+            //var user = _mapper.Map<AppUser>(registerDto);
+
+            var user = _mapper.Map<AppUser>(new RegisterDto {
+                Username = registerDto.Username,
+                KnownAs = registerDto.KnownAs,
+                Email = registerDto.Email,
+                Gender = registerDto.Gender,
+                DateOfBirth = registerDto.DateOfBirth,
+                City = registerDto.City,
+                ProvinceOrState = registerDto.ProvinceOrState,
+                Country = registerDto.Country,
+                Occupation = registerDto.Occupation,
+                Skills = registerDto.Skills,
+                Genres = registerDto.Genres,
+                Password = registerDto.Password
+            });
+
+            // foreach (var org in registerDto.AffiliationIds)
+            // {
+                
+            // }
 
             user.UserName = registerDto.Username.ToLower();
 
@@ -40,7 +60,7 @@ namespace API.Controllers
 
             if (!result.Succeeded) return BadRequest(result.Errors);
 
-            var roleResult = await _userManager.AddToRoleAsync(user, "Member");
+            var roleResult = await _userManager.AddToRolesAsync(user, new[]{"Member", "Piano"});
 
             if (!roleResult.Succeeded) return BadRequest(result.Errors);
 
@@ -58,6 +78,11 @@ namespace API.Controllers
         {
             var user = await _userManager.Users
                 .Include(p => p.Photos)
+                .Include(j => j.CreatedJobs)
+                .Include(j => j.SavedJobs)
+                .Include(o => o.Affiliation)
+                .Include(o => o.OwnedOrganizations)
+                .Include(o => o.LikedByOrganizations)
                 .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
 
             if (user == null) return Unauthorized("Invalid username");
