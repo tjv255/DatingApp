@@ -13,6 +13,7 @@ import { Job } from 'src/app/_models/job';
 import { Organization } from 'src/app/_models/organization';
 import { MembersService } from 'src/app/_services/members.service';
 import { OrganizationsService } from 'src/app/_services/organizations.service';
+import { JobsService } from 'src/app/_services/jobs.service';
 
 @Component({
   selector: 'app-job-detail',
@@ -20,15 +21,12 @@ import { OrganizationsService } from 'src/app/_services/organizations.service';
   styleUrls: ['./job-detail.component.css']
 })
 export class JobDetailComponent implements OnInit {
-  @ViewChild('jobTabs', {static: true}) jobTabs: TabsetComponent;
   job: Job;
-  orgs: Organization[];
+  org: Organization;
   member: Member;
-  galleryOptions: NgxGalleryOptions[];
-  galleryImages: NgxGalleryImage[];
-  activeTab: TabDirective;
 
-  constructor(private route: ActivatedRoute, private memberService: MembersService, private organizationsService: OrganizationsService, private router: Router ) { 
+
+  constructor(private route: ActivatedRoute, private memberService: MembersService, private jobsService: JobsService, private router: Router, private orgsService: OrganizationsService ) { 
   //Load member and load Organization objects from server 
   this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 
@@ -44,6 +42,37 @@ export class JobDetailComponent implements OnInit {
       this.orgs = response;
     }); 
     */
+   this.loadJob();
+  }
+
+  loadJob(){
+    this.jobsService.getJob(Number(this.route.snapshot.paramMap.get('id'))).subscribe(
+      job =>{
+        this.job = job;
+        //this.loadOrg(job.orgId);
+        this.loadMember(job.jobPosterName)
+      }
+    )
+  }
+
+  loadOrg(orgId: number)
+  {
+    this.orgsService.getOrganization(orgId).subscribe(
+      org =>{
+        this.org = org;
+      }
+    )
+  }
+
+  loadMember(username: string)
+  {
+    username = username.toLowerCase();
+
+    this.memberService.getMember(username).subscribe(
+      member =>{
+        this.member = member;
+      }
+    )
   }
 
 

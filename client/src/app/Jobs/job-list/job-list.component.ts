@@ -25,16 +25,14 @@ export class JobListComponent implements OnInit {
   pagination: Pagination;
   postedByUser: Boolean;
   jobParams: JobsParams;
-
-  genderList = GENDER_LIST;
+  title: string;
 
   constructor(private memberService: MembersService, private jobsService: JobsService, private accountService: AccountService) {
     this.jobParams = this.jobsService.getUserParams();
     this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
-    this.memberService.getMember(this.user.username).subscribe(member => {
-      this.member = member;
+    this.memberService.getMember(this.user.username).subscribe((m) => {
+      this.member = m;
     });
-
 
   }
 
@@ -50,13 +48,23 @@ export class JobListComponent implements OnInit {
       this.pagination = response.pagination;
     });
 
-
-
+    
   }
 
   btnClick()
   {
-
+    if(this.title != null)
+    {
+      if(this.title != "")
+      {
+        this.title = this.title.replace(" ", "%20");
+        this.loadJobsByTitle(this.title);
+      }
+      else
+      {
+        this.loadMembers();
+      }
+    }  
   }
 
   loadJobsByUserId(id: number)
