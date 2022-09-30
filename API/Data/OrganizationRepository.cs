@@ -4,7 +4,6 @@ using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
@@ -51,26 +50,7 @@ namespace API.Data
                 
         // var organization = await _context.Organizations.Where(o=>o.Name.ToLower().Contains(orgname.ToLower())).ToListAsync();
         // return  organization;
-        }
-
-        public async Task<PagedList<OrgMemberDto>> GetMembersByOrganizationIdAsync(UserParams userParams, int id)
-        {
-            var org = _context.Organizations.SingleOrDefault(o => o.Id == id);
-            var query = _context.Users.Where(u => u.Affiliation.Contains(org));
-            query = query.Where(u => u.UserName != userParams.CurrentUsername);
-
-            query = userParams.OrderBy switch
-            {
-                "created" => query.OrderByDescending(u => u.Created),
-                _ => query.OrderByDescending(u => u.LastActive)
-            };
-
-            return await PagedList<OrgMemberDto>.CreateAsync(
-                    query.ProjectTo<OrgMemberDto>(_mapper.ConfigurationProvider).AsNoTracking(),
-                    userParams.PageNumber,
-                    userParams.PageSize 
-                );
-        } 
+        }        
 
         public async Task<bool> SaveAllAsync()
         {
