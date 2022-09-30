@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace API.Data.Migrations
+namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
@@ -218,10 +218,7 @@ namespace API.Data.Migrations
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("LogoUrl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("OrgId")
+                    b.Property<int?>("OrganizationId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ProvinceOrState")
@@ -239,6 +236,8 @@ namespace API.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("JobPosterId");
+
+                    b.HasIndex("OrganizationId");
 
                     b.ToTable("Jobs");
                 });
@@ -580,7 +579,13 @@ namespace API.Data.Migrations
                         .WithMany("CreatedJobs")
                         .HasForeignKey("JobPosterId");
 
+                    b.HasOne("API.Entities.Organization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId");
+
                     b.Navigation("JobPoster");
+
+                    b.Navigation("Organization");
                 });
 
             modelBuilder.Entity("API.Entities.JobSave", b =>
