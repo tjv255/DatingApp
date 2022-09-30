@@ -36,7 +36,6 @@ namespace API.Helpers
              src.Organization == null ? src.JobPoster.Photos.FirstOrDefault(p => p.IsMain).Url
              : src.Organization.Photos.FirstOrDefault(x => x.IsMain).Url));
             CreateMap<JobUpdateDto, Job>();
-            //CreateMap<JobDto, Job>();
             CreateMap<JobRegisterDto, Job>();
 
             CreateMap<JobSave, JobSaveDto>()
