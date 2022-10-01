@@ -77,6 +77,8 @@ namespace API.Helpers
             CreateMap<Organization, OrganizationDto>()
                 .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
                     src.Photos.FirstOrDefault(x => x.IsMain).Url))
+                .ForMember(dest => dest.Likes, opt => opt.MapFrom(src =>
+                    src.LikedOrganizations.Count()))
                 .ForMember(dest => dest.Jobs, opt => opt.MapFrom(src => 
                      src.Jobs.ToList()));
 

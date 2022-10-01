@@ -7,6 +7,7 @@ namespace API.DTOs
         public string Introduction { get; set; }
         public string PhotoUrl { get; set; }
         public int Established { get; set; }
+        public int Likes { get; set; }
         public DateTime Created { get; set; } 
         public DateTime LastUpdated { get; set; }
         public ICollection<OrgPhotoDto> Photos { get; set; }

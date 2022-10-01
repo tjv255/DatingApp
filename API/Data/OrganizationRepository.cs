@@ -27,11 +27,23 @@ namespace API.Data
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<OrganizationDto>> GetCompactOrganizationsAsync()
+        public async Task<PagedList<OrganizationDto>> GetCompactOrganizationsAsync(OrganizationParams organizationParams)
         {
-            return await _context.Organizations
-                .ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+            var organizations = _context.Organizations.AsQueryable();
+            var query = organizations.Where(o => o.Name != organizationParams.CurrentName);
+
+            query = organizationParams.OrderBy switch
+            {
+                "alphabetical" => query.OrderBy(o => o.Name),
+                "established" => query.OrderBy(o => o.Established),
+                _ => query.OrderByDescending(o => o.LikedByUser.Count)
+            };
+
+            return await PagedList<OrganizationDto>.CreateAsync(
+                query.ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider).AsNoTracking(),
+                organizationParams.PageNumber,
+                organizationParams.PageSize
+            );
         }
 
         public async Task<Organization> GetOrganizationByIdAsync(int id)
@@ -117,6 +129,41 @@ namespace API.Data
                     jobParams.PageSize
                 );
         }
+        public async Task<PagedList<OrganizationDto>> GetOwnedOrganizationsAsync(OrganizationParams organizationParams, int id)
+        {
+            var organizations = _context.Organizations.Where(o => o.OwnerId == id);
+            var query = organizations.Where(o => o.Name != organizationParams.CurrentName);
 
+            query = organizationParams.OrderBy switch
+            {
+                "alphabetical" => query.OrderBy(o => o.Name),
+                "established" => query.OrderBy(o => o.Established),
+                _ => query.OrderByDescending(o => o.LikedByUser.Count)
+            };
+
+            return await PagedList<OrganizationDto>.CreateAsync(
+                query.ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider).AsNoTracking(),
+                organizationParams.PageNumber,
+                organizationParams.PageSize
+            );
+        }
+
+        public async Task<PagedList<OrganizationDto>> GetAffiliatedOrganizationsAsync(OrganizationParams organizationParams, int id)
+        {
+            var query = _context.Users.Where(u => u.Id == id).SelectMany(u => u.Affiliation).AsQueryable();
+
+            query = organizationParams.OrderBy switch
+            {
+                "alphabetical" => query.OrderBy(o => o.Name),
+                "established" => query.OrderBy(o => o.Established),
+                _ => query.OrderByDescending(o => o.LikedByUser.Count)
+            };
+
+            return await PagedList<OrganizationDto>.CreateAsync(
+                query.ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider).AsNoTracking(),
+                organizationParams.PageNumber,
+                organizationParams.PageSize
+            );
+        }
     }
 }

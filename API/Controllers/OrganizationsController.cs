@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 namespace API.Controllers
 {
 
-   // [Authorize]
+   [Authorize]
     public class OrganizationsController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
@@ -34,15 +34,19 @@ namespace API.Controllers
         }
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrganizationDto>>> GetOrganizations()
+        public async Task<ActionResult<IEnumerable<OrganizationDto>>> GetOrganizations([FromQuery] OrganizationParams organizationParams)
         {
-            var organizations = await _organizationRepository.GetCompactOrganizationsAsync();
+            var organizations = await _organizationRepository.GetCompactOrganizationsAsync(organizationParams);
+
+            Response.AddPaginationHeader(organizations.CurrentPage, organizations.PageSize,
+        organizations.TotalCount, organizations.TotalPages);
+
             return Ok(organizations);
 
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<OrganizationDto>> GetOrganizationsById(int id)
+        public async Task<ActionResult<OrganizationDto>> GetOrganizationById(int id)
         {
             return await _organizationRepository.GetCompactOrganizationByIdAsync(id);
         }
@@ -59,7 +63,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}/jobs")]
-        public async Task<ActionResult<IEnumerable<OrgMemberDto>>> GetJobsByOrganizationId([FromQuery] JobParams jobParams, int id)
+        public async Task<ActionResult<IEnumerable<JobDto>>> GetJobsByOrganizationId([FromQuery] JobParams jobParams, int id)
         {
             var jobs = await _organizationRepository.GetJobsByOrganizationIdAsync(jobParams, id);
 
@@ -69,7 +73,33 @@ namespace API.Controllers
             return Ok(jobs);
         }
 
-        [HttpPut ("{id}")]
+        [HttpGet("owned")]
+        public async Task<ActionResult<IEnumerable<OrganizationDto>>> GetOwnedOrganizations([FromQuery] OrganizationParams organizationParams)
+        {
+            var id = User.GetUserId();
+            var organizations = await _organizationRepository.GetOwnedOrganizationsAsync(organizationParams, id);
+
+            Response.AddPaginationHeader(organizations.CurrentPage, organizations.PageSize,
+        organizations.TotalCount, organizations.TotalPages);
+
+            return Ok(organizations);
+
+        }
+
+        [HttpGet("affiliated")]
+        public async Task<ActionResult<IEnumerable<OrganizationDto>>> GetAffiliatedOrganizations([FromQuery] OrganizationParams organizationParams)
+        {
+            var id = User.GetUserId();
+            var organizations = await _organizationRepository.GetAffiliatedOrganizationsAsync(organizationParams, id);
+
+            Response.AddPaginationHeader(organizations.CurrentPage, organizations.PageSize,
+        organizations.TotalCount, organizations.TotalPages);
+
+            return Ok(organizations);
+
+        }
+
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateOrganization( OrganizationUpdateDto organizationUpdateDto , int id)
         {
             var user = _userRepository.GetUserByUsernameAsync(User.GetUsername());
@@ -136,6 +166,7 @@ namespace API.Controllers
         public async Task<ActionResult<OrganizationRegisterDto>> AddNewOrganization(OrganizationRegisterDto organizationRegisterDto)       
         {
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            user = _mapper.Map<AppUser>(user);
         var organization = _mapper.Map<Organization>(organizationRegisterDto);
 
         _organizationRepository.Add(organization);
@@ -156,13 +187,14 @@ namespace API.Controllers
         public async Task<ActionResult<Organization>> AddMember(string username, int id)
         {
             var user = await _userRepository.GetUserByUsernameAsync(username);
-            _mapper.Map<AppUser>(user);
+            user = _mapper.Map<AppUser>(user);
+            var owner = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             var org = await _organizationRepository.GetOrganizationByIdAsync(id);
 
-            if (org.OwnerId != user.Id)
-            {
+            if (org.OwnerId != owner.Id)
                 return BadRequest("Failed to add member. You are not the owner. Nice try ;)");
-            }
+
+            if (org.Members.Contains(user)) return BadRequest("This user is already a member of this organization.");
 
             org.Members.Add(user);
             if (await _organizationRepository.SaveAllAsync())

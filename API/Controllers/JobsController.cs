@@ -1,6 +1,7 @@
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -25,11 +26,14 @@ namespace API.Controllers
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<JobDto>>> GetJobs(){
-        var jobs = await _jobRepository.GetJobsAsync();
-        var jobstoreturn = _mapper.Map<IEnumerable<JobDto>>(jobs);
-        return Ok(jobstoreturn);
-       // return Ok(await _context.Jobs.ToListAsync());
+    public async Task<ActionResult<IEnumerable<JobDto>>> GetJobs([FromQuery] JobParams jobParams)
+    {
+        var jobs = await _jobRepository.GetJobsAsync(jobParams);
+
+        Response.AddPaginationHeader(jobs.CurrentPage, jobs.PageSize,
+            jobs.TotalCount, jobs.TotalPages);
+
+        return Ok(jobs);
     }
 
     [HttpGet("{id}")]
@@ -39,17 +43,23 @@ namespace API.Controllers
     }
 
     [HttpGet("title/{title}")]
-    public async Task<ActionResult<IEnumerable<JobDto>>> GetJobByTitle(string title){
-        var job = await _jobRepository.GetJobByTitleAsync(title);
-        var jobreturn = _mapper.Map<IEnumerable<JobDto>>(job);
-        return Ok(jobreturn);
+    public async Task<ActionResult<IEnumerable<JobDto>>> GetJobsByTitle([FromQuery] JobParams jobParams,string title){
+            var jobs = await _jobRepository.GetJobsByTitleAsync(jobParams, title);
+
+            Response.AddPaginationHeader(jobs.CurrentPage, jobs.PageSize,
+                jobs.TotalCount, jobs.TotalPages);
+
+            return Ok(jobs);
     }
 
     [HttpGet("poster/{id}")]
-    public async Task<ActionResult<IEnumerable<JobDto>>> GetJobsByPosterId(int id){
-        var job = await _jobRepository.GetJobsByPosterIdAsync(id);
-        var jobreturn = _mapper.Map<IEnumerable<JobDto>>(job);
-        return Ok(jobreturn);
+    public async Task<ActionResult<IEnumerable<JobDto>>> GetJobsByPosterId([FromQuery] JobParams jobParams, int id){
+            var jobs = await _jobRepository.GetJobsByPosterIdAsync(jobParams, id);
+
+            Response.AddPaginationHeader(jobs.CurrentPage, jobs.PageSize,
+                jobs.TotalCount, jobs.TotalPages);
+
+            return Ok(jobs);
     }
 
         //Update existing Job
@@ -81,10 +91,8 @@ namespace API.Controllers
         var id = jobRegisterDto.ConfirmedOrgId;
         var org = await _organizationRepository.GetOrganizationByIdAsync(id);
         var job = _mapper.Map<Job>(jobRegisterDto);
-
-        if (job.JobPoster.Id != user.Id) return BadRequest("You are not permitted to perform this action. Nice try ;)");
         
-        if (org != null)
+        if (org != null && user != null)
         {
                 job.JobPoster = user;
                 job.Organization = org;
@@ -94,7 +102,7 @@ namespace API.Controllers
                     return NoContent();
         }
 
-        return BadRequest("Failed to add user");
+        return BadRequest("Failed to add job");
     }
 
         //Delete a Job
