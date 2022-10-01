@@ -29,22 +29,18 @@ export class JobRegisterComponent implements OnInit {
   initializeForm() {
     this.registerForm = this.fb.group ({
       title: ['', Validators.required],
-      orgId: ['', Validators.required],
-      jobPosterId: ['', Validators.required],
+      confirmedOrgId: ['', Validators.required],
       logoUrl: ['', Validators.required],
       description: ['', Validators.required],
       salary: ['', Validators.required],
       city: ['', Validators.required],
-      province: ['', Validators.required],
+      provinceOrState: ['', Validators.required],
       country: ['', Validators.required],
       genres: ['', Validators.required],
       jobType: ['', Validators.required],
       skillsRequired: ['', Validators.required],
       applicationUrl: ['', Validators.required],
-      dateCreated: ['', Validators.required],
-      deadline: ['', Validators.required],
-      lastUpdated: ['', Validators.required]
-
+      deadline: ['', Validators.required]
     });
     this.registerForm.controls.password.valueChanges.subscribe(() => {
       this.registerForm.controls.confirmPassword.updateValueAndValidity();
