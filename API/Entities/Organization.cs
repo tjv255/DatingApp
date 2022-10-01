@@ -16,7 +16,7 @@ namespace API.Entities
         public ICollection<Job> Jobs { get; set; }
         public ICollection<OrgLike> LikedByUser { get; set; }
         public ICollection<OrgPhoto> Photos { get; set; }
-        public OwnedOrganization OwnedByUser { get; set; }
+        //public OwnedOrganization OwnedByUser { get; set; }
         public ICollection<OrgLike> LikedOrganizations { get; set; }
 
         

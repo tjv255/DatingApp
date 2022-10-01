@@ -5,7 +5,10 @@ using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+
 namespace API.Controllers
 {
 
@@ -16,11 +19,13 @@ namespace API.Controllers
         private readonly IOrganizationRepository _organizationRepository;
         private readonly IMapper _mapper;
         public readonly IPhotoService _photoService;
+        private readonly UserManager<AppUser> _userManager;
 
-        public OrganizationsController(IUserRepository userRepository, IOrganizationRepository organizationRepository,
+        public OrganizationsController(UserManager<AppUser> userManager, IUserRepository userRepository, IOrganizationRepository organizationRepository,
                                         IMapper mapper, IPhotoService photoService)
 
         {
+            _userManager = userManager;
             _photoService = photoService;
             _userRepository = userRepository;
             _organizationRepository = organizationRepository;
@@ -67,7 +72,9 @@ namespace API.Controllers
         [HttpPut ("{id}")]
         public async Task<ActionResult> UpdateOrganization( OrganizationUpdateDto organizationUpdateDto , int id)
         {
-            var organization = await _organizationRepository.GetOrganizationByIdAsync(id); 
+            var user = _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            var organization = await _organizationRepository.GetOrganizationByIdAsync(id);
+            if (organization.OwnerId != user.Id) return BadRequest("You cannot update this organization!");
             _mapper.Map<Organization>(organization);
             _organizationRepository.Update(organization);
 
@@ -79,7 +86,9 @@ namespace API.Controllers
         [HttpPost("add-photo")]
         public async Task<ActionResult<OrgPhotoDto>>AddPhoto(IFormFile file, int id)
     {
-        var organization = await _organizationRepository.GetOrganizationByIdAsync(id); 
+        var user = _userRepository.GetUserByUsernameAsync(User.GetUsername());
+        var organization = await _organizationRepository.GetOrganizationByIdAsync(id);
+            if (organization.OwnerId != user.Id) return BadRequest("You cannot add photo to this organization!");
         var result = await _photoService.AddPhotoAsync(file);
 
         if (result.Error != null) return BadRequest(result.Error.Message);
@@ -105,7 +114,9 @@ namespace API.Controllers
         [HttpPut("set-main-photo/{photoId}")]
         public async Task<ActionResult> SetMainPhoto(int photoId, int id)
     {
-        var organization = await _organizationRepository.GetOrganizationByIdAsync(id); 
+        var user = _userRepository.GetUserByUsernameAsync(User.GetUsername());
+        var organization = await _organizationRepository.GetOrganizationByIdAsync(id);
+            if (organization.OwnerId != user.Id) return BadRequest("You are not permitted to set main photo.");
 
         var photo = organization.Photos.FirstOrDefault(x => x.Id == photoId);
 
@@ -120,40 +131,51 @@ namespace API.Controllers
         return BadRequest("Failed to set main photo");
     }
 
-
+        [Authorize(Policy = "RequireForteMembershipRole")]
         [HttpPost("add")]
         public async Task<ActionResult<OrganizationRegisterDto>> AddNewOrganization(OrganizationRegisterDto organizationRegisterDto)       
         {
-
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
         var organization = _mapper.Map<Organization>(organizationRegisterDto);
 
         _organizationRepository.Add(organization);
 
-        if (await _organizationRepository.SaveAllAsync()) 
-            return NoContent();
+        if (await _organizationRepository.SaveAllAsync())
+        {
+                await _userManager.AddToRoleAsync(user, "OrgAdmin");
+                organization.OwnerId = user.Id;
+                
+                return NoContent();
+        }
         return BadRequest("Failed to add organization");
         
     }
-        
 
+        [Authorize(Policy = "RequireOrgAdminRole")]
         [HttpPost("add-member/{id}")]
         public async Task<ActionResult<Organization>> AddMember(string username, int id)
         {
             var user = await _userRepository.GetUserByUsernameAsync(username);
             _mapper.Map<AppUser>(user);
             var org = await _organizationRepository.GetOrganizationByIdAsync(id);
+
+            if (org.OwnerId != user.Id)
+            {
+                return BadRequest("Failed to add member. You are not the owner. Nice try ;)");
+            }
+
             org.Members.Add(user);
             if (await _organizationRepository.SaveAllAsync())
                 return NoContent();
-            return BadRequest("Failed to add member");
 
+            return BadRequest("Failed to add member.");
         }
 
         [HttpDelete("delete-photo/{photoId}")]
         public async Task<ActionResult> DeletePhoto(int photoId, int id)
         {
+        var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
         var organization = await _organizationRepository.GetOrganizationByIdAsync(id);
-
         var photo = organization.Photos.FirstOrDefault(x => x.Id == photoId);
 
         if (photo == null) return NotFound();
@@ -163,8 +185,14 @@ namespace API.Controllers
         if (photo.PublicId != null)
         {
         var result = await _photoService.DeletePhotoAsync(photo.PublicId);
+        
         if (result.Error != null) return BadRequest(result.Error.Message);
         }
+
+        if (organization.OwnerId != user.Id)
+            {
+                return BadRequest("Failed delete photo. You are not the owner. Nice try ;)");
+            }
 
         organization.Photos.Remove(photo);
 
@@ -172,10 +200,5 @@ namespace API.Controllers
 
         return BadRequest("Failed to delete the photo");
     }
-
-
-
-
-
     }
 }
