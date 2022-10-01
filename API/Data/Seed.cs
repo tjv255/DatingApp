@@ -24,7 +24,11 @@ namespace API.Data
                 new AppRole{Name = "Piano"},    // Free Account
                 new AppRole{Name = "Forte"},    // Tier 1 Subscription
                 new AppRole{Name = "Fortissimo"},  // Tier 2 Subscription
-                new AppRole{Name = "Pianissimo"}   // Tier 2 Subscription (temporary day free trial)
+                new AppRole{Name = "Pianissimo"},   // Tier 2 Subscription (temporary day free trial)
+                new AppRole{Name = "OrgAdmin"},
+                new AppRole{Name = "OrgModerator"},
+                new AppRole{Name = "OrgMember"},
+                new AppRole{Name = "Recruiter"}
             };
 
             foreach (var role in roles)
@@ -37,7 +41,7 @@ namespace API.Data
                 user.UserName = user.UserName.ToLower();
                 await userManager.CreateAsync(user, "Pa$$w0rd");
                 await userManager.AddToRoleAsync(user, "Member");
-                await userManager.AddToRoleAsync(user, "Piano");
+                await userManager.AddToRoleAsync(user, "Pianissimo");
             }
 
             var admin = new AppUser

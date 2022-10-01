@@ -1,8 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
@@ -10,7 +5,6 @@ using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -58,12 +52,15 @@ namespace API.Controllers
         return Ok(jobreturn);
     }
 
-    //Update existing Job
+        //Update existing Job
+    [Authorize(Policy = "RequireForteMembershipRole")]
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateJob(JobUpdateDto jobUpdateDto,int id)
         {
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             var job = await _jobRepository.GetJobByIdAsync(id);
+
+            if (job.JobPoster.Id != user.Id) return BadRequest("You are not permitted to perform this action. Nice try ;)");
             
             if(job.JobPoster != user) return BadRequest("Job Not Found");
             
@@ -76,24 +73,32 @@ namespace API.Controllers
             return BadRequest("Failed to update user");
         }
 
-    // Add a new Job
+        // Add a new Job
+    [Authorize(Policy = "RequireForteMembershipRole")]
     [HttpPost("add")]
     public async Task<ActionResult<JobRegisterDto>> AddNewJobByPosterId(JobRegisterDto jobRegisterDto){
         var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
         var id = jobRegisterDto.ConfirmedOrgId;
         var org = await _organizationRepository.GetOrganizationByIdAsync(id);
         var job = _mapper.Map<Job>(jobRegisterDto);
-        job.JobPoster = user;
-        job.Organization = org;
 
-        _jobRepository.Add(job);
-        if (await _jobRepository.SaveAllAsync()) 
-            return NoContent();
+        if (job.JobPoster.Id != user.Id) return BadRequest("You are not permitted to perform this action. Nice try ;)");
+        
+        if (org != null)
+        {
+                job.JobPoster = user;
+                job.Organization = org;
+
+                _jobRepository.Add(job);
+                if (await _jobRepository.SaveAllAsync())
+                    return NoContent();
+        }
 
         return BadRequest("Failed to add user");
     }
 
-    //Delete a Job
+        //Delete a Job
+    [Authorize(Policy = "RequireForteMembershipRole")]
     [HttpDelete("delete/{id}")]
     public async Task<ActionResult> DeleteJob(int id)
     {
@@ -101,7 +106,9 @@ namespace API.Controllers
 
       var job = user.CreatedJobs.FirstOrDefault(x=>x.Id == id);
 
-      if (job == null) return NotFound();
+     if (job.JobPoster.Id != user.Id) return BadRequest("You are not permitted to perform this action. Nice try ;)");
+
+      if (job == null || user == null) return NotFound();
 
       user.CreatedJobs.Remove(job);
 
