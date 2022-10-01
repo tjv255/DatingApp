@@ -19,6 +19,7 @@ export class MembersService {
     memberCache = new Map();
     user: User;
     userParams: UserParams;
+    currMem: Member;
 
     getUserParams() {
         return this.userParams
@@ -37,7 +38,12 @@ export class MembersService {
         this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
             this.user = user;
             this.userParams = new UserParams(user);
+            this.getMember(user.username).subscribe(member =>{
+                this.currMem = member;
+            });
         })
+
+        
     }
 
     getMembers(userParams: UserParams) {
@@ -70,6 +76,19 @@ export class MembersService {
         }
         return this.http.get<Member>(this.baseUrl + 'users/' + username);
     }
+
+    //Make sure its supported by back end
+    getMemberbyId(id: number) {
+        const member = [...this.memberCache.values()]
+            .reduce((arr, elem) => arr.concat(elem.result), [])
+            .find((member: Member) => member.id === id);
+
+        if (member) {
+            return of(member);
+        }
+        return this.http.get<Member>(this.baseUrl + 'users/' + id);
+    }
+
 
     updateMember(member: Member) {
         return this.http.put(this.baseUrl + 'users', member).pipe(
