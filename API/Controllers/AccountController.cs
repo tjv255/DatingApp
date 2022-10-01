@@ -54,6 +54,8 @@ namespace API.Controllers
                 
             // }
 
+            Console.WriteLine(user);
+
             user.UserName = registerDto.Username.ToLower();
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
