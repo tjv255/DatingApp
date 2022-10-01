@@ -81,7 +81,6 @@ namespace API.Controllers
                 .Include(j => j.CreatedJobs)
                 .Include(j => j.SavedJobs)
                 .Include(o => o.Affiliation)
-                .Include(o => o.OwnedOrganizations)
                 .Include(o => o.LikedByOrganizations)
                 .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
 
