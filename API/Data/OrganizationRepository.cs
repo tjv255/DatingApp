@@ -166,5 +166,22 @@ namespace API.Data
                 organizationParams.PageSize
             );
         }
+
+        public async Task<IEnumerable<Organization>> GetOwnedOrganizationsRawAsync(int id)
+        {
+            return await _context.Organizations
+                .Where(o => o.OwnerId == id)
+                .Include(p => p.Photos)
+                .Include(m => m.Members)
+                .Include(j => j.Jobs)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<string>> GetAllOrganizationNames()
+        {
+            return await _context.Organizations
+                .Select(o => o.Name)
+                .ToListAsync();
+        }
     }
 }

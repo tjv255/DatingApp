@@ -11,9 +11,11 @@ namespace API.Interfaces
     void Add(Organization organization);
     Task<bool> SaveAllAsync();
 
+    Task<IEnumerable<String>> GetAllOrganizationNames();
     Task<IEnumerable<Organization>> GetOrganizationsAsync();
     Task<PagedList<OrganizationDto>> GetCompactOrganizationsAsync(OrganizationParams organizationParams);
     Task<PagedList<OrganizationDto>> GetOwnedOrganizationsAsync(OrganizationParams organizationParams, int id);
+    Task<IEnumerable<Organization>> GetOwnedOrganizationsRawAsync(int id);
     Task<PagedList<OrganizationDto>> GetAffiliatedOrganizationsAsync(OrganizationParams organizationParams, int id);
     Task<Organization> GetOrganizationByOrgnameAsync(string orgname);
     Task<Organization> GetOrganizationByIdAsync(int id);

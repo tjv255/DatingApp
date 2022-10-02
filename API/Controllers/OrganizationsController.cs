@@ -45,6 +45,14 @@ namespace API.Controllers
 
         }
 
+        [AllowAnonymous]
+        [HttpGet("names")]
+        public async Task<ActionResult<IEnumerable<string>>> GetOrganizationNames()
+        {
+            var orgNames = await _organizationRepository.GetAllOrganizationNames();
+            return Ok(orgNames);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<OrganizationDto>> GetOrganizationById(int id)
         {
@@ -168,6 +176,10 @@ namespace API.Controllers
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             user = _mapper.Map<AppUser>(user);
             var organization = _mapper.Map<Organization>(organizationRegisterDto);
+            var ownedOrgs = await _organizationRepository.GetOwnedOrganizationsRawAsync(user.Id);
+
+            if (ownedOrgs.Select(o => o.Name).ToList().Contains(organizationRegisterDto.Name))
+                return BadRequest("You already own an organization with this name");
 
             var userRoles = await _userManager.GetRolesAsync(user);
 
@@ -176,18 +188,19 @@ namespace API.Controllers
 
             if (await _organizationRepository.SaveAllAsync())
             {
+                var updatedOwnedOrgs = await _organizationRepository.GetOwnedOrganizationsRawAsync(user.Id);
+                var thisOrg = updatedOwnedOrgs.LastOrDefault(x => x.Name == organizationRegisterDto.Name);
+                thisOrg.Members.Add(user);
+
                 if (!userRoles.Contains("OrgAdmin"))
                     await _userManager.AddToRoleAsync(user, "OrgAdmin");
-
-                var thisOrg = await _organizationRepository.GetOrganizationByOrgnameAsync(organizationRegisterDto.Name);
-                thisOrg.Members.Add(user);
 
                 if (await _organizationRepository.SaveAllAsync())
                 {
                     return NoContent();
                 } else
                 {
-                    return BadRequest("Organization is create but failed to associate it with your account.");
+                    return BadRequest("Organization is created but failed to associate it with your account.");
                 }
             }
 
