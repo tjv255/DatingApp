@@ -30,7 +30,7 @@ namespace API.Data
         public async Task<PagedList<OrganizationDto>> GetCompactOrganizationsAsync(OrganizationParams organizationParams)
         {
             var organizations = _context.Organizations.AsQueryable();
-            var query = organizations.Where(o => o.Name != organizationParams.CurrentName);
+            var query = organizations;
 
             query = organizationParams.OrderBy switch
             {
@@ -73,6 +73,7 @@ namespace API.Data
                     .Include(j => j.Jobs)
                     .SingleOrDefaultAsync(x => x.Name == orgname);  
                 
+        // ! Do not delete - we can use this for a search function
         // var organization = await _context.Organizations.Where(o=>o.Name.ToLower().Contains(orgname.ToLower())).ToListAsync();
         // return  organization;
         }        
@@ -132,7 +133,7 @@ namespace API.Data
         public async Task<PagedList<OrganizationDto>> GetOwnedOrganizationsAsync(OrganizationParams organizationParams, int id)
         {
             var organizations = _context.Organizations.Where(o => o.OwnerId == id);
-            var query = organizations.Where(o => o.Name != organizationParams.CurrentName);
+            var query = organizations;
 
             query = organizationParams.OrderBy switch
             {

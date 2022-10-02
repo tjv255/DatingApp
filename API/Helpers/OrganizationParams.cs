@@ -2,7 +2,7 @@ namespace API.Helpers
 {
   public class OrganizationParams : PaginationParams
     {
-        public string CurrentName { get; set; }
+        public string OrgType { get; set; }
         public string OrderBy { get; set; } = "likes";
         public int Established { get; set; }
         public string City { get; set; }

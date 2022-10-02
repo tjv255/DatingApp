@@ -25,20 +25,24 @@ namespace API.Data
     public async Task<Job> GetJobByIdAsync(int id)
     {
       return await _context.Jobs
+      .Include(o => o.Organization)
+      .Include(o => o.Organization.Photos)
       .Include(j => j.JobPoster)
+      .Include(j => j.JobPoster.Photos)
       .SingleOrDefaultAsync(x => x.Id == id);
     }
 
      public async Task<PagedList<JobDto>> GetJobsByTitleAsync(JobParams jobParams, string title)
         {
       var jobs = _context.Jobs.Where(t=>t.Title.ToLower().Contains(title.ToLower())).AsQueryable();
-      var query = jobs.Where(j => j.Title != jobParams.CurrentName);
+      var query = jobs;
 
             query = jobParams.OrderBy switch
             {
                 "alphabetical" => query.OrderBy(o => o.Title),
                 "deadline" => query.OrderByDescending(o => o.Deadline),
-                _ => query.OrderByDescending(o => o.LastUpdated)
+                "lastUpdated" => query.OrderByDescending(o => o.LastUpdated),
+                _ => query.OrderByDescending(o => o.DateCreated)
             };
 
             return await PagedList<JobDto>.CreateAsync(
@@ -51,7 +55,7 @@ namespace API.Data
     public async Task<PagedList<JobDto>> GetJobsAsync(JobParams jobParams)
     {
             var jobs = _context.Jobs.AsQueryable();
-            var query = jobs.Where(j => j.Title != jobParams.CurrentName);
+            var query = jobs;
 
             query = jobParams.OrderBy switch
             {
@@ -97,7 +101,7 @@ namespace API.Data
     public async Task<PagedList<JobDto>> GetJobsByPosterIdAsync(JobParams jobParams, int id)
         {
             var jobs = _context.Jobs.Where(j => j.JobPoster.Id == id).AsQueryable();
-            var query = jobs.Where(j => j.Title != jobParams.CurrentName);
+            var query = jobs;
 
             query = jobParams.OrderBy switch
             {

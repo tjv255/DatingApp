@@ -3,6 +3,7 @@ namespace API.DTOs
     public class OrganizationDto
     {
         public int Id { get; set; }
+        public int OwnerId { get; set; }
         public string Name { get; set; }
         public string Introduction { get; set; }
         public string PhotoUrl { get; set; }
