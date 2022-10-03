@@ -4,6 +4,12 @@ export class UserParams {
   gender: string;
   minAge = 18;
   maxAge = 99;
+  occupation?: string;
+  skill?: string;
+  genre?: string;
+  city?: string;
+  provinceOrState?: string;
+  country?: string;
   pageNumber = 1;
   pageSize = 5;
   orderBy = 'lastActive';
