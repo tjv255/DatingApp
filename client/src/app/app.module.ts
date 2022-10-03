@@ -43,6 +43,7 @@ import { JobRegisterComponent } from './Jobs/job-register/job-register.component
 import { OrganizationRegisterComponent } from './organization/organization-register/organization-register.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MultiselectComponent } from './_forms/multiselect/multiselect.component';
+import { JobSavedComponent } from './Jobs/job-saved/job-saved.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import { MultiselectComponent } from './_forms/multiselect/multiselect.component
     OrganizationListComponent,
     JobRegisterComponent,
     OrganizationRegisterComponent,
-    MultiselectComponent
+    MultiselectComponent,
+    JobSavedComponent
   ],
   imports: [
     BrowserModule,
