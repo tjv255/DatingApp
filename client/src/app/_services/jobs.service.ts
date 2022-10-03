@@ -74,7 +74,7 @@ export class JobsService {
 
     return getPaginatedResult<Job[]>(this.baseUrl+'jobs/poster/'+id, params, this.http)
             .pipe(map(response => {
-                //this.jobCache.set(Object.values(jobsParams).join('-'), response);
+                this.jobCache.set(Object.values(jobsParams).join('-'), response);
                 return response;
             }));
   }
@@ -111,7 +111,7 @@ export class JobsService {
   }
 
   registerJob(model: any) {
-    return this.http.post(this.baseUrl + 'jobs/', model);
+    return this.http.post(this.baseUrl + 'jobs/add', model);
   }
 
   removeSaveJob(id: number) {

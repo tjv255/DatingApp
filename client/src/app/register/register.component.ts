@@ -15,17 +15,15 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   maxDate: Date;
   validationErrors: string[] = [];
-  affiliationList = AFFILIATION_LIST;
+  //affiliationList = AFFILIATION_LIST; 
+  // ! Let the user add themselves to an org after creating an account. Thnx.
   genderList = GENDER_LIST;
 
   constructor(private accountService: AccountService, private toastr: ToastrService, 
-    // orgnizationList!: Orgninzation[] --> See OnInit
 
     private fb: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
-    // GET Organizations list
-    // this.orgnizationList = this.organizationService.getOrganizations() something like that
     this.initializeForm();
     this.maxDate = new Date();
     this.maxDate.setFullYear(this.maxDate.getFullYear() -18);
@@ -41,12 +39,11 @@ export class RegisterComponent implements OnInit {
       email: ['', Validators.required],
       dateOfBirth: ['', Validators.required],
       city: ['', Validators.required],
-      province: ['', Validators.required],
+      provinceOrState: ['', Validators.required],
       country: ['', Validators.required],
       occupation: [''],
       skills: [''],
       genres: [''],
-      affiliation: [[]],
       password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]],
       confirmPassword: ['', [Validators.required, this.matchValues('password')]]
     });
@@ -81,16 +78,16 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    // get OrgID's from from value
-    const selectedOrgs = this.registerForm
-      .get('affiliation')
-      .value.flatMap((i) => i.item_id);
-    // get actual Org objects to be passed into request body
-    const selectedOrgsFinal = AFFILIATION_DATA.filter( (org, i) => org.id === selectedOrgs[i] );
-    // add actual org objects to form value
-    this.registerForm.patchValue({
-        affiliation: selectedOrgsFinal
-    }) 
+    // // get OrgID's from from value
+    // const selectedOrgs = this.registerForm
+    //   .get('affiliation')
+    //   .value.flatMap((i) => i.item_id);
+    // // get actual Org objects to be passed into request body
+    // const selectedOrgsFinal = AFFILIATION_DATA.filter( (org, i) => org.id === selectedOrgs[i] );
+    // // add actual org objects to form value
+    // this.registerForm.patchValue({
+    //     affiliation: selectedOrgsFinal
+    // }) 
 
     console.log(this.registerForm.value)
     this.accountService.register(this.registerForm.value).subscribe(res => {

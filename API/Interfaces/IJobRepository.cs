@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 
 namespace API.Interfaces
 {
@@ -12,11 +13,11 @@ namespace API.Interfaces
         void Update(Job job);
         void Add(Job job);
 		Task<bool> SaveAllAsync();
-		Task<IEnumerable<Job>> GetJobsAsync();
+		Task<PagedList<JobDto>> GetJobsAsync(JobParams jobParams);
 		Task<Job> GetJobByIdAsync(int id);
-        Task<IEnumerable<Job>> GetJobByTitleAsync(string title);
-        Task<IEnumerable<Job>> GetJobsByPosterIdAsync(int id);
-        Task<IEnumerable<JobDto>> GetMemberJobsAsync();
+        Task<PagedList<JobDto>> GetJobsByTitleAsync(JobParams jobParams, string title);
+        Task<PagedList<JobDto>> GetJobsByPosterIdAsync(JobParams jobParams, int id);
+        Task<PagedList<JobDto>> GetMemberJobsAsync(JobParams jobParams);
         Task<JobDto> GetMemberJobAsync();
         Task<AppUser> GetUserByUsernameAsync(string username);
     }

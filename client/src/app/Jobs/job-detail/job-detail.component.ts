@@ -49,7 +49,7 @@ export class JobDetailComponent implements OnInit {
     this.jobsService.getJob(Number(this.route.snapshot.paramMap.get('id'))).subscribe(
       job =>{
         this.job = job;
-        //this.loadOrg(job.orgId);
+        this.loadOrg(job.orgId);
         this.loadMember(job.jobPosterName)
       }
     )
@@ -57,7 +57,7 @@ export class JobDetailComponent implements OnInit {
 
   loadOrg(orgId: number)
   {
-    this.orgsService.getOrganization(orgId).subscribe(
+    this.orgsService.getOrganization(orgId+1).subscribe(
       org =>{
         this.org = org;
       }

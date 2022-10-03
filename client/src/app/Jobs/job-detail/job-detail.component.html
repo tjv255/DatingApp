@@ -110,10 +110,10 @@
                 </div>
             </div>
 
-            <div class="row mt-2">
+            <div *ngIf="memberService.currMem" class="row mt-2">
                 <h5>Your Skills</h5>
                 <div class="col" >
-                    <span class="badge bg-primary ml-1" *ngFor="let a of memberService?.currMem.interests.split(',')" >{{a}}</span>
+                    <span class="badge bg-primary ml-1" *ngFor="let a of memberService.currMem.interests.split(',')" >{{a}}</span>
                 </div>
             </div>
 
@@ -145,14 +145,37 @@
             </div>
         </div>
 
-        <div *ngIf="org" class="glass-container mt-2 p-4" >
+        <div *ngIf="org" class="glass-container mt-2 p-4">
+                <h5>About The Organization</h5>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-3">
+                            <img src="{{org.photoUrl || './assets/user.png'}}" alt="{{org.title}}" class="rounded-circle img-thumbnail">
+                        </div>
+                        <div class="col">
+                            <div class="container pl-0">
+                                <div class="row">
+                                    <div class="col">
+                                        <p>{{org.name}}</p>
+                                    </div>
+                                    <div class="col">
+                                        <button class="btn btn-primary">Like</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-
-            <h2>Orgination template holder</h2>
-                <div class="d-flex flex-wrap px-3 justify-content-center">
-                    <app-organization-card [org]="org"></app-organization-card>
                 </div>
-        </div>
+
+                <div *ngIf="member" class="card p-2">
+                    <div class="card-body">
+                        <p>{{org.introduction}}</p>
+                    </div>
+            </div>
+
+
+
     </div>
 </div>
 

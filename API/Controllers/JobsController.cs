@@ -1,114 +1,136 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
     [Authorize]
     public class JobsController : BaseApiController
-    { 
-        private readonly IUserRepository _userRepository;       
+    {
+        private readonly IUserRepository _userRepository;
         private readonly IJobRepository _jobRepository;
         private readonly IMapper _mapper;
         private readonly IOrganizationRepository _organizationRepository;
 
-    public JobsController(IUserRepository userRepository, IJobRepository jobRepository, IOrganizationRepository organizationRepository, IMapper mapper)
-    {
+        public JobsController(IUserRepository userRepository, IJobRepository jobRepository, IOrganizationRepository organizationRepository, IMapper mapper)
+        {
             _organizationRepository = organizationRepository;
-        _jobRepository = jobRepository;
-        _mapper = mapper;
-        _userRepository = userRepository;
-    }
+            _jobRepository = jobRepository;
+            _mapper = mapper;
+            _userRepository = userRepository;
+        }
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<JobDto>>> GetJobs(){
-        var jobs = await _jobRepository.GetJobsAsync();
-        var jobstoreturn = _mapper.Map<IEnumerable<JobDto>>(jobs);
-        return Ok(jobstoreturn);
-       // return Ok(await _context.Jobs.ToListAsync());
-    }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<JobDto>>> GetJobs([FromQuery] JobParams jobParams)
+        {
+            var jobs = await _jobRepository.GetJobsAsync(jobParams);
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<JobDto>> GetJobById(int id){
-        var job = await _jobRepository.GetJobByIdAsync(id);
-        return _mapper.Map<JobDto>(job);
-    }
+            Response.AddPaginationHeader(jobs.CurrentPage, jobs.PageSize,
+                jobs.TotalCount, jobs.TotalPages);
 
-    [HttpGet("title/{title}")]
-    public async Task<ActionResult<IEnumerable<JobDto>>> GetJobByTitle(string title){
-        var job = await _jobRepository.GetJobByTitleAsync(title);
-        var jobreturn = _mapper.Map<IEnumerable<JobDto>>(job);
-        return Ok(jobreturn);
-    }
+            return Ok(jobs);
+        }
 
-    [HttpGet("poster/{id}")]
-    public async Task<ActionResult<IEnumerable<JobDto>>> GetJobsByPosterId(int id){
-        var job = await _jobRepository.GetJobsByPosterIdAsync(id);
-        var jobreturn = _mapper.Map<IEnumerable<JobDto>>(job);
-        return Ok(jobreturn);
-    }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<JobDto>> GetJobById(int id)
+        {
+            var job = await _jobRepository.GetJobByIdAsync(id);
+            return _mapper.Map<JobDto>(job);
+        }
 
-    //Update existing Job
-    [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateJob(JobUpdateDto jobUpdateDto,int id)
+        [HttpGet("title/{title}")]
+        public async Task<ActionResult<IEnumerable<JobDto>>> GetJobsByTitle([FromQuery] JobParams jobParams, string title)
+        {
+            var jobs = await _jobRepository.GetJobsByTitleAsync(jobParams, title);
+
+            Response.AddPaginationHeader(jobs.CurrentPage, jobs.PageSize,
+                jobs.TotalCount, jobs.TotalPages);
+
+            return Ok(jobs);
+        }
+
+        [HttpGet("poster/{id}")]
+        public async Task<ActionResult<IEnumerable<JobDto>>> GetJobsByPosterId([FromQuery] JobParams jobParams, int id)
+        {
+            var jobs = await _jobRepository.GetJobsByPosterIdAsync(jobParams, id);
+
+            Response.AddPaginationHeader(jobs.CurrentPage, jobs.PageSize,
+                jobs.TotalCount, jobs.TotalPages);
+
+            return Ok(jobs);
+        }
+
+        //Update existing Job
+        [Authorize(Policy = "RequireForteMembershipRole")]
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateJob(JobUpdateDto jobUpdateDto, int id)
         {
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             var job = await _jobRepository.GetJobByIdAsync(id);
-            
-            if(job.JobPoster != user) return BadRequest("Job Not Found");
-            
+
+            if (job.JobPoster.Id != user.Id) return BadRequest("You are not permitted to perform this action. Nice try ;)");
+
+            if (job.JobPoster != user) return BadRequest("Job Not Found");
+
             _mapper.Map(jobUpdateDto, job);
 
             _jobRepository.Update(job);
-            if (await _jobRepository.SaveAllAsync()) 
+            if (await _jobRepository.SaveAllAsync())
                 return NoContent();
 
             return BadRequest("Failed to update user");
         }
 
-    // Add a new Job
-    [HttpPost("add")]
-    public async Task<ActionResult<JobRegisterDto>> AddNewJobByPosterId(JobRegisterDto jobRegisterDto){
-        var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
-        var id = jobRegisterDto.ConfirmedOrgId;
-        var org = await _organizationRepository.GetOrganizationByIdAsync(id);
-        var job = _mapper.Map<Job>(jobRegisterDto);
-        job.JobPoster = user;
-        job.Organization = org;
+        // Add a new Job
+        [Authorize(Policy = "RequireForteMembershipRole")]
+        [HttpPost("add")]
+        public async Task<ActionResult<JobRegisterDto>> AddNewJobByPosterId(JobRegisterDto jobRegisterDto)
+        {
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            var id = jobRegisterDto.ConfirmedOrgId;
+            var org = await _organizationRepository.GetOrganizationByIdAsync(id);
+            var job = _mapper.Map<Job>(jobRegisterDto);
 
-        _jobRepository.Add(job);
-        if (await _jobRepository.SaveAllAsync()) 
-            return NoContent();
+            if (org != null && user != null)
+            {
+                if (user.Affiliation != null && !user.Affiliation.Contains(org))
+                    return BadRequest("You cannot post a job if you are not part of the organization.");
 
-        return BadRequest("Failed to add user");
-    }
+                job.JobPoster = user;
+                job.Organization = org;
 
-    //Delete a Job
-    [HttpDelete("delete/{id}")]
-    public async Task<ActionResult> DeleteJob(int id)
-    {
-      var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+                _jobRepository.Add(job);
+                if (await _jobRepository.SaveAllAsync())
+                    return NoContent();
+            }
 
-      var job = user.CreatedJobs.FirstOrDefault(x=>x.Id == id);
+            return BadRequest("Failed to add job");
+        }
 
-      if (job == null) return NotFound();
+        //Delete a Job
+        [Authorize(Policy = "RequireForteMembershipRole")]
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult> DeleteJob(int id)
+        {
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
 
-      user.CreatedJobs.Remove(job);
+            var job = user.CreatedJobs.FirstOrDefault(x => x.Id == id);
 
-      if (await _userRepository.SaveAllAsync()) return Ok();
+            if (job.JobPoster.Id != user.Id) return BadRequest("You are not permitted to perform this action. Nice try ;)");
 
-      return BadRequest("Failed to delete the photo");
-    }
+            if (job == null || user == null) return NotFound();
+
+            user.CreatedJobs.Remove(job);
+
+            if (await _userRepository.SaveAllAsync()) return Ok();
+
+            return BadRequest("Failed to delete the photo");
+        }
 
     }
 }

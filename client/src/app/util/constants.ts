@@ -84,36 +84,22 @@ export const AFFILIATION_DATA = [
     name: 'Spring Reed',
     introduction: 'Lorem ipsum dolor sit amet',
     established: 2008,
-    photos: [
-      {
-        url: 'https://randomuser.me/api/portraits/women/54.jpg',
-        isMain: true,
-      },
-    ],
+    photoUrl: 'https://randomuser.me/api/portraits/women/54.jpg',
   },
   {
     id: 2,
     name: 'Summer Salt',
     introduction: 'Lorem ipsum dolor sit amet',
     established: 2004,
-    photos: [
-      {
-        url: 'https://randomuser.me/api/portraits/women/54.jpg',
-        isMain: true,
-      },
-    ],
+    photoUrl: 'https://randomuser.me/api/portraits/women/54.jpg'
   },
   {
     id: 3,
     name: 'Winterizers',
     introduction: 'Lorem ipsum dolor sit amet',
     established: 2012,
-    photos: [
-      {
-        url: 'https://randomuser.me/api/portraits/women/54.jpg',
-        isMain: true,
-      },
-    ],
-  }];
+    photoUrl: 'https://randomuser.me/api/portraits/women/54.jpg'
+  },
+];
 
   export const AFFILIATION_LIST: MultiselectSelectionItem[] = AFFILIATION_DATA.map( org => ({item_id: org.id, item_text: org.name}));

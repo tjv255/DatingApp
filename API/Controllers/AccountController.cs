@@ -34,15 +34,13 @@ namespace API.Controllers
 
             var user = _mapper.Map<AppUser>(registerDto);
 
-            Console.WriteLine(user);
-
             user.UserName = registerDto.Username.ToLower();
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
             if (!result.Succeeded) return BadRequest(result.Errors);
 
-            var roleResult = await _userManager.AddToRoleAsync(user, "Member");
+            var roleResult = await _userManager.AddToRolesAsync(user, new[]{"Member", "Pianissimo"});
 
             if (!roleResult.Succeeded) return BadRequest(result.Errors);
 
@@ -63,7 +61,6 @@ namespace API.Controllers
                 .Include(j => j.CreatedJobs)
                 .Include(j => j.SavedJobs)
                 .Include(o => o.Affiliation)
-                .Include(o => o.OwnedOrganizations)
                 .Include(o => o.LikedByOrganizations)
                 .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
 

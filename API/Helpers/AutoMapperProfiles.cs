@@ -23,6 +23,7 @@ namespace API.Helpers
                 .ForMember(dest => dest.RecipientPhotoUrl, opt => opt.MapFrom(src =>
                     src.Recipient.Photos.FirstOrDefault(x => x.IsMain).Url));
             CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
+
             CreateMap<Job, JobDto>()
             .ForMember(dest => dest.JobPosterId, opt => opt.MapFrom(src =>
             src.JobPoster.Id))
@@ -33,8 +34,9 @@ namespace API.Helpers
              .ForMember(dest => dest.Organization, opt => opt.MapFrom(src =>
              src.Organization == null ? "Private Event" : src.Organization.Name))
              .ForMember(dest => dest.LogoUrl, opt => opt.MapFrom(src =>
-             src.Organization == null ? src.JobPoster.Photos.FirstOrDefault(p => p.IsMain).Url
+             src.Organization.Photos == null || src.Organization == null ? src.JobPoster.Photos.FirstOrDefault(p => p.IsMain).Url
              : src.Organization.Photos.FirstOrDefault(x => x.IsMain).Url));
+
             CreateMap<JobUpdateDto, Job>();
             CreateMap<JobRegisterDto, Job>();
 
@@ -77,14 +79,31 @@ namespace API.Helpers
             CreateMap<Organization, OrganizationDto>()
                 .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
                     src.Photos.FirstOrDefault(x => x.IsMain).Url))
+                .ForMember(dest => dest.Likes, opt => opt.MapFrom(src =>
+                    src.LikedOrganizations.Count()))
                 .ForMember(dest => dest.Jobs, opt => opt.MapFrom(src => 
                      src.Jobs.ToList()));
+
+            CreateMap<OrganizationDto, Organization>();
+
+            CreateMap<Organization, AffiliationDto>()
+                .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
+                    src.Photos.FirstOrDefault(x => x.IsMain).Url))
+                .ForMember(dest => dest.MembersCount, opt => opt.MapFrom(src =>
+                    src.Members.Count()))
+                .ForMember(dest => dest.Likes, opt => opt.MapFrom(src =>
+                    src.LikedOrganizations.Count()));
+
+            //CreateMap<AffiliationDto, Organization>();
+
             CreateMap<AppUser, OrgMemberDto>()
             .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
                     src.Photos.FirstOrDefault(x => x.IsMain).Url));
+
+
             CreateMap<OrgPhoto, OrgPhotoDto>();
             CreateMap<OrganizationUpdateDto, Organization>();
-            CreateMap<OrgPhotoDto, Organization>();
+            CreateMap<OrganizationRegisterDto, Organization>();
             CreateMap<OrgLike, OrgLikeDto>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
                     src.Org.Name))

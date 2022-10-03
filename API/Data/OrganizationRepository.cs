@@ -27,11 +27,23 @@ namespace API.Data
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<OrganizationDto>> GetCompactOrganizationsAsync()
+        public async Task<PagedList<OrganizationDto>> GetCompactOrganizationsAsync(OrganizationParams organizationParams)
         {
-            return await _context.Organizations
-                .ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+            var organizations = _context.Organizations.AsQueryable();
+            var query = organizations;
+
+            query = organizationParams.OrderBy switch
+            {
+                "alphabetical" => query.OrderBy(o => o.Name),
+                "established" => query.OrderBy(o => o.Established),
+                _ => query.OrderByDescending(o => o.LikedByUser.Count)
+            };
+
+            return await PagedList<OrganizationDto>.CreateAsync(
+                query.ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider).AsNoTracking(),
+                organizationParams.PageNumber,
+                organizationParams.PageSize
+            );
         }
 
         public async Task<Organization> GetOrganizationByIdAsync(int id)
@@ -61,6 +73,7 @@ namespace API.Data
                     .Include(j => j.Jobs)
                     .SingleOrDefaultAsync(x => x.Name == orgname);  
                 
+        // ! Do not delete - we can use this for a search function
         // var organization = await _context.Organizations.Where(o=>o.Name.ToLower().Contains(orgname.ToLower())).ToListAsync();
         // return  organization;
         }        
@@ -103,7 +116,7 @@ namespace API.Data
         public async Task<PagedList<JobDto>> GetJobsByOrganizationIdAsync(JobParams jobParams, int id)
         {
             var org = _context.Organizations.SingleOrDefault(o => o.Id == id);
-            var query = _context.Jobs.AsQueryable();
+            var query = _context.Jobs.Where(j => j.Organization.Equals(org));
 
             query = jobParams.OrderBy switch
             {
@@ -117,6 +130,58 @@ namespace API.Data
                     jobParams.PageSize
                 );
         }
+        public async Task<PagedList<OrganizationDto>> GetOwnedOrganizationsAsync(OrganizationParams organizationParams, int id)
+        {
+            var organizations = _context.Organizations.Where(o => o.OwnerId == id);
+            var query = organizations;
 
+            query = organizationParams.OrderBy switch
+            {
+                "alphabetical" => query.OrderBy(o => o.Name),
+                "established" => query.OrderBy(o => o.Established),
+                _ => query.OrderByDescending(o => o.LikedByUser.Count)
+            };
+
+            return await PagedList<OrganizationDto>.CreateAsync(
+                query.ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider).AsNoTracking(),
+                organizationParams.PageNumber,
+                organizationParams.PageSize
+            );
+        }
+
+        public async Task<PagedList<OrganizationDto>> GetAffiliatedOrganizationsAsync(OrganizationParams organizationParams, int id)
+        {
+            var query = _context.Users.Where(u => u.Id == id).SelectMany(u => u.Affiliation).AsQueryable();
+
+            query = organizationParams.OrderBy switch
+            {
+                "alphabetical" => query.OrderBy(o => o.Name),
+                "established" => query.OrderBy(o => o.Established),
+                _ => query.OrderByDescending(o => o.LikedByUser.Count)
+            };
+
+            return await PagedList<OrganizationDto>.CreateAsync(
+                query.ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider).AsNoTracking(),
+                organizationParams.PageNumber,
+                organizationParams.PageSize
+            );
+        }
+
+        public async Task<IEnumerable<Organization>> GetOwnedOrganizationsRawAsync(int id)
+        {
+            return await _context.Organizations
+                .Where(o => o.OwnerId == id)
+                .Include(p => p.Photos)
+                .Include(m => m.Members)
+                .Include(j => j.Jobs)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<string>> GetAllOrganizationNames()
+        {
+            return await _context.Organizations
+                .Select(o => o.Name)
+                .ToListAsync();
+        }
     }
 }

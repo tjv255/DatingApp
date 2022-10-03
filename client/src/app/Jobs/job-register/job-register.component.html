@@ -14,17 +14,15 @@
             [label]="'Title'"
           ></app-text-input>
           <app-text-input
-            [formControl]="$any(registerForm.controls['orgId'])"
+            [formControl]="$any(registerForm.controls['confirmedOrgId'])"
             [label]="'Organization ID'"
           ></app-text-input>
-          <app-text-input
-            [formControl]="$any(registerForm.controls['jobPosterId'])"
-            [label]="'Job Poster Id'"
-          ></app-text-input>
+          <!-- Let's remove the job logo upload. LinkedIn uses company logo and Indeed got none -->
           <app-text-input
             [formControl]="$any(registerForm.controls['logoUrl'])"
             [label]="'URL for job Logo'"
           ></app-text-input>
+          <!-- End of Deprecated Element -->
           <app-text-input
             [formControl]="$any(registerForm.controls['description'])"
             [label]="'Job Description'"
@@ -38,7 +36,7 @@
             [label]="'city'"
           ></app-text-input>
           <app-text-input
-            [formControl]="$any(registerForm.controls['province'])"
+            [formControl]="$any(registerForm.controls['provinceOrState'])"
             [label]="'province'"
           ></app-text-input>
           <app-text-input
@@ -61,18 +59,12 @@
             [formControl]="$any(registerForm.controls['applicationUrl'])"
             [label]="'applicationUrl'"
           ></app-text-input>
-          <app-text-input
-            [formControl]="$any(registerForm.controls['dateCreated'])"
-            [label]="'dateCreated'"
-          ></app-text-input>
+
           <app-date-input
             [formControl]="$any(registerForm.controls['deadline'])"
             [label]="'deadline'"
           ></app-date-input>
-          <app-text-input
-            [formControl]="$any(registerForm.controls['lastUpdated'])"
-            [label]="'lastUpdated'"
-          ></app-text-input>
+
       
           <div class="row mt-2" *ngIf="validationErrors && validationErrors.length > 0">
               <ul class="text-danger">

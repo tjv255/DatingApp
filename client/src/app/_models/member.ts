@@ -1,5 +1,6 @@
+import { Affiliation } from "./affiliation";
 import { Job } from "./job";
-import { Organization } from "./organization";
+import { Organization } from "./organization"; // delete when ready
 import { Photo } from "./photo"
 
 export interface Member {
@@ -15,10 +16,16 @@ export interface Member {
     lookingFor: string; // changes required to remove
     interests: string; // changes required to remove
     city: string;
+    provinceOrState: string;
     country: string;
     photos: Photo[];
     createdJobs: Job[];
-    affiliation: Organization[];
+    savedJobs: Job[];
+    affiliation: Organization[]; // !Possible cycle detection -> delete when ready
+    // affiliation: Affiliation[]; 
+    // Uncomment the line above when ready
+    // Or if no codes depend on accessing nested organization objects 
+    // within Member object
 
     /*firstName: string;
     lastName: string;

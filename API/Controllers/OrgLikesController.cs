@@ -1,6 +1,3 @@
-
-
-
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
@@ -46,7 +43,7 @@ namespace API.Controllers
 
             if (await _organizationRepository.SaveAllAsync()) return Ok();
 
-            return BadRequest("Failed to like user");
+            return BadRequest("Failed to like this organization");
         }
 
         [HttpGet]

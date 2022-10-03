@@ -10,6 +10,7 @@ import { MembersService } from 'src/app/_services/members.service';
 import { take } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { NgForm } from '@angular/forms';
+import { AccountService } from 'src/app/_services/account.service';
 
 @Component({
   selector: 'app-job-edit',
@@ -22,14 +23,28 @@ export class JobEditComponent implements OnInit {
   job: Job = null;
   member: Member;
   user: User;
+  //id: number;
   
-  constructor(private jobService: JobsService, private memberService: MembersService,
-    private toastr: ToastrService) { 
+  
+  constructor(private jobService: JobsService, private memberService: MembersService,private accountService : AccountService
+    ,private toastr: ToastrService ) { 
+      this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
+      jobService.getJob(4).subscribe(job => {
+        this.job = job;
+      });
+
+      // this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
+      // this.memberService.getMember(this.user.username).subscribe(member => {
+      //   this.member = member;
       
     }
 
   ngOnInit(): void {
+
+    //this.loadJob();
     
+
+    /*
     this.job = {
       id: 10,
       title: "Hello",
@@ -41,30 +56,61 @@ export class JobEditComponent implements OnInit {
       salary: 20000,
       city: "Pizza Land",
       provinceOrState: "Vegas",
-      country: "Italy",
+      country: "Italy1",
       genres: "Strong, Talented",
       jobType: "Hard",
       skillsRequired: "Farming, Mooing, Grass eating",
       applicationUrl: "https://randomuser.me/api/portraits/men/93.jpg",
       dateCreated: new Date(Date.now()),
-      deadline: new Date(Date.now()),
+      deadline: new Date('2022-09-29'),
       lastUpdated: new Date(Date.now())
     }
+    
+    */
 
       
   }
- /* UpdateJob(Job: job)
-  {
-    this.jobService.updateJob(job, id);
+
+  UpdateJob(){
+    console.log(this.job);
+    this.jobService.updateJob(this.job).subscribe(() =>{
+      this.toastr.success('Profile updated');
+      this.editForm.reset(this.job);
+    })
   }
-  */
+
+
+  //loadJob() {
+   // this.jobService.getJob.().subscribe(job => {
+     // this.job = job;
+    //})
+  //}
+
+  //
+// GetJob(id: number){
+//   this.jobService.getJob(id).subscribe(job => {
+//     this.job = job
+//   });
+// }
+ 
+  //UpdateJob(data: any)
+  //{
+
+   // console.warn(data)
+
+   // this.jobService.getJobs(data).subscribe((data) =>{
+   //   this.job = data;
+   // })
+  //}
+
+  /*
   UpdateJob() {
     this.jobService.updateJob(this.job).subscribe(() => {
       this.toastr.success('Job Updated successfully');
       this.editForm.reset(this.job);
     })
   }
-
+  */
   /*DeleteJob(jobid: number) {
     this.jobService.deleteJob(jobid).subscribe(() => {
       this.toastr.success('Job Deleted successfully');
