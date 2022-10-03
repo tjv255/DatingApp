@@ -31,6 +31,7 @@ export class JobListComponent implements OnInit {
     this.jobParams = this.jobsService.getUserParams();
     this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
     this.memberService.getMember(this.user.username).subscribe((m) => {
+      console.log(m);
       this.member = m;
     });
 

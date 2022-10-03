@@ -11,6 +11,8 @@ import { take } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { NgForm } from '@angular/forms';
 import { AccountService } from 'src/app/_services/account.service';
+import { JobsParams } from 'src/app/_models/jobParams';
+import { Pagination } from 'src/app/_models/pagination';
 
 @Component({
   selector: 'app-job-edit',
@@ -23,13 +25,25 @@ export class JobEditComponent implements OnInit {
   job: Job = null;
   member: Member;
   user: User;
+  jobParams: JobsParams;
+  jobs: Job [];
+  pagination: Pagination;
   //id: number;
   
   
-  constructor(private jobService: JobsService, private memberService: MembersService,private accountService : AccountService
+  constructor(private memberService: MembersService, private jobService: JobsService,private accountService : AccountService
     ,private toastr: ToastrService ) { 
+      this.jobParams = this.jobService.getUserParams();
+      console.log("constructor");
+
       this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
-      jobService.getJob(4).subscribe(job => {
+      console.log(this.user);
+      this.memberService.getMember(this.user.username).subscribe((m) => {
+        this.member = m;
+      });
+     
+
+      jobService.getJob(12).subscribe(job => {
         this.job = job;
       });
 
@@ -40,6 +54,10 @@ export class JobEditComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    console.log(this.member);
+    console.log("ngOnInit");
+
+    this.loadJobsByUserId(this.member.id);
 
     //this.loadJob();
     
@@ -79,6 +97,19 @@ export class JobEditComponent implements OnInit {
     })
   }
 
+  
+  loadJobsByUserId(id: number)
+  {
+    console.log("HII");
+    console.log(id);
+    this.jobService.setUserParams(this.jobParams);
+    this.jobService.getJobsByPosterId(id, this.jobParams).subscribe((response) => {
+      console.log(response);
+      console.log(response.result);
+      this.jobs = response.result;
+      this.pagination = response.pagination;
+    });
+  }
 
   //loadJob() {
    // this.jobService.getJob.().subscribe(job => {
