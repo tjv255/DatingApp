@@ -51,8 +51,9 @@ export class OrganizationListComponent implements OnInit {
       this.orgs = response.result;
       this.pagination = response.pagination;
     });
+  }
 
-
+  loadOrganizationsByUserId(id: number){
 
   }
 
