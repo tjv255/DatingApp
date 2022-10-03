@@ -13,7 +13,7 @@
       <div class="container">
         <h4 class="text-primary">Name:</h4>
         <app-text-input
-          [formControl]="$any(addOrganizationForm.controls['org_name'])"
+          [formControl]="$any(addOrganizationForm.controls['name'])"
           [label]="'Organization Name'"
         ></app-text-input>
 
@@ -58,6 +58,13 @@
                 </li>
             </ul>
         </div>
+
+        <h4 class="mt-4">Edit Photos:</h4>
+        <div class="bg-light round-textbox">
+          <div class="p-3">
+            <app-photo-editor [member]="organization"></app-photo-editor>
+          </div>
+        </div>
     
         <div
           class="container form-group"
@@ -67,8 +74,7 @@
           <button
             class="btn btn-outline-primary"
             (click)="cancel()"
-            style="margin: 10px"
-          >
+            style="margin: 10px">
             Cancel
           </button>
         </div>
