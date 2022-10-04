@@ -112,7 +112,7 @@ export class JobsService {
 
   registerJob(model: any) {
 
-    console.log(model);
+    //console.log(model);
     
     return this.http.post(this.baseUrl + 'jobs/add', model);
   }

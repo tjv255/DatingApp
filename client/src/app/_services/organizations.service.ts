@@ -102,14 +102,14 @@ export class OrganizationsService {
         return this.http.delete(this.baseUrl + 'organizations/delete-photo/' + photoId, {})
     }
 
-    addLike(orgName: string) {
-        return this.http.post(this.baseUrl + 'likes/' + orgName, {});
+    addLike(orgId: number) {
+        return this.http.post(this.baseUrl + 'orglikes/' + orgId, {});
     }
 
     getLikes(predicate: string, pageNumber, pageSize) {
         let params = getPaginationHeaders(pageNumber, pageSize);
         params = params.append('predicate', predicate);
-        return getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params, this.http);
+        return getPaginatedResult<Partial<Organization[]>>(this.baseUrl + 'orgLikes', params, this.http);
     }
 
     //Add new organization
