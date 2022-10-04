@@ -64,6 +64,32 @@ namespace API.Controllers
             return Ok(jobs);
         }
 
+        [HttpDelete("delete-savedJob/{id}")]
+        public async Task<ActionResult> RemoveSavedJob(int id)
+        {
+            var sourceUserId = User.GetUserId();
+            var savedJob = await _jobRepository.GetJobByIdAsync(id);
+
+            var sourceUser = await _jobSaveRepository.GetUserWithSavedJobs(sourceUserId);
+
+            if (savedJob == null) return NotFound();
+
+            var jobSave = await _jobSaveRepository.GetSavedJob(sourceUserId, savedJob.Id);
+
+            if (jobSave == null) return BadRequest("You already removed this job");
+
+            
+            sourceUser.SavedJobs.Remove(jobSave);
+
+            if (await _jobRepository.SaveAllAsync())
+            {
+                return Ok();
+            }
+
+            return BadRequest("Failed to remove Job");
+
+        }
+
         
     }
 }
