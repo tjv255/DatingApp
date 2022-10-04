@@ -85,7 +85,10 @@ namespace API.Data
 
         public async Task<bool> SaveAllAsync()
         {
-        return await _context.SaveChangesAsync() > 0;
+            var updates = await _context.SaveChangesAsync();
+            var isUpdated = updates > 0;
+            
+            return isUpdated;
         }
 
 
@@ -197,6 +200,20 @@ namespace API.Data
             return await _context.Organizations
                 .Select(o => o.Name)
                 .ToListAsync();
+        }
+
+        public bool DeleteOrganizationById(int id)
+        {
+            var organization = _context.Organizations.Where(o => o.Id == id).SingleOrDefault();
+
+            var IsExisted = organization != null;
+
+            if (IsExisted)
+            {
+                _context.Organizations.Remove(organization);
+            }
+
+            return IsExisted;
         }
     }
 }

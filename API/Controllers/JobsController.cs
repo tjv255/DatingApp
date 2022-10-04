@@ -96,15 +96,23 @@ namespace API.Controllers
         public async Task<ActionResult<JobRegisterDto>> AddNewJobByPosterId(JobRegisterDto jobRegisterDto)
         {
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            if (user == null) return BadRequest("User not found");
+
             var id = jobRegisterDto.ConfirmedOrgId;
+
             var org = await _organizationRepository.GetOrganizationByIdAsync(id);
+            if (org == null) return NotFound("Organization not found");
+
             var job = _mapper.Map<Job>(jobRegisterDto);
 
-            if (org != null && user != null)
-            {
-                if (user.Affiliation != null && !user.Affiliation.Contains(org))
-                    return BadRequest("You cannot post a job if you are not part of the organization.");
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var IsOwner = org.OwnerId == user.Id;
+            var IsAdmin = userRoles.Contains("Admin");
+            var IsModerator = userRoles.Contains("Moderator");
+            var IsOrgMember = user.Affiliation != null && user.Affiliation.Contains(org);
 
+            if (IsOwner || IsAdmin || IsModerator || IsOrgMember)
+            {
                 job.JobPoster = user;
                 job.Organization = org;
 
@@ -112,41 +120,49 @@ namespace API.Controllers
                 if (await _jobRepository.SaveAllAsync())
                     return NoContent();
             }
-
-            return BadRequest("Failed to add job");
+            return BadRequest("You are not permitted to post a job.");
         }
 
         //Delete a Job
-        [Authorize(Policy = "RequireForteMembershipRole")]
         [HttpDelete("delete/{id}")]
         public async Task<ActionResult> DeleteJob(int id)
         {
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             if (user == null) return BadRequest("User not found");
-            var userRoles = await _userManager.GetRolesAsync(user);
+            _mapper.Map<AppUser>(user);
 
-            var job = user.CreatedJobs.FirstOrDefault(x => x.Id == id);
+            var job = await _jobRepository.GetJobByIdAsync(id);
+            //var job = user.CreatedJobs.FirstOrDefault(x => x.Id == id);
             if (job == null) return NotFound();
 
-            if (job.JobPoster.Id != user.Id
-                || !userRoles.Contains("OrgAdmin")
-                || !userRoles.Contains("OrgModerator")
-                || !userRoles.Contains("Admin")
-                || !userRoles.Contains("Moderator")) 
-                return BadRequest("You are not permitted to perform this action. Nice try ;)");
+            var orgs = await _organizationRepository.GetOrganizationsAsync();
+            var affiliatedOrgs = orgs.Where(o => o.Members.Contains(user));
+            var thisOrg = await _organizationRepository.GetOrganizationByIdAsync(id);
 
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var IsAdmin = userRoles.Contains("Admin");
+            var IsModerator = userRoles.Contains("Moderator");
+            var IsOrgMember = affiliatedOrgs.Contains(thisOrg);
+            var IsOrgAdmin = userRoles.Contains("OrgAdmin") && IsOrgMember;
+            var IsOrgModerator = userRoles.Contains("OrgModerator") && IsOrgMember;
+            var IsJobPoster = job.JobPoster.Id == user.Id;
 
-            var isDeleted = _jobRepository.DeleteJobById(id, user.Id);
+           if (IsAdmin | IsModerator | IsOrgAdmin | IsOrgModerator | IsJobPoster)
+           {
+                var isDeleted = _jobRepository.DeleteJobById(id);
 
-            if (isDeleted)
-            {
-                if (await _jobRepository.SaveAllAsync())
+                if (isDeleted)
                 {
-                    return Ok("Job has successfully been deleted!");
+                    if (await _jobRepository.SaveAllAsync())
+                    {
+                        return Ok("Job has successfully been deleted!");
+                    }
+                    return BadRequest("Failed to save changes to the database");
                 }
-            }
 
-            return BadRequest("Failed to delete the job");
+                return BadRequest("Failed to delete the job.");
+           }
+            return Unauthorized("You are not permitted to perform this action. Nice try ;)");
         }
 
     }
