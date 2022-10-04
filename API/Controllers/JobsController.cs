@@ -100,6 +100,8 @@ namespace API.Controllers
             var org = await _organizationRepository.GetOrganizationByIdAsync(id);
             var job = _mapper.Map<Job>(jobRegisterDto);
 
+           
+
             if (org != null && user != null)
             {
                 if (user.Affiliation != null && !user.Affiliation.Contains(org))
@@ -117,7 +119,6 @@ namespace API.Controllers
         }
 
         //Delete a Job
-        [Authorize(Policy = "RequireForteMembershipRole")]
         [HttpDelete("delete/{id}")]
         public async Task<ActionResult> DeleteJob(int id)
         {
@@ -136,7 +137,7 @@ namespace API.Controllers
                 return BadRequest("You are not permitted to perform this action. Nice try ;)");
 
 
-            var isDeleted = _jobRepository.DeleteJobById(id, user.Id);
+            var isDeleted = _jobRepository.DeleteJobById(id);
 
             if (isDeleted)
             {

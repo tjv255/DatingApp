@@ -126,19 +126,19 @@ namespace API.Data
             throw new NotImplementedException();
         }
 
-        public bool DeleteJobById(int id, int userId)
+        public bool DeleteJobById(int id)
         {
             var job = _context.Jobs.Where(j => j.Id == id)
                           .SingleOrDefault();
 
-            var isOwnedByUser = job.JobPoster.Id == userId;
+            var jobExist = job != null;
 
-            if (isOwnedByUser) 
+            if (jobExist)
             {
-              _context.Jobs.Remove(job);
+                _context.Jobs.Remove(job);
             }
 
-            return isOwnedByUser;
+            return jobExist;
 
         }
     }
