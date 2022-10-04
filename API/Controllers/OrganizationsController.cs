@@ -282,15 +282,14 @@ namespace API.Controllers
         {
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             if (user == null) return BadRequest("User not found");
-            var userRoles = await _userManager.GetRolesAsync(user);
 
             var org = await _organizationRepository.GetOrganizationByIdAsync(id);
             if (org == null) return NotFound();
 
+            var userRoles = await _userManager.GetRolesAsync(user);
             var IsOwner = org.OwnerId == user.Id;
             var IsAdmin = userRoles.Contains("Admin");
             var IsModerator = userRoles.Contains("Moderator");
-            var IsSuperuser = IsAdmin && IsModerator;
 
             if (IsOwner || IsAdmin || IsModerator)
             {
@@ -302,9 +301,10 @@ namespace API.Controllers
                     
                     return BadRequest("Failed to delete the organization");
                 }
+                return BadRequest("Failed to delete the organization");
             }
             
-            return BadRequest("You are must be the owner of this organization to perform this action");
+            return Unauthorized("You are must be the owner of this organization to perform this action");
         }
     }
 }
