@@ -39,7 +39,7 @@ namespace API.Controllers
                 LikedUserId = user.Id
             };
 
-            organization.LikedOrganizations.Add(orgLike);
+            organization.LikedByUser.Add(orgLike);
 
             if (await _organizationRepository.SaveAllAsync()) return Ok();
 
