@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -25,14 +26,14 @@ namespace API.Data
     }
 
     //list of jobs that the user has saved
-    public async Task<List<JobSaveDto>> GetSavedJobs(string predicate, int userId)
+    public async Task<PagedList<JobSaveDto>> GetSavedJobs(PaginationParams pagiparams, int userId)
     {
      // var users = _context.Users.OrderBy(u => u.UserName).AsQueryable();
       var jobs = _context.Jobs.AsQueryable();
       var savedjobs = _context.SavedJobs.AsQueryable();
 
       //list of jobs currently logged in user has saved
-      if (predicate == "saved") 
+      if (true) 
       {
         savedjobs = savedjobs.Where(user => user.SavedUserId == userId);
         jobs = savedjobs.Select(save => save.SavedJob);
@@ -46,8 +47,8 @@ namespace API.Data
     //  //   jobs = savedjobs.Where(job => job.JobId == userId)
     //   }
 
-      return await  jobs.Select(job=> new JobSaveDto{
-        JobId=job.Id,
+      var selectedjobs = jobs.Select(job=> new JobSaveDto{
+        Id=job.Id,
         Title=job.Title,
         OrgId = job.Organization.Id,
         JobPosterId = job.JobPoster.Id,
@@ -67,7 +68,10 @@ namespace API.Data
         DateCreated=job.DateCreated,
         Deadline=job.Deadline,
         LastUpdated=job.LastUpdated
-      }).ToListAsync();
+      });
+
+      return await PagedList<JobSaveDto>.CreateAsync(selectedjobs,
+       pagiparams.PageNumber, pagiparams.PageSize);
       
     }
 
