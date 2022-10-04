@@ -1,3 +1,4 @@
+using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
@@ -118,18 +119,25 @@ namespace API.Controllers
         public async Task<ActionResult> DeleteJob(int id)
         {
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            if (user == null) return BadRequest("User not found");
 
             var job = user.CreatedJobs.FirstOrDefault(x => x.Id == id);
+            if (job == null) return NotFound();
 
-            if (job.JobPoster.Id != user.Id) return BadRequest("You are not permitted to perform this action. Nice try ;)");
+            if (job.JobPoster.Id != user.Id) return Unauthorized("You are not permitted to perform this action. Nice try ;)");
 
-            if (job == null || user == null) return NotFound();
 
-            user.CreatedJobs.Remove(job);
+            var isDeleted = _jobRepository.DeleteJobById(id, user.Id);
 
-            if (await _userRepository.SaveAllAsync()) return Ok();
+            if (isDeleted)
+            {
+                if (await _jobRepository.SaveAllAsync())
+                {
+                    return Ok("Job has successfully been deleted!");
+                }
+            }
 
-            return BadRequest("Failed to delete the photo");
+            return BadRequest("Failed to delete the job");
         }
 
     }

@@ -9,7 +9,6 @@
   <textarea
     *ngIf="isTextArea"
     [class.is-invalid]="ngControl.touched && ngControl.invalid"
-    type="{{type}}"
     class="form-control" 
     [formControl]="ngControl.control"
     placeholder="{{label}}"

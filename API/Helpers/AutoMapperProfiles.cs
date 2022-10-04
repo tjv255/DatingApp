@@ -34,7 +34,8 @@ namespace API.Helpers
              .ForMember(dest => dest.Organization, opt => opt.MapFrom(src =>
              src.Organization == null ? "Private Event" : src.Organization.Name))
              .ForMember(dest => dest.LogoUrl, opt => opt.MapFrom(src =>
-             src.Organization.Photos == null || src.Organization == null ? src.JobPoster.Photos.FirstOrDefault(p => p.IsMain).Url
+             src.Organization.Photos == null || src.Organization == null 
+             ? src.JobPoster.Photos.FirstOrDefault(p => p.IsMain).Url
              : src.Organization.Photos.FirstOrDefault(x => x.IsMain).Url));
 
             CreateMap<JobUpdateDto, Job>();
@@ -80,7 +81,7 @@ namespace API.Helpers
                 .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>
                     src.Photos.FirstOrDefault(x => x.IsMain).Url))
                 .ForMember(dest => dest.Likes, opt => opt.MapFrom(src =>
-                    src.LikedOrganizations.Count()))
+                    src.LikedByUser.Count()))
                 .ForMember(dest => dest.Jobs, opt => opt.MapFrom(src => 
                      src.Jobs.ToList()));
 
@@ -92,7 +93,7 @@ namespace API.Helpers
                 .ForMember(dest => dest.MembersCount, opt => opt.MapFrom(src =>
                     src.Members.Count()))
                 .ForMember(dest => dest.Likes, opt => opt.MapFrom(src =>
-                    src.LikedOrganizations.Count()));
+                    src.LikedByUser.Count()));
 
             //CreateMap<AffiliationDto, Organization>();
 
