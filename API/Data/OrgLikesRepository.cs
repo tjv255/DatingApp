@@ -21,7 +21,7 @@ namespace API.Data
         public async Task<Organization> GetOrganizationWithLikes(int orgId)
         {
             return await _context.Organizations
-                .Include(x => x.LikedOrganizations)
+                .Include(x => x.LikedByUser)
                 .FirstOrDefaultAsync(x => x.Id ==orgId);
         }
 

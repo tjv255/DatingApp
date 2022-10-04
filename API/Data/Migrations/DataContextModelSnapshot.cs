@@ -366,14 +366,9 @@ namespace API.Data.Migrations
                     b.Property<int>("LikedUserId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("OrganizationId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("OrgId", "LikedUserId");
 
                     b.HasIndex("LikedUserId");
-
-                    b.HasIndex("OrganizationId");
 
                     b.ToTable("OrgLikes");
                 });
@@ -631,14 +626,10 @@ namespace API.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("API.Entities.Organization", "Org")
-                        .WithMany("LikedOrganizations")
+                        .WithMany("LikedByUser")
                         .HasForeignKey("OrgId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("API.Entities.Organization", null)
-                        .WithMany("LikedByUser")
-                        .HasForeignKey("OrganizationId");
 
                     b.Navigation("LikedUser");
 
@@ -778,8 +769,6 @@ namespace API.Data.Migrations
                     b.Navigation("Jobs");
 
                     b.Navigation("LikedByUser");
-
-                    b.Navigation("LikedOrganizations");
 
                     b.Navigation("Photos");
                 });
