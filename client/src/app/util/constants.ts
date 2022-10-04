@@ -102,4 +102,54 @@ export const AFFILIATION_DATA = [
   },
 ];
 
+export const JOB_TYPE: MultiselectSelectionItem[] = [
+    {
+        item_id: 0,
+        item_text: '',
+    },
+    {
+        item_id: 1,
+        item_text: 'One-time gig',
+    },
+    {
+        item_id: 2,
+        item_text: 'Multi-day gig',
+    },
+    {
+        item_id: 3,
+        item_text: 'Part-time',
+    },
+    {
+        item_id: 4,
+        item_text: 'Full-time',
+    },
+    {
+        item_id: 5,
+        item_text: 'Contract',
+    },
+    {
+        item_id: 5,
+        item_text: 'Volunteer',
+    }
+];
+
+export const JOB_SORT_ORDER: MultiselectSelectionItem[] = [
+    {
+        item_id: 1,
+        item_text: 'dateCreated',
+    },
+    {
+        item_id: 2,
+        item_text: 'alphabetical',
+    },
+    {
+        item_id: 3,
+        item_text: 'deadline',
+    },
+    {
+        item_id: 4,
+        item_text: 'lastUpdated',
+    }
+];
+
   export const AFFILIATION_LIST: MultiselectSelectionItem[] = AFFILIATION_DATA.map( org => ({item_id: org.id, item_text: org.name}));

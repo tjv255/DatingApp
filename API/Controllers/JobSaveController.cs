@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -58,10 +59,40 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<JobSaveDto>>> GetSavedJobs(string predicate)
+        public async Task<ActionResult<IEnumerable<JobSaveDto>>> GetSavedJobs([FromQuery] PaginationParams pagiparams)
         {
-            var jobs = await _jobSaveRepository.GetSavedJobs(predicate, User.GetUserId());
+            var jobs = await _jobSaveRepository.GetSavedJobs(pagiparams, User.GetUserId());
+            
+            Response.AddPaginationHeader(jobs.CurrentPage,
+          jobs.PageSize, jobs.TotalCount, jobs.TotalPages);
+
             return Ok(jobs);
+        }
+
+        [HttpDelete("delete-savedJob/{id}")]
+        public async Task<ActionResult> RemoveSavedJob(int id)
+        {
+            var sourceUserId = User.GetUserId();
+            var savedJob = await _jobRepository.GetJobByIdAsync(id);
+
+            var sourceUser = await _jobSaveRepository.GetUserWithSavedJobs(sourceUserId);
+
+            if (savedJob == null) return NotFound();
+
+            var jobSave = await _jobSaveRepository.GetSavedJob(sourceUserId, savedJob.Id);
+
+            if (jobSave == null) return BadRequest("You already removed this job");
+
+            
+            sourceUser.SavedJobs.Remove(jobSave);
+
+            if (await _jobRepository.SaveAllAsync())
+            {
+                return Ok();
+            }
+
+            return BadRequest("Failed to remove Job");
+
         }
 
         

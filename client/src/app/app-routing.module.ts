@@ -16,6 +16,7 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MessagesComponent } from './messages/messages.component';
+import { OrgLikedComponent } from './organization/org-liked/org-liked.component';
 import { OrganizationDetailComponent } from './organization/organization-detail/organization-detail.component';
 import { OrganizationEditComponent } from './organization/organization-edit/organization-edit.component';
 import { OrganizationListComponent } from './organization/organization-list/organization-list.component';
@@ -46,6 +47,7 @@ const routes: Routes = [
       {path: 'jobs', component: JobListComponent},
       {path: 'job/new_post', component: JobRegisterComponent},
       {path: 'jobs_saved', component: JobSavedComponent},
+      {path: 'orgs_saved', component: OrgLikedComponent},
       {path: 'organizations', component: OrganizationListComponent},
       {path: 'organization/register', component: OrganizationRegisterComponent}
     ]

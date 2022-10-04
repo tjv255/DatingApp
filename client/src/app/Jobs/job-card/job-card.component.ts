@@ -14,16 +14,52 @@ import { PresenceService } from 'src/app/_services/presence.service';
 export class JobCardComponent implements OnInit {
   @Input() job: Job;
 
-  constructor(private jobsService: JobsService, private toastr: ToastrService, 
+  constructor(private jobsService: JobsService, public memberService: MembersService, private toastr: ToastrService, 
     public presence: PresenceService) { }
 
   ngOnInit(): void {
+    if(this.memberService.currMem)
+    {
+     this.memberService.getMember(this.memberService.currMem.username).subscribe(member =>{
+       this.memberService.currMem = member;
+       });
+    }
   }
 
   addLike(job: Job) {
     this.jobsService.saveJob(job.id).subscribe(() => {
-      this.toastr.success('You have liked ' + job.title);
+      this.toastr.success('You have saved ' + job.title);
+      this.memberService.getMember(this.memberService.currMem.username).subscribe(member =>{
+        this.memberService.currMem = member;
+    });
     })
+  }
+
+  jobalreadyliked()
+  {
+    if(this.memberService.currMem.savedJobs !== null)
+    {
+      if(this.memberService.currMem.savedJobs.length > 0)
+      {
+        var x = this.memberService.currMem.savedJobs.find((obj) => {
+      return obj.title === this.job.title && obj.confirmedOrgId === this.job.confirmedOrgId && obj.jobPosterId === this.job.jobPosterId ;}
+      );
+      }
+    }
+    //console.log(this.memberService.currMem + "here");
+   
+    return x;
+    
+  }
+
+  removeSaveJob(job: Job) {
+    this.jobsService.removeSaveJob(job.id).subscribe(() => {
+      this.toastr.success('You have removed '+ job.title+  ' from saved jobs.');
+      this.memberService.getMember(this.memberService.currMem.username).subscribe(member =>{
+        this.memberService.currMem = member;
+    });
+    })
+
   }
 
 }

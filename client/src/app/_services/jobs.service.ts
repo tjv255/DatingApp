@@ -47,8 +47,17 @@ export class JobsService {
 
     let params = getPaginationHeaders(jobsParams.pageNumber, jobsParams.pageSize);
 
+    var regex = /^[a-zA-Z0-9 ]+$/g; //checks if the string is just empty spaces could be improved
+    if(regex.test(jobsParams.title) && jobsParams.title)
+    {
+      jobsParams.title = jobsParams.title.replace(" ", "%20");
+    }
+
+    params = params.append('title', jobsParams.title);
     params = params.append('jobType', jobsParams.jobType);
+    params = params.append('selfPost', jobsParams.selfPost);
     params = params.append('orderBy', jobsParams.orderBy);
+    console.log(jobsParams)
 
     return getPaginatedResult<Job[]>(this.baseUrl + 'jobs', params, this.http)
       .pipe(map(response => {
@@ -90,32 +99,35 @@ export class JobsService {
             }));
   }
 
-  updateJob(job: Job) {
-    return this.http.put(this.baseUrl + 'jobs/' + job.id, job);
-    /*.pipe(
+  updateJob(job: Job, id: number) {
+    return this.http.put(this.baseUrl + 'jobs/' + id, job)
+    .pipe(
       map(() => {
-        const index = this.jobUpdate.indexOf(jobUpdate);
-        this.jobs[index] = jobUpdate;
+        const index = this.jobs.indexOf(job);
+        this.jobs[index] = job;
       })
-    );*/
+    );
   }
 
   saveJob(id: number) {
-    return this.http.post(this.baseUrl + 'saved/' + id, {});
+    return this.http.post(this.baseUrl + 'jobsave/' + id, {});
   }
 
-  getSavedJobs(predicate: string, pageNumber, pageSize) {
+  getSavedJobs( pageNumber, pageSize) {
     let params = getPaginationHeaders(pageNumber, pageSize);
-    params = params.append('predicate', predicate);
-    return getPaginatedResult<Partial<Job[]>>(this.baseUrl + 'saved', params, this.http);
+    
+    return getPaginatedResult<Partial<Job[]>>(this.baseUrl + 'jobsave', params, this.http);
   }
 
   registerJob(model: any) {
+
+    //console.log(model);
+    
     return this.http.post(this.baseUrl + 'jobs/add', model);
   }
 
   removeSaveJob(id: number) {
-    return this.http.delete(this.baseUrl + 'savedJobs/delete-savedJob/' + id, {});
+    return this.http.delete(this.baseUrl + 'jobsave/delete-savedJob/' + id, {});
 };
 
 }
