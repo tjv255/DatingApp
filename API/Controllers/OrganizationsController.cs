@@ -56,7 +56,11 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<OrganizationDto>> GetOrganizationById(int id)
         {
-            return await _organizationRepository.GetCompactOrganizationByIdAsync(id);
+            var organization = await _organizationRepository.GetCompactOrganizationByIdAsync(id);
+
+            if (organization == null) return NotFound(); 
+
+            return Ok(organization);
         }
 
         [HttpGet("{id}/users")]
@@ -74,6 +78,8 @@ namespace API.Controllers
         public async Task<ActionResult<IEnumerable<JobDto>>> GetJobsByOrganizationId([FromQuery] JobParams jobParams, int id)
         {
             var jobs = await _organizationRepository.GetJobsByOrganizationIdAsync(jobParams, id);
+
+            // if (jobs == null) return Ok(new PagedList<object>(new object[0],0,1,1));
 
             Response.AddPaginationHeader(jobs.CurrentPage, jobs.PageSize,
         jobs.TotalCount, jobs.TotalPages);
@@ -191,6 +197,8 @@ namespace API.Controllers
             {
                 var updatedOwnedOrgs = await _organizationRepository.GetOwnedOrganizationsRawAsync(user.Id);
                 var thisOrg = updatedOwnedOrgs.LastOrDefault(x => x.Name == organizationRegisterDto.Name);
+                if (thisOrg == null)
+                    thisOrg = updatedOwnedOrgs.SingleOrDefault(x => x.Name == organizationRegisterDto.Name);
                 thisOrg.Members.Add(user);
 
                 if (!userRoles.Contains("OrgAdmin"))
