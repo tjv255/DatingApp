@@ -109,7 +109,7 @@ namespace API.Controllers
             var IsOwner = org.OwnerId == user.Id;
             var IsAdmin = userRoles.Contains("Admin");
             var IsModerator = userRoles.Contains("Moderator");
-            var IsOrgMember = user.Affiliation != null && !user.Affiliation.Contains(org);
+            var IsOrgMember = user.Affiliation != null && user.Affiliation.Contains(org);
 
             if (IsOwner || IsAdmin || IsModerator || IsOrgMember)
             {
