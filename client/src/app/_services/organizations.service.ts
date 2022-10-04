@@ -107,7 +107,11 @@ export class OrganizationsService {
     }
 
     //Add new organization
-    //please add method call in addOrganization() method in the organization-register.ts component
+    //please add method call in registerOrganization() method in the organization-register.ts component
+    registerOrganization(model: any){
+        console.log(model);
+        return this.http.post(this.baseUrl + 'organizations/add/', model);
+    }
 
     //Add Member
 

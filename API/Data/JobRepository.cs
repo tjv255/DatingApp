@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,41 +16,64 @@ namespace API.Data
   public class JobRepository : IJobRepository
   {
     private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-    public JobRepository(DataContext context){
+        public JobRepository(DataContext context, IMapper mapper){
       _context = context;
-        
-    } 
+            _mapper = mapper;
+        } 
     public async Task<Job> GetJobByIdAsync(int id)
     {
       return await _context.Jobs
+      .Include(o => o.Organization)
+      .Include(o => o.Organization.Photos)
       .Include(j => j.JobPoster)
+      .Include(j => j.JobPoster.Photos)
       .SingleOrDefaultAsync(x => x.Id == id);
     }
 
-     public async Task<IEnumerable<Job>> GetJobByTitleAsync(string title){
-      var jobs = await _context.Jobs
-        .Where(t=>t.Title.ToLower().Contains(title.ToLower()))
-        .Include(j => j.JobPoster)
-        .ToListAsync();
-      return jobs;
+     public async Task<PagedList<JobDto>> GetJobsByTitleAsync(JobParams jobParams, string title)
+        {
+      var jobs = _context.Jobs.Where(t=>t.Title.ToLower().Contains(title.ToLower())).AsQueryable();
+      var query = jobs;
+
+            query = jobParams.OrderBy switch
+            {
+                "alphabetical" => query.OrderBy(o => o.Title),
+                "deadline" => query.OrderByDescending(o => o.Deadline),
+                "lastUpdated" => query.OrderByDescending(o => o.LastUpdated),
+                _ => query.OrderByDescending(o => o.DateCreated)
+            };
+
+            return await PagedList<JobDto>.CreateAsync(
+                query.ProjectTo<JobDto>(_mapper.ConfigurationProvider).AsNoTracking(),
+                jobParams.PageNumber,
+                jobParams.PageSize
+            );
     }
 
-    public async Task<IEnumerable<Job>> GetJobsAsync()
+    public async Task<PagedList<JobDto>> GetJobsAsync(JobParams jobParams)
     {
-      return await _context.Jobs
-      .Include(j => j.JobPoster)
-      .ToListAsync();
+            var jobs = _context.Jobs.AsQueryable();
+            var query = jobs;
+
+            query = jobParams.OrderBy switch
+            {
+                "alphabetical" => query.OrderBy(o => o.Title),
+                "deadline" => query.OrderByDescending(o => o.Deadline),
+                _ => query.OrderByDescending(o => o.LastUpdated)
+            };
+
+            return await PagedList<JobDto>.CreateAsync(
+                query.ProjectTo<JobDto>(_mapper.ConfigurationProvider).AsNoTracking(),
+                jobParams.PageNumber,
+                jobParams.PageSize
+            );
     }
 
     public Task<JobDto> GetMemberJobAsync()
     {
       //return await _context.Jobs.Where()
-      throw new NotImplementedException();
-    }
-
-    public Task<IEnumerable<JobDto>> GetMemberJobsAsync()
-    {
       throw new NotImplementedException();
     }
 
@@ -72,13 +98,28 @@ namespace API.Data
       .Include(p=>p.Photos).SingleOrDefaultAsync(x=>x.UserName == username);
     }
     
-    public async Task<IEnumerable<Job>> GetJobsByPosterIdAsync(int id){      
-        var user = await _context.Users.Where(t=>t.Id==id)
-        .Select(t=>t.UserName).SingleOrDefaultAsync();
+    public async Task<PagedList<JobDto>> GetJobsByPosterIdAsync(JobParams jobParams, int id)
+        {
+            var jobs = _context.Jobs.Where(j => j.JobPoster.Id == id).AsQueryable();
+            var query = jobs;
 
-      return  await _context.Jobs.Where(t=>t.JobPoster.UserName==user)
-      .Include(j => j.JobPoster)
-      .ToListAsync();
+            query = jobParams.OrderBy switch
+            {
+                "alphabetical" => query.OrderBy(o => o.Title),
+                "deadline" => query.OrderByDescending(o => o.Deadline),
+                _ => query.OrderByDescending(o => o.LastUpdated)
+            };
+
+            return await PagedList<JobDto>.CreateAsync(
+                query.ProjectTo<JobDto>(_mapper.ConfigurationProvider).AsNoTracking(),
+                jobParams.PageNumber,
+                jobParams.PageSize
+            );
     }
-  }
+
+        public Task<PagedList<JobDto>> GetMemberJobsAsync(JobParams jobParams)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

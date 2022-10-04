@@ -52,6 +52,9 @@ namespace API.Data
         OrgId = job.Organization.Id,
         JobPosterId = job.JobPoster.Id,
         JobPosterName = job.JobPoster.UserName,
+        LogoUrl = job.Organization.Photos != null || job.Organization != null 
+          ? job.Organization.Photos.FirstOrDefault(x => x.IsMain).Url
+          : job.JobPoster.Photos.FirstOrDefault(x => x.IsMain).Url,
         Description=job.Description,
         Salary=job.Salary,
         City=job.City,

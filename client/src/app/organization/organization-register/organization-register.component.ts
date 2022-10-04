@@ -24,12 +24,13 @@ export class OrganizationRegisterComponent implements OnInit {
 
   initializeForm(){
     this.addOrganizationForm = this.fb.group({
-      org_name: ['', Validators.required],
+      name: ['', Validators.required],
       established: [''],
       city: [''],
       provinceOrState: [''],
       country: [''],
-      introduction: ['']
+      introduction: [''],
+      photos: []
     });
 
   }
@@ -67,12 +68,12 @@ export class OrganizationRegisterComponent implements OnInit {
      * uncomment below code
      */
 
-    // this.organizationService.addOrganization(this.addOrganizationForm.value).subscribe(res => {
-    //   this.router.navigateByUrl('/organizations');
-    // }, error => {
-    //   console.log(error);
-    //   this.validationErrors = error;
-    // })
+    this.organizationService.registerOrganization(this.addOrganizationForm.value).subscribe(res => {
+      this.router.navigateByUrl('/organizations');
+    }, error => {
+      console.log(error);
+      this.validationErrors = error;
+    })
   }
 
   cancel() {

@@ -43,7 +43,7 @@ namespace API.Controllers
 
             if (await _organizationRepository.SaveAllAsync()) return Ok();
 
-            return BadRequest("Failed to like user");
+            return BadRequest("Failed to like this organization");
         }
 
         [HttpGet]

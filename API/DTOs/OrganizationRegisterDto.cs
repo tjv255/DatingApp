@@ -8,6 +8,5 @@ namespace API.DTOs
         public string City { get; set; }
         public string ProvinceOrState { get; set; }
         public string Country { get; set; }
-        public ICollection<OrgPhotoDto> Photos { get; set; }
     }
 }

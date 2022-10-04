@@ -17,10 +17,12 @@
             [formControl]="$any(registerForm.controls['confirmedOrgId'])"
             [label]="'Organization ID'"
           ></app-text-input>
+          <!-- Let's remove the job logo upload. LinkedIn uses company logo and Indeed got none -->
           <app-text-input
             [formControl]="$any(registerForm.controls['logoUrl'])"
             [label]="'URL for job Logo'"
           ></app-text-input>
+          <!-- End of Deprecated Element -->
           <app-text-input
             [formControl]="$any(registerForm.controls['description'])"
             [label]="'Job Description'"
