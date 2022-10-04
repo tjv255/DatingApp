@@ -147,8 +147,8 @@ namespace API.Controllers
             var IsOrgModerator = userRoles.Contains("OrgModerator") && IsOrgMember;
             var IsJobPoster = job.JobPoster.Id == user.Id;
 
-           if (IsAdmin | IsModerator | IsOrgAdmin | IsOrgModerator | IsJobPoster)
-           {
+            if (IsAdmin | IsModerator | IsOrgAdmin | IsOrgModerator | IsJobPoster)
+            {
                 var isDeleted = _jobRepository.DeleteJobById(id);
 
                 if (isDeleted)
@@ -161,7 +161,7 @@ namespace API.Controllers
                 }
 
                 return BadRequest("Failed to delete the job.");
-           }
+            }
             return Unauthorized("You are not permitted to perform this action. Nice try ;)");
         }
 
