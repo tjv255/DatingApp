@@ -47,8 +47,17 @@ export class JobsService {
 
     let params = getPaginationHeaders(jobsParams.pageNumber, jobsParams.pageSize);
 
+    var regex = /^[a-zA-Z0-9 ]+$/g; //checks if the string is just empty spaces could be improved
+    if(regex.test(jobsParams.title) && jobsParams.title)
+    {
+      jobsParams.title = jobsParams.title.replace(" ", "%20");
+    }
+
+    params = params.append('title', jobsParams.title);
     params = params.append('jobType', jobsParams.jobType);
+    params = params.append('selfPost', jobsParams.selfPost);
     params = params.append('orderBy', jobsParams.orderBy);
+    console.log(jobsParams)
 
     return getPaginatedResult<Job[]>(this.baseUrl + 'jobs', params, this.http)
       .pipe(map(response => {
