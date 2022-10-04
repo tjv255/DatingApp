@@ -46,6 +46,7 @@ export class OrganizationListComponent implements OnInit {
 
   loadMembers() {
     this.orgsService.setOrgParams(this.orgParams);
+    this.orgParams.pageSize = 5;
 
     this.orgsService.getOrganizations(this.orgParams).subscribe((response) => {
       this.orgs = response.result;
@@ -56,6 +57,17 @@ export class OrganizationListComponent implements OnInit {
   btnClick()
   {
 
+  }
+
+  loadOrganizationsByUserId(id: number){
+    console.log(id);
+    this.orgsService.setOrgParams(this.orgParams);
+    this.orgsService.getOrgByPosterId(id, this.orgParams).subscribe((response) => {
+      this.orgs = response.result;
+      this.pagination = response.pagination;
+    });
+    console.log("userOrgs");
+    console.log(this.orgs);
   }
 
 
