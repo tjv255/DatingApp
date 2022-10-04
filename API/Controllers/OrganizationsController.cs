@@ -119,13 +119,13 @@ namespace API.Controllers
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             var organization = await _organizationRepository.GetOrganizationByIdAsync(id);
             if (organization.OwnerId != user.Id) return BadRequest("You cannot update this organization! Becuase you are not the owner");
-            
+
             _mapper.Map(organizationUpdateDto, organization);
             _organizationRepository.Update(organization);
 
             if (await _organizationRepository.SaveAllAsync())
                 return NoContent();
-            return BadRequest("Failed to update user");
+            return BadRequest("Failed to update organization");
         }
 
         [HttpPost("add-photo")]
@@ -196,21 +196,30 @@ namespace API.Controllers
             if (await _organizationRepository.SaveAllAsync())
             {
                 var updatedOwnedOrgs = await _organizationRepository.GetOwnedOrganizationsRawAsync(user.Id);
-                var thisOrg = updatedOwnedOrgs.LastOrDefault(x => x.Name == organizationRegisterDto.Name);
+                var thisOrg = updatedOwnedOrgs.FirstOrDefault(x => x.Name == organizationRegisterDto.Name);
+                
+                if (updatedOwnedOrgs.Count() > 1)
+                    thisOrg = updatedOwnedOrgs.LastOrDefault(x => x.Name == organizationRegisterDto.Name);
+                
                 if (thisOrg == null)
-                    thisOrg = updatedOwnedOrgs.SingleOrDefault(x => x.Name == organizationRegisterDto.Name);
+                    return BadRequest("Error associating the new organization with your account");
+                
                 thisOrg.Members.Add(user);
 
                 if (!userRoles.Contains("OrgAdmin"))
                     await _userManager.AddToRoleAsync(user, "OrgAdmin");
 
+                if (updatedOwnedOrgs.Count() == 1)
+                {
+                    await _organizationRepository.SaveAllAsync();
+                    return NoContent();
+                }
+
                 if (await _organizationRepository.SaveAllAsync())
                 {
                     return NoContent();
-                } else
-                {
-                    return BadRequest("Organization is created but failed to associate it with your account.");
-                }
+                } 
+                return BadRequest("Organization is created but failed to associate it with your account.");
             }
 
             return BadRequest("Failed to add organization");
