@@ -20,10 +20,7 @@ export class OrganizationEditComponent implements OnInit {
 
   loadOrganization(){
     this.organization = {
-      knownAs: "Test Job Title",
       introduction: "test intro",
-      interests: "test interests",
-      lookingFor: "test looking for",
       city: "test city",
       province: "test province",
       country: "test country",

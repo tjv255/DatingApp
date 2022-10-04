@@ -6,6 +6,7 @@ using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -17,9 +18,11 @@ namespace API.Controllers
         private readonly IJobRepository _jobRepository;
         private readonly IMapper _mapper;
         private readonly IOrganizationRepository _organizationRepository;
+        public UserManager<AppUser> _userManager { get; }
 
-        public JobsController(IUserRepository userRepository, IJobRepository jobRepository, IOrganizationRepository organizationRepository, IMapper mapper)
+        public JobsController(UserManager<AppUser> userManager, IUserRepository userRepository, IJobRepository jobRepository, IOrganizationRepository organizationRepository, IMapper mapper)
         {
+            _userManager = userManager;
             _organizationRepository = organizationRepository;
             _jobRepository = jobRepository;
             _mapper = mapper;
@@ -120,11 +123,17 @@ namespace API.Controllers
         {
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             if (user == null) return BadRequest("User not found");
+            var userRoles = await _userManager.GetRolesAsync(user);
 
             var job = user.CreatedJobs.FirstOrDefault(x => x.Id == id);
             if (job == null) return NotFound();
 
-            if (job.JobPoster.Id != user.Id) return Unauthorized("You are not permitted to perform this action. Nice try ;)");
+            if (job.JobPoster.Id != user.Id
+                || !userRoles.Contains("OrgAdmin")
+                || !userRoles.Contains("OrgModerator")
+                || !userRoles.Contains("Admin")
+                || !userRoles.Contains("Moderator")) 
+                return BadRequest("You are not permitted to perform this action. Nice try ;)");
 
 
             var isDeleted = _jobRepository.DeleteJobById(id, user.Id);
