@@ -104,9 +104,9 @@ export class JobsService {
     return this.http.post(this.baseUrl + 'jobsave/' + id, {});
   }
 
-  getSavedJobs(predicate: string, pageNumber, pageSize) {
+  getSavedJobs( pageNumber, pageSize) {
     let params = getPaginationHeaders(pageNumber, pageSize);
-    params = params.append('predicate', predicate);
+    
     return getPaginatedResult<Partial<Job[]>>(this.baseUrl + 'jobsave', params, this.http);
   }
 

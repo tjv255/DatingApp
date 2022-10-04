@@ -12,10 +12,8 @@ import { JobsService } from 'src/app/_services/jobs.service';
 export class JobSavedComponent implements OnInit {
 
   jobs: Partial<Job[]>;
-
-  predicate = 'saved';
   pageNumber = 1;
-  pageSize = 2;
+  pageSize = 5;
   pagination: Pagination;
 
 
@@ -26,7 +24,7 @@ export class JobSavedComponent implements OnInit {
   }
 
   loadSavedJobs() {
-    this.jobService.getSavedJobs(this.predicate, this.pageNumber, this.pageSize).subscribe(response => {
+    this.jobService.getSavedJobs( this.pageNumber, this.pageSize).subscribe(response => {
       this.jobs = response.result;
       this.pagination = response.pagination;
     })

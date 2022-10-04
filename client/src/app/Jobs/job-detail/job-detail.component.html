@@ -85,7 +85,9 @@
                 <p class="mycol">{{job.orgId}} {{job.city}}, {{job.country}} <i>{{job.dateCreated | timeago}}</i></p>
                 <p class="mycol">{{job.jobType}}</p>
                 <p class="mycol">${{job.salary}}</p>
-                <p class="mycol"><button class="btn-primary">Apply</button><button class="btn-primary">Save</button></p>
+                <p *ngIf="memberService.currMem" class="mycol">
+                <button *ngIf="!jobalreadyliked()" class="btn btn-success m-1" (click)="addLike(job)">Save</button>
+                <button *ngIf="jobalreadyliked()"class="btn btn-danger m-1" (click)="removeSaveJob(job)">Unsave</button></p>
             </div>
             <div class="row  mt-2">
                 <h5>Musical genres we work with</h5>
@@ -133,7 +135,7 @@
                                             <p>{{member.age}}</p>
                                         </div>
                                         <div class="col">
-                                            <button class="btn btn-primary">Message</button>
+                                            <button routerLink="/members/{{member.username}}" [queryParams]="{tab: 3}" class="btn btn-primary">Message</button>
                                         </div>
                     
                                     </div>

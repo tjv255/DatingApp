@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -58,9 +59,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<JobSaveDto>>> GetSavedJobs(string predicate)
+        public async Task<ActionResult<IEnumerable<JobSaveDto>>> GetSavedJobs([FromQuery] PaginationParams pagiparams)
         {
-            var jobs = await _jobSaveRepository.GetSavedJobs(predicate, User.GetUserId());
+            var jobs = await _jobSaveRepository.GetSavedJobs(pagiparams, User.GetUserId());
+            
+            Response.AddPaginationHeader(jobs.CurrentPage,
+          jobs.PageSize, jobs.TotalCount, jobs.TotalPages);
+
             return Ok(jobs);
         }
 
