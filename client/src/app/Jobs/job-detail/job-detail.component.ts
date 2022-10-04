@@ -14,6 +14,7 @@ import { Organization } from 'src/app/_models/organization';
 import { MembersService } from 'src/app/_services/members.service';
 import { OrganizationsService } from 'src/app/_services/organizations.service';
 import { JobsService } from 'src/app/_services/jobs.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-job-detail',
@@ -26,7 +27,7 @@ export class JobDetailComponent implements OnInit {
   member: Member;
 
 
-  constructor(private route: ActivatedRoute, private memberService: MembersService, private jobsService: JobsService, private router: Router, private orgsService: OrganizationsService ) { 
+  constructor(private route: ActivatedRoute, private memberService: MembersService, private jobsService: JobsService, private router: Router, private orgsService: OrganizationsService, private toastr: ToastrService ) { 
   //Load member and load Organization objects from server 
   this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 
@@ -43,6 +44,13 @@ export class JobDetailComponent implements OnInit {
     }); 
     */
    this.loadJob();
+   if(this.memberService.currMem)
+   {
+    this.memberService.getMember(this.memberService.currMem.username).subscribe(member =>{
+      this.memberService.currMem = member;
+      });
+   }
+
   }
 
   loadJob(){
@@ -73,6 +81,42 @@ export class JobDetailComponent implements OnInit {
         this.member = member;
       }
     )
+  }
+
+  addLike(job: Job) {
+    this.jobsService.saveJob(job.id).subscribe(() => {
+      this.toastr.success('You have saved ' + job.title);
+      this.memberService.getMember(this.memberService.currMem.username).subscribe(member =>{
+        this.memberService.currMem = member;
+    });
+    })
+  }
+
+  jobalreadyliked()
+  {
+    if(this.memberService.currMem.savedJobs !== null)
+    {
+      if(this.memberService.currMem.savedJobs.length > 0)
+      {
+        var x = this.memberService.currMem.savedJobs.find((obj) => {
+      return obj.title === this.job.title && obj.confirmedOrgId === this.job.confirmedOrgId && obj.jobPosterId === this.job.jobPosterId ;}
+      );
+      }
+    }
+    //console.log(this.memberService.currMem + "here");
+   
+    return x;
+    
+  }
+
+  removeSaveJob(job: Job) {
+    this.jobsService.removeSaveJob(job.id).subscribe(() => {
+      this.toastr.success('You have removed '+ job.title+  ' from saved jobs.');
+      this.memberService.getMember(this.memberService.currMem.username).subscribe(member =>{
+        this.memberService.currMem = member;
+    });
+    })
+
   }
 
 
