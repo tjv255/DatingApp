@@ -12,28 +12,24 @@ import { JobsService } from 'src/app/_services/jobs.service';
 export class JobSavedComponent implements OnInit {
 
   jobs: Partial<Job[]>;
-
-  predicate = 'savedJob';
   pageNumber = 1;
-  pageSize = 2;
+  pageSize = 5;
   pagination: Pagination;
 
 
   constructor(private jobService: JobsService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    //this.loadSavedJobs();
+    this.loadSavedJobs();
   }
 
   loadSavedJobs() {
-    this.jobService.getSavedJobs(this.predicate, this.pageNumber, this.pageSize).subscribe(response => {
-      if (response.result && response.result.length <= 0) {
-        this.toastr.error('You do not have any saved jobs.');
-      }
+    this.jobService.getSavedJobs( this.pageNumber, this.pageSize).subscribe(response => {
       this.jobs = response.result;
       this.pagination = response.pagination;
     })
   }
+
 
 
   removeSaveJob(job: Job) {
@@ -41,6 +37,7 @@ export class JobSavedComponent implements OnInit {
       this.toastr.success('You have remove this from saved jobs.');
       this.loadSavedJobs();
     })
+
   }
 
   pageChanged(event: any) {

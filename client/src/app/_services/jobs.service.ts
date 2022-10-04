@@ -101,13 +101,13 @@ export class JobsService {
   }
 
   saveJob(id: number) {
-    return this.http.post(this.baseUrl + 'saved/' + id, {});
+    return this.http.post(this.baseUrl + 'jobsave/' + id, {});
   }
 
-  getSavedJobs(predicate: string, pageNumber, pageSize) {
+  getSavedJobs( pageNumber, pageSize) {
     let params = getPaginationHeaders(pageNumber, pageSize);
-    params = params.append('predicate', predicate);
-    return getPaginatedResult<Partial<Job[]>>(this.baseUrl + 'saved', params, this.http);
+    
+    return getPaginatedResult<Partial<Job[]>>(this.baseUrl + 'jobsave', params, this.http);
   }
 
   registerJob(model: any) {
@@ -118,7 +118,7 @@ export class JobsService {
   }
 
   removeSaveJob(id: number) {
-    return this.http.delete(this.baseUrl + 'savedJobs/delete-savedJob/' + id, {});
+    return this.http.delete(this.baseUrl + 'jobsave/delete-savedJob/' + id, {});
 };
 
 }
