@@ -40,33 +40,11 @@ export class OrganizationEditComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    // this.loadOrganization();
+    
   }
 
   loadOrganization(org: any){
     this.organization = org;
-    // this.organization = {
-    //   knownAs: "Test Job Title",
-    //   introduction: "test intro",
-    //   interests: "test interests",
-    //   lookingFor: "test looking for",
-    //   city: "test city",
-    //   province: "test province",
-    //   country: "test country",
-    //   name: "Test organization Name",
-    //   likes: 10,
-    //   members: [
-    //     {
-
-    //     },
-    //     {
-
-    //     },{},{}
-    //   ],
-    //   established: "2015",
-    //   about: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    //   photos: this.getDummyImages(),
-    // };
   }
 
   loadOrganizationsByUserId(id: number){
@@ -74,15 +52,11 @@ export class OrganizationEditComponent implements OnInit {
     this.organizationService.setOrgParams(this.orgParams);
     this.organizationService.getOrgByPosterId(id, this.orgParams).subscribe((response) => {
       if(response?.result?.length>0){
-        console.log("1st item");
-        console.log(response.result[0]);
         this.loadOrganization(response.result[0]);
       }
       this.userOrgs = response.result;
       this.pagination = response.pagination;
     });
-    console.log("userOrgs");
-    console.log(this.userOrgs);
   }
 
   load(id: number){
@@ -90,7 +64,6 @@ export class OrganizationEditComponent implements OnInit {
     this.organizationService.getOrganization(id).subscribe(
       org => {
         this.organization = org;
-        console.log(org);
         // this.galleryImages = this.getImages(org);
         this.editForm.reset(org);
       }
