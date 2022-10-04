@@ -38,7 +38,6 @@ export class JobEditComponent implements OnInit {
       console.log(this.user);
       this.memberService.getMember(this.user.username).subscribe((m) => {
         this.loadJobsByUserId(m.id);
-        this.loadJobsFromCard(this.job.id);
         this.member = m;
       });
      
@@ -47,46 +46,22 @@ export class JobEditComponent implements OnInit {
         this.job = job;
       });
 
-      // this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
-      // this.memberService.getMember(this.user.username).subscribe(member => {
-      //   this.member = member;
-      
     }
 
   ngOnInit(): void {
 
-    //this.loadJobsFromCard(this.job.id);
-
-    /*
-    this.job = {
-      id: 10,
-      title: "Hello",
-      orgId: 12,
-      jobPosterId: 1,
-      jobPosterName: "lisa",
-      logoUrl: "https://randomuser.me/api/portraits/men/93.jpg",
-      description: "Need farm work who can feed cows",
-      salary: 20000,
-      city: "Pizza Land",
-      provinceOrState: "Vegas",
-      country: "Italy1",
-      genres: "Strong, Talented",
-      jobType: "Hard",
-      skillsRequired: "Farming, Mooing, Grass eating",
-      applicationUrl: "https://randomuser.me/api/portraits/men/93.jpg",
-      dateCreated: new Date(Date.now()),
-      deadline: new Date('2022-09-29'),
-      lastUpdated: new Date(Date.now())
-    }
-    
-    */
 
       
   }
 
+  loadJob(jb: any)
+  {
+    this.job = jb;
+  }
+
   UpdateJob(){
     console.log(this.job);
-    this.jobService.updateJob(this.job).subscribe(() =>{
+    this.jobService.updateJob(this.editForm.value,this.job.id).subscribe(() =>{
       this.toastr.success('Profile updated');
       this.editForm.reset(this.job);
     })
@@ -99,6 +74,10 @@ export class JobEditComponent implements OnInit {
     console.log(id);
     this.jobService.setUserParams(this.jobParams);
     this.jobService.getJobsByPosterId(id, this.jobParams).subscribe((response) => {
+      if(response?.result?.length>0)
+      {
+        this.loadJob(response.result[0]);
+      }
       console.log(response);
       console.log(response.result);
       this.jobs = response.result;
@@ -106,47 +85,26 @@ export class JobEditComponent implements OnInit {
     });
   }
 
-  loadJobsFromCard(id: number)
+  loadJobFromCard(id: number)
   {
-    this.jobs.forEach(function (value) {
-      console.log(value);
-    });
+    this.jobService.getJob(id).subscribe(
+      jb => {
+        this.job = jb;
+        this.editForm.reset(jb);
+      }
+    )
+  }
+  
+  resetFilters() {
+    this.jobParams = this.jobService.resetUserParams();
+    this.loadJobsByUserId(this.member.id);
   }
 
-  //loadJob() {
-   // this.jobService.getJob.().subscribe(job => {
-     // this.job = job;
-    //})
-  //}
-
-  //
-// GetJob(id: number){
-//   this.jobService.getJob(id).subscribe(job => {
-//     this.job = job
-//   });
-// }
- 
-  //UpdateJob(data: any)
-  //{
-
-   // console.warn(data)
-
-   // this.jobService.getJobs(data).subscribe((data) =>{
-   //   this.job = data;
-   // })
-  //}
-
-  /*
-  UpdateJob() {
-    this.jobService.updateJob(this.job).subscribe(() => {
-      this.toastr.success('Job Updated successfully');
-      this.editForm.reset(this.job);
-    })
+  pageChanged(event: any) {
+    this.jobParams.pageNumber = event.page;
+    this.jobService.setUserParams(this.jobParams);
+    this.loadJobsByUserId(this.member.id);
   }
-  */
-  /*DeleteJob(jobid: number) {
-    this.jobService.deleteJob(jobid).subscribe(() => {
-      this.toastr.success('Job Deleted successfully');
-    })
-  }*/
+
+
 }
