@@ -40,12 +40,6 @@ export class JobEditComponent implements OnInit {
         this.loadJobsByUserId(m.id);
         this.member = m;
       });
-     
-
-      jobService.getJob(12).subscribe(job => {
-        this.job = job;
-      });
-
     }
 
   ngOnInit(): void {
