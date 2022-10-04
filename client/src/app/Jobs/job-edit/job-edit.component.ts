@@ -34,11 +34,10 @@ export class JobEditComponent implements OnInit {
   constructor(private memberService: MembersService, private jobService: JobsService,private accountService : AccountService
     ,private toastr: ToastrService ) { 
       this.jobParams = this.jobService.getUserParams();
-      console.log("constructor");
-
       this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
       console.log(this.user);
       this.memberService.getMember(this.user.username).subscribe((m) => {
+        this.loadJobsByUserId(m.id);
         this.member = m;
       });
      
@@ -54,12 +53,6 @@ export class JobEditComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    console.log(this.member);
-    console.log("ngOnInit");
-
-    this.loadJobsByUserId(this.member.id);
-
-    //this.loadJob();
     
 
     /*
