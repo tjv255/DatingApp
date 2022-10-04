@@ -366,14 +366,9 @@ namespace API.Data.Migrations
                     b.Property<int>("LikedUserId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("OrganizationId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("OrgId", "LikedUserId");
 
                     b.HasIndex("LikedUserId");
-
-                    b.HasIndex("OrganizationId");
 
                     b.ToTable("OrgLikes");
                 });
@@ -401,28 +396,6 @@ namespace API.Data.Migrations
                     b.HasIndex("OrganizationId");
 
                     b.ToTable("OrgPhotos");
-                });
-
-            modelBuilder.Entity("API.Entities.OwnedOrganization", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("OrganizationId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("OrganizationId")
-                        .IsUnique();
-
-                    b.ToTable("OwnedOrganization");
                 });
 
             modelBuilder.Entity("API.Entities.Photo", b =>
@@ -653,14 +626,10 @@ namespace API.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("API.Entities.Organization", "Org")
-                        .WithMany("LikedOrganizations")
+                        .WithMany("LikedByUser")
                         .HasForeignKey("OrgId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("API.Entities.Organization", null)
-                        .WithMany("LikedByUser")
-                        .HasForeignKey("OrganizationId");
 
                     b.Navigation("LikedUser");
 
@@ -674,25 +643,6 @@ namespace API.Data.Migrations
                         .HasForeignKey("OrganizationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Organization");
-                });
-
-            modelBuilder.Entity("API.Entities.OwnedOrganization", b =>
-                {
-                    b.HasOne("API.Entities.AppUser", "AppUser")
-                        .WithMany("OwnedOrganizations")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("API.Entities.Organization", "Organization")
-                        .WithOne("OwnedByUser")
-                        .HasForeignKey("API.Entities.OwnedOrganization", "OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
 
                     b.Navigation("Organization");
                 });
@@ -797,8 +747,6 @@ namespace API.Data.Migrations
 
                     b.Navigation("MessagesSent");
 
-                    b.Navigation("OwnedOrganizations");
-
                     b.Navigation("Photos");
 
                     b.Navigation("SavedJobs");
@@ -821,10 +769,6 @@ namespace API.Data.Migrations
                     b.Navigation("Jobs");
 
                     b.Navigation("LikedByUser");
-
-                    b.Navigation("LikedOrganizations");
-
-                    b.Navigation("OwnedByUser");
 
                     b.Navigation("Photos");
                 });

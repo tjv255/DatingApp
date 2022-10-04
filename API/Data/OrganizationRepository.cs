@@ -4,6 +4,7 @@ using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
@@ -57,21 +58,25 @@ namespace API.Data
 
         public async Task<OrganizationDto> GetCompactOrganizationByIdAsync(int id)
         {
-            return await _context.Organizations
+            var organization = await _context.Organizations
+                    .Where(o => o.Id == id)
                     .Include(p => p.Photos)
                     .Include(m => m.Members)
                     .Include(j => j.Jobs)
                     .ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider)
-                    .SingleOrDefaultAsync(o => o.Id == id);
+                    .SingleOrDefaultAsync();
+
+            return organization;
         }
 
         public async Task<Organization> GetOrganizationByOrgnameAsync(string orgname)
         {
             return await _context.Organizations
+                    .Where(x => x.Name == orgname)
                     .Include(p => p.Photos)
                     .Include(m => m.Members)
                     .Include(j => j.Jobs)
-                    .SingleOrDefaultAsync(x => x.Name == orgname);  
+                    .SingleOrDefaultAsync();  
                 
         // ! Do not delete - we can use this for a search function
         // var organization = await _context.Organizations.Where(o=>o.Name.ToLower().Contains(orgname.ToLower())).ToListAsync();
@@ -117,12 +122,22 @@ namespace API.Data
         {
             var org = _context.Organizations.SingleOrDefault(o => o.Id == id);
             var query = _context.Jobs.Where(j => j.Organization.Equals(org));
+            var emptyOrg = _context.Organizations.Take(0);
 
+            if (query == null)
+                return new PagedList<JobDto>(new List<JobDto>(), 0, jobParams.PageNumber, jobParams.PageSize);
+            
             query = jobParams.OrderBy switch
             {
                 "deadline" => query.OrderByDescending(u => u.Deadline),
                 _ => query.OrderByDescending(u => u.LastUpdated)
             };
+
+            query = query
+                        .Include(j => j.Organization)
+                        .Include(j => j.Organization.Photos)
+                        .Include(j => j.JobPoster)
+                        .Include(j => j.JobPoster.Photos).AsQueryable();
 
             return await PagedList<JobDto>.CreateAsync(
                     query.ProjectTo<JobDto>(_mapper.ConfigurationProvider).AsNoTracking(),
