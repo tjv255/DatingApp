@@ -53,10 +53,6 @@ export class OrganizationListComponent implements OnInit {
     });
   }
 
-  loadOrganizationsByUserId(id: number){
-
-  }
-
   btnClick()
   {
 

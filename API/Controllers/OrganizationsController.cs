@@ -110,10 +110,11 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateOrganization(OrganizationUpdateDto organizationUpdateDto, int id)
         {
-            var user = _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             var organization = await _organizationRepository.GetOrganizationByIdAsync(id);
-            if (organization.OwnerId != user.Id) return BadRequest("You cannot update this organization!");
-            _mapper.Map<Organization>(organization);
+            if (organization.OwnerId != user.Id) return BadRequest("You cannot update this organization! Becuase you are not the owner");
+            
+            _mapper.Map(organizationUpdateDto, organization);
             _organizationRepository.Update(organization);
 
             if (await _organizationRepository.SaveAllAsync())
