@@ -33,11 +33,9 @@ namespace API.Data
       var savedjobs = _context.SavedJobs.AsQueryable();
 
       //list of jobs currently logged in user has saved
-      if (true) 
-      {
-        savedjobs = savedjobs.Where(user => user.SavedUserId == userId);
-        jobs = savedjobs.Select(save => save.SavedJob);
-      }
+     savedjobs = savedjobs.Where(user => user.SavedUserId == userId);
+     jobs = savedjobs.Select(save => save.SavedJob);
+      
 
     //   if (predicate == "savedBy")
     //   {
