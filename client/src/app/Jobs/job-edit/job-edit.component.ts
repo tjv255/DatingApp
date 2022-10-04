@@ -38,6 +38,7 @@ export class JobEditComponent implements OnInit {
       console.log(this.user);
       this.memberService.getMember(this.user.username).subscribe((m) => {
         this.loadJobsByUserId(m.id);
+        this.loadJobsFromCard(this.job.id);
         this.member = m;
       });
      
@@ -53,7 +54,8 @@ export class JobEditComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    
+
+    //this.loadJobsFromCard(this.job.id);
 
     /*
     this.job = {
@@ -101,6 +103,13 @@ export class JobEditComponent implements OnInit {
       console.log(response.result);
       this.jobs = response.result;
       this.pagination = response.pagination;
+    });
+  }
+
+  loadJobsFromCard(id: number)
+  {
+    this.jobs.forEach(function (value) {
+      console.log(value);
     });
   }
 

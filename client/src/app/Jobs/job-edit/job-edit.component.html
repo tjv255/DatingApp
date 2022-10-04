@@ -16,7 +16,7 @@
                 <div  class="card-body" >
                     <div  class="d-flex flex-wrap px-3 justify-content-center">
                         <div class="col-2" style="min-width: 187px;">
-                          <app-job-card [job]="job"  >
+                          <app-job-card [job]="job" (click)="loadJobsFromCard(job.id)"   >
                             
                           </app-job-card>
                         </div>
