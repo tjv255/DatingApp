@@ -80,15 +80,11 @@ export class OrganizationsService {
       }
 
     updateOrganization(id: number, organization: Organization) {
-        console.log("update organization");
-        console.log(organization);
+
         return this.http.put(this.baseUrl + 'organizations/'+id, organization)
         .pipe(
             map(() => {
-                console.log("in the put api");
                 const index = this.organizations.indexOf(organization);
-                console.log(index);
-                console.log(this.organizations);
                 this.organizations[index] = organization;
             })
         );

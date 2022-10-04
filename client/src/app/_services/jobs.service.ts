@@ -90,14 +90,14 @@ export class JobsService {
             }));
   }
 
-  updateJob(job: Job) {
-    return this.http.put(this.baseUrl + 'jobs/' + job.id, job);
-    /*.pipe(
+  updateJob(job: Job, id: number) {
+    return this.http.put(this.baseUrl + 'jobs/' + id, job)
+    .pipe(
       map(() => {
-        const index = this.jobUpdate.indexOf(jobUpdate);
-        this.jobs[index] = jobUpdate;
+        const index = this.jobs.indexOf(job);
+        this.jobs[index] = job;
       })
-    );*/
+    );
   }
 
   saveJob(id: number) {
