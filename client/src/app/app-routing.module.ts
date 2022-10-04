@@ -46,7 +46,8 @@ const routes: Routes = [
       {path: 'jobs', component: JobListComponent},
       {path: 'job/new_post', component: JobRegisterComponent},
       {path: 'jobs_saved', component: JobSavedComponent},
-      {path: 'organizations', component: OrganizationListComponent}
+      {path: 'organizations', component: OrganizationListComponent},
+      {path: 'organization/register', component: OrganizationRegisterComponent}
     ]
   },
   {path: 'errors', component: TestErrorsComponent},

@@ -64,6 +64,10 @@ namespace API.Data
                 _ => query.OrderByDescending(o => o.LastUpdated)
             };
 
+            query = query
+                        .Include(j => j.Organization.Photos)
+                        .Include(j => j.JobPoster.Photos);
+
             return await PagedList<JobDto>.CreateAsync(
                 query.ProjectTo<JobDto>(_mapper.ConfigurationProvider).AsNoTracking(),
                 jobParams.PageNumber,
@@ -120,6 +124,22 @@ namespace API.Data
         public Task<PagedList<JobDto>> GetMemberJobsAsync(JobParams jobParams)
         {
             throw new NotImplementedException();
+        }
+
+        public bool DeleteJobById(int id)
+        {
+            var job = _context.Jobs.Where(j => j.Id == id)
+                          .SingleOrDefault();
+
+            var jobExist = job != null;
+
+            if (jobExist)
+            {
+                _context.Jobs.Remove(job);
+            }
+
+            return jobExist;
+
         }
     }
 }
