@@ -1,38 +1,41 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Job } from 'src/app/_models/Job';
+import { Organization } from 'src/app/_models/organization';
 import { Pagination } from 'src/app/_models/pagination';
 import { JobsService } from 'src/app/_services/jobs.service';
+import { OrganizationsService } from 'src/app/_services/organizations.service';
 
 @Component({
-  selector: 'app-job-saved',
-  templateUrl: './job-saved.component.html',
-  styleUrls: ['./job-saved.component.css']
+  selector: 'org-liked-saved',
+  templateUrl: './org-liked.component.html',
+  styleUrls: ['./org-liked.component.css']
 })
-export class JobSavedComponent implements OnInit {
+export class OrgLikedComponent implements OnInit {
 
-  jobs: Partial<Job[]>;
+  orgs: Partial<Organization[]>;
   pageNumber = 1;
   pageSize = 5;
   pagination: Pagination;
 
 
-  constructor(private jobService: JobsService, private toastr: ToastrService) { }
+  constructor(private orgsService: OrganizationsService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    this.loadSavedJobs();
+    this.loadSavedOrgs();
   }
 
-  loadSavedJobs() {
-    this.jobService.getSavedJobs( this.pageNumber, this.pageSize).subscribe(response => {
-      this.jobs = response.result;
+  loadSavedOrgs() {
+    this.orgsService.getLikes("hi", this.pageNumber, this.pageSize).subscribe(response => {
+      this.orgs = response.result;
+      console.log(response.result);
       this.pagination = response.pagination;
     })
   }
 
 
 
-  removeSaveJob(job: Job) {
+  /*removeSaveJob(job: Job) {
     this.jobService.removeSaveJob(job.id).subscribe(() => {
       this.toastr.success('You have remove this from saved jobs.');
       this.loadSavedJobs();
@@ -45,6 +48,6 @@ export class JobSavedComponent implements OnInit {
     this.loadSavedJobs();
   }
 
-
+*/
 
 }

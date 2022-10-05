@@ -4,6 +4,7 @@ namespace API.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string OrgType { get; set; }
         public string Introduction { get; set; }
         public int Established { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;

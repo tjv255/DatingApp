@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 
 namespace API.Interfaces
 {
@@ -15,7 +16,7 @@ namespace API.Interfaces
         //list of saved job that the user has saved
         Task<AppUser> GetUserWithSavedJobs(int userId);
 
-        Task<List<JobSaveDto>>  GetSavedJobs(string predicate, int userId);
+        Task<PagedList<JobSaveDto>>  GetSavedJobs(JobParams jobParams, int userId);
 
         
     }

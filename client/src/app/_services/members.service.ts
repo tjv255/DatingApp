@@ -72,6 +72,7 @@ export class MembersService {
             .find((member: Member) => member.username === username);
 
         if (member) {
+            console.log(member);
             return of(member);
         }
         return this.http.get<Member>(this.baseUrl + 'users/' + username);
