@@ -58,9 +58,16 @@ export class JobDetailComponent implements OnInit {
       job =>{
         this.job = job;
         this.loadOrg(job.orgId);
-        this.loadMember(job.jobPosterName)
+        console.log(job.jobPosterName);
+        this.loadMember(job.jobPosterName);
       }
     )
+  }
+  
+  addLikeOrg(org: Organization) {
+    this.orgsService.addLike(org.id).subscribe(() => {
+      this.toastr.success('You have liked ' + org.name);
+    })
   }
 
   loadOrg(orgId: number)

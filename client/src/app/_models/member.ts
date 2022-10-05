@@ -27,18 +27,15 @@ export interface Member {
     // Or if no codes depend on accessing nested organization objects 
     // within Member object
 
-    /*firstName: string;
+    firstName: string;
     lastName: string;
 
     email: string;
 
-   
-
-    provinceOrState: string;
 
     occupation: string;
-    skills: string[];
-    genres: string[];*/
+    skills: string;
+    genres: string;
 
    
     

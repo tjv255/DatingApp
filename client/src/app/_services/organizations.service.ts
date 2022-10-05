@@ -105,8 +105,13 @@ export class OrganizationsService {
 
     getLikes(pageNumber, pageSize) {
         let params = getPaginationHeaders(pageNumber, pageSize);
+<<<<<<< Updated upstream
         //params = params.append('predicate', predicate);
         return getPaginatedResult<Partial<orgLike[]>>(this.baseUrl + 'orgLikes/liked', params, this.http);
+=======
+        params = params.append('predicate', predicate);
+        return getPaginatedResult<Partial<Organization[]>>(this.baseUrl + 'orgLikes/liked', params, this.http);
+>>>>>>> Stashed changes
     }
 
     //Add new organization
@@ -116,6 +121,18 @@ export class OrganizationsService {
     }
 
     //Add Member
+    getMembers(id, pageNumber, pageSize) {
+
+
+        let params = getPaginationHeaders(pageNumber, pageSize);
+
+
+
+        return getPaginatedResult<Member[]>(this.baseUrl + 'organizations/'+id+'/users', params, this.http)
+            .pipe(map(response => {
+                return response;
+            }));
+    }
 
     
 }
