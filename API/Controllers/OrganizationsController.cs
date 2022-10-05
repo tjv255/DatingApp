@@ -56,7 +56,11 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<OrganizationDto>> GetOrganizationById(int id)
         {
-            return await _organizationRepository.GetCompactOrganizationByIdAsync(id);
+            var organization = await _organizationRepository.GetCompactOrganizationByIdAsync(id);
+
+            if (organization == null) return NotFound(); 
+
+            return Ok(organization);
         }
 
         [HttpGet("{id}/users")]
@@ -74,6 +78,8 @@ namespace API.Controllers
         public async Task<ActionResult<IEnumerable<JobDto>>> GetJobsByOrganizationId([FromQuery] JobParams jobParams, int id)
         {
             var jobs = await _organizationRepository.GetJobsByOrganizationIdAsync(jobParams, id);
+
+            // if (jobs == null) return Ok(new PagedList<object>(new object[0],0,1,1));
 
             Response.AddPaginationHeader(jobs.CurrentPage, jobs.PageSize,
         jobs.TotalCount, jobs.TotalPages);
@@ -113,13 +119,13 @@ namespace API.Controllers
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             var organization = await _organizationRepository.GetOrganizationByIdAsync(id);
             if (organization.OwnerId != user.Id) return BadRequest("You cannot update this organization! Becuase you are not the owner");
-            
+
             _mapper.Map(organizationUpdateDto, organization);
             _organizationRepository.Update(organization);
 
             if (await _organizationRepository.SaveAllAsync())
                 return NoContent();
-            return BadRequest("Failed to update user");
+            return BadRequest("Failed to update organization");
         }
 
         [HttpPost("add-photo/{id}")]
@@ -193,19 +199,30 @@ namespace API.Controllers
             if (await _organizationRepository.SaveAllAsync())
             {
                 var updatedOwnedOrgs = await _organizationRepository.GetOwnedOrganizationsRawAsync(user.Id);
-                var thisOrg = updatedOwnedOrgs.LastOrDefault(x => x.Name == organizationRegisterDto.Name);
+                var thisOrg = updatedOwnedOrgs.FirstOrDefault(x => x.Name == organizationRegisterDto.Name);
+                
+                if (updatedOwnedOrgs.Count() > 1)
+                    thisOrg = updatedOwnedOrgs.LastOrDefault(x => x.Name == organizationRegisterDto.Name);
+                
+                if (thisOrg == null)
+                    return BadRequest("Error associating the new organization with your account");
+                
                 thisOrg.Members.Add(user);
 
                 if (!userRoles.Contains("OrgAdmin"))
                     await _userManager.AddToRoleAsync(user, "OrgAdmin");
 
+                if (updatedOwnedOrgs.Count() == 1)
+                {
+                    await _organizationRepository.SaveAllAsync();
+                    return NoContent();
+                }
+
                 if (await _organizationRepository.SaveAllAsync())
                 {
                     return NoContent();
-                } else
-                {
-                    return BadRequest("Organization is created but failed to associate it with your account.");
-                }
+                } 
+                return BadRequest("Organization is created but failed to associate it with your account.");
             }
 
             return BadRequest("Failed to add organization");
