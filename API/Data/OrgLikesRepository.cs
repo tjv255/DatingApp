@@ -20,6 +20,11 @@ namespace API.Data
             _context = context;
         }
 
+        public async Task<bool> SaveAllAsync()
+        {
+            return await _context.SaveChangesAsync() > 0;
+        }
+        
         public async Task<OrgLike> GetOrganizationLike(int OrgId, int likedUserId)
         {
             return await _context.OrgLikes.FindAsync(OrgId, likedUserId);
@@ -42,7 +47,7 @@ namespace API.Data
                 .FirstOrDefaultAsync(x => x.Id ==orgId);
         }
 
-        public async Task<PagedList<OrgLikeDto>> GetLikedOrganizations(OrgLikeParams orgLikeParams)
+        public async Task<PagedList<OrganizationDto>> GetLikedOrganizations(OrgLikeParams orgLikeParams)
         {
             var orgs = _context.Organizations.OrderBy(o => o.Name).AsQueryable();
             var orgLikes = _context.OrgLikes.OrderBy(o => o.Org.Name).AsQueryable();
@@ -51,7 +56,7 @@ namespace API.Data
             orgLikes = orgLikes.Where(like => like.LikedUserId == orgLikeParams.UserId);
             orgs = orgLikes.Select(like => like.Org);
 
-            var result = await GetPaginatedResult<OrgLikeDto>(orgs.ProjectTo<OrgLikeDto>(_mapper.ConfigurationProvider), orgLikeParams);
+            var result = await GetPaginatedResult<OrganizationDto>(orgs.ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider), orgLikeParams);
 
             // var likedUsers = users.Select(user => new LikeDto
             // {
@@ -75,7 +80,7 @@ namespace API.Data
             var users = _context.Users.OrderBy(u => u.UserName).AsQueryable();
             var orgLikes = _context.OrgLikes.OrderBy(o => o.Org.Name).AsQueryable();
 
-            orgLikes = orgLikes.Where(like => like.OrgId == orgLikeParams.OrgId);
+            orgLikes = orgLikes.Where(like => like.OrgId == orgId);
             users = orgLikes.Select(like => like.LikedUser);
 
             var result = await GetPaginatedResult<MemberDto>(users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider), orgLikeParams);
@@ -91,5 +96,19 @@ namespace API.Data
                     orgLikeParams.PageSize);
         }
 
+        public bool UnlikeOrganization(int orgId, int userId)
+        {
+            var orgLikes = _context.OrgLikes.Where(o => o.OrgId == orgId).AsQueryable();
+            var orgLike = orgLikes.Where(o => o.LikedUserId == userId).SingleOrDefault();
+
+            var likeExisted = orgLike != null;
+
+            if (likeExisted)
+            {
+                _context.OrgLikes.Remove(orgLike);
+            }
+
+            return likeExisted;
+        }
     }
 }

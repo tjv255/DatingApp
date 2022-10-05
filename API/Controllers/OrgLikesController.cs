@@ -69,18 +69,40 @@ namespace API.Controllers
             return Ok(likedOrgs);
         }
 
-        [HttpGet("likedBy")]
-        public async Task<ActionResult<IEnumerable<OrgLikeDto>>> GetLikedByUsers([FromQuery] OrgLikeParams orgLikeParams, int id)
+        [HttpGet("likedby")]
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetLikedByUsers([FromQuery] OrgLikeParams orgLikeParams, int id)
         {
             var org = await _organizationRepository.GetOrganizationByIdAsync(id);
             if (org == null) return NotFound("Organization not found");
-            
+
             var likedByUsers = await _orgLikesRepository.GetLikedByUsers(orgLikeParams, id);
 
             Response.AddPaginationHeader(likedByUsers.CurrentPage, likedByUsers.PageSize,
         likedByUsers.TotalCount, likedByUsers.TotalPages);
 
             return Ok(likedByUsers);
+        }
+
+        [HttpDelete("unlike/{orgId}")]
+        public async Task<ActionResult<IEnumerable<MemberDto>>> UnlikeOrganization(int orgId)
+        {
+            var userId = User.GetUserId();
+            if (User.GetUsername() == null) return BadRequest("You must login");
+            
+            var org = await _organizationRepository.GetOrganizationByIdAsync(orgId);
+            if (org == null) return NotFound("Organization not found");
+
+            var isDeleted = _orgLikesRepository.UnlikeOrganization(orgId, userId);
+
+            if (isDeleted)
+            {
+                if (await _orgLikesRepository.SaveAllAsync())
+                {
+                    return Ok("You have unliked this organization.");
+                }
+                return BadRequest("Failed to save changes.");
+            }
+            return BadRequest("Failed to unlike this organization.");
         }
     }
 }
