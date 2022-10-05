@@ -91,8 +91,8 @@ export class OrganizationsService {
         );
     }
 
-    setMainPhoto(photoId: number) {
-        return this.http.put(this.baseUrl + 'organizations/set-main-photo/' + photoId, {});
+    setMainPhoto(photoId: number, orgId: number) {
+        return this.http.put(this.baseUrl + 'organizations/'+ orgId + '/set-main-photo/' + photoId, {});
     }
 
     deletePhoto(photoId: number) {
