@@ -65,7 +65,7 @@ export class JobDetailComponent implements OnInit {
 
   loadOrg(orgId: number)
   {
-    this.orgsService.getOrganization(orgId+1).subscribe(
+    this.orgsService.getOrganization(orgId).subscribe(
       org =>{
         this.org = org;
       }

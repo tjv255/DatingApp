@@ -1,5 +1,6 @@
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -29,7 +30,7 @@ namespace API.Data
                 .FirstOrDefaultAsync(x => x.Id ==orgId);
         }
 
-        public async Task<IEnumerable<OrgLikeDto>> GetOrganizationLikes(int orgId)
+        public async Task<PagedList<OrgLikeDto>> GetOrganizationLikes(PaginationParams pagiparams)
         {
             // var organizations = _context.Organizations.OrderBy(u => u.Name).AsQueryable();
             //var orgLikes = _context.OrgLikes.AsQueryable();
@@ -54,11 +55,13 @@ namespace API.Data
 
             // }).ToListAsync();
 
-            return await _context.OrgLikes
+            var orgs =  _context.OrgLikes
                             .Include(o => o.Org)
                             .Include(o => o.LikedUser)
-                            .ProjectTo<OrgLikeDto>(_mapper.ConfigurationProvider)
-                            .ToListAsync();
+                            .ProjectTo<OrgLikeDto>(_mapper.ConfigurationProvider);
+
+            return await PagedList<OrgLikeDto>.CreateAsync(orgs,
+       pagiparams.PageNumber, pagiparams.PageSize);
 
         }
 

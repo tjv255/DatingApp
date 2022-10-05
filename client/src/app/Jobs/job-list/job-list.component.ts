@@ -26,6 +26,7 @@ export class JobListComponent implements OnInit {
   postedByUser: Boolean;
   jobParams: JobsParams;
   title: string;
+  postedloded: boolean = false;
 
   constructor(private memberService: MembersService, private jobsService: JobsService, private accountService: AccountService) {
     this.jobParams = this.jobsService.getUserParams();
@@ -46,6 +47,7 @@ export class JobListComponent implements OnInit {
 
     this.jobsService.getJobs(this.jobParams).subscribe((response) => {
       this.jobs = response.result;
+      console.log(response.result);
       this.pagination = response.pagination;
     });
 
@@ -63,18 +65,29 @@ export class JobListComponent implements OnInit {
       }
       else
       {
-        this.loadMembers();
+        this.resetFilters();
       }
     }  
   }
 
   loadJobsByUserId(id: number)
   {
-    this.jobsService.setUserParams(this.jobParams);
-    this.jobsService.getJobsByPosterId(id, this.jobParams).subscribe((response) => {
-      this.jobs = response.result;
-      this.pagination = response.pagination;
-    });
+    if( this.postedloded == false)
+    {    
+      this.jobsService.setUserParams(this.jobParams);
+      this.jobsService.getJobsByPosterId(id, this.jobParams).subscribe((response) => {
+        this.jobs = response.result;
+        this.pagination = response.pagination;
+      });
+      this.postedloded = true;
+    }
+
+    else{
+      this.resetFilters();
+      
+      this.postedloded = false;
+    }
+
 
   }
 

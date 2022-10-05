@@ -1,6 +1,7 @@
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +32,7 @@ namespace API.Controllers
             if (user == null) return NotFound();
             var orgLike = await _orgLikesRepository.GetOrganizationLike(id, user.Id);
 
-            if (orgLike != null) return BadRequest("You already like this user");
+            if (orgLike != null) return BadRequest("You already like this organization");
 
             orgLike = new OrgLike
             {
@@ -47,12 +48,18 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrgLikeDto>>> GetOrganizationLikes(int id )
+        public async Task<ActionResult<PagedList<OrgLikeDto>>> GetOrganizationLikes([FromQuery] PaginationParams pagiparams )
             {
 
-                return Ok (await _orgLikesRepository.GetOrganizationLikes(id));
-                
-        }
 
-    }
+                var orgs = await _orgLikesRepository.GetOrganizationLikes(pagiparams);
+            
+                Response.AddPaginationHeader(orgs.CurrentPage,
+                 orgs.PageSize, orgs.TotalCount, orgs.TotalPages);
+
+                return Ok(orgs);
+                
+            }
+
+        }
 }

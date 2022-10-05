@@ -10,13 +10,8 @@
       </div>
       <div class="col-3">
         <div class="btn-group">
-            <a routerLink="/job/new_post"><button class="btn btn-primary pull-right" > Post job</button></a>
-          <button *ngIf="this.member"
-            type="button"
-            class="btn btn-primary" 
-            name="orderBy" 
-            (click)="loadJobsByUserId(this.member.id)"
-            btnRadio="created">Posted by me</button>
+          <button class="btn btn-primary" routerLink="/job/new_post"> Post job</button>
+          <button *ngIf="this.member" class="btn btn-primary" (click)="loadJobsByUserId(this.member.id)">Posted by me</button>
         </div>
       </div>
 
@@ -24,7 +19,7 @@
     
     <div class="row">
       <div class="col text-center">
-        <p>{{jobs?.length}} results found</p>
+        <p>{{pagination?.totalItems}} results found</p>
       </div>
 
       

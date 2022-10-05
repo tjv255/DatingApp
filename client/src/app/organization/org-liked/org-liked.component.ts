@@ -13,7 +13,7 @@ import { OrganizationsService } from 'src/app/_services/organizations.service';
 })
 export class OrgLikedComponent implements OnInit {
 
-  orgs: Partial<Organization[]>;
+  orgs: Partial<Organization[]> = [];
   pageNumber = 1;
   pageSize = 5;
   pagination: Pagination;
@@ -26,10 +26,16 @@ export class OrgLikedComponent implements OnInit {
   }
 
   loadSavedOrgs() {
-    this.orgsService.getLikes("hi", this.pageNumber, this.pageSize).subscribe(response => {
-      this.orgs = response.result;
-      console.log(response.result);
-      this.pagination = response.pagination;
+    this.orgs = [];
+    this.orgsService.getLikes( this.pageNumber, this.pageSize).subscribe(response => {
+    for(var res of response.result)
+    {
+      this.orgsService.getOrganization(res.orgId).subscribe(response => {
+        this.orgs.push(response);
+      })
+    }
+
+    this.pagination = response.pagination;
     })
   }
 
@@ -41,13 +47,12 @@ export class OrgLikedComponent implements OnInit {
       this.loadSavedJobs();
     })
 
-  }
+  }*/
 
   pageChanged(event: any) {
     this.pageNumber = event.page;
-    this.loadSavedJobs();
+    this.loadSavedOrgs();
   }
 
-*/
 
 }

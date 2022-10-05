@@ -10,6 +10,6 @@ namespace API.Interfaces
         Task<OrgLike> GetOrganizationLike(int OrgId, int likedUserId);
         Task<Organization> GetOrganizationWithLikes(int orgId);
 
-        Task<IEnumerable<OrgLikeDto>> GetOrganizationLikes( int orgId);
+        Task<PagedList<OrgLikeDto>> GetOrganizationLikes( PaginationParams pagiparams);
     }
 }

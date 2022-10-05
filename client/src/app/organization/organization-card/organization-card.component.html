@@ -8,6 +8,12 @@
             <li class="list-inline-item"><button (click)="addLike(org)" class="btn btn-primary">
                     <i class="fa fa-plus"></i></button></li>
             <!--
+            <li *ngIf="memberService.currMem && !jobalreadyliked()" class="list-inline-item"><button (click)="addLike(job)" class="btn btn-success">
+                        <i class="fa fa-plus"></i></button></li>
+                
+            <li *ngIf="memberService.currMem && jobalreadyliked()" class="list-inline-item"><button (click)="removeSaveJob(job)" class="btn btn-danger">
+                        <i class="fa fa-minus"></i></button></li>
+            
             <li class="list-inline-item">
                 <button routerLink="/members/{{job.title}}" [queryParams]="{tab: 3}" class="btn btn-primary">
                     <i class="fa fa-envelope"></i>
@@ -23,6 +29,6 @@
             </span>
             {{org.established}}
         </h6>
-        <p class="card-text text-muted text-center">{{org.introduction}}</p>
+        <p class="card-text text-muted text-center">{{org.name}}</p>
     </div>
 </div>

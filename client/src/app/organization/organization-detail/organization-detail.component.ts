@@ -22,7 +22,7 @@ export class OrganizationDetailComponent implements OnInit {
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
 
-  constructor(private route: ActivatedRoute, private memberService: MembersService, private router: Router, private orgsService: OrganizationsService ) {
+  constructor(private route: ActivatedRoute, private memberService: MembersService, private router: Router, private orgsService: OrganizationsService, private toastr: ToastrService ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
    }
 
@@ -67,12 +67,11 @@ export class OrganizationDetailComponent implements OnInit {
   }
 
 
-  addLike(organization: Organization) {
-    //this.toastr.success('You have liked ');
-    //add addLike method in organization service
-    // this.memberService.addLike(member.username).subscribe(() => {
-    //   this.toastr.success('You have liked ' + member.knownAs);
-    // })
+  addLike(org: Organization) {
+    this.orgsService.addLike(org.id).subscribe(() => {
+      this.toastr.success('You have liked ' + org.name);
+
+    })
   }
 
 }
