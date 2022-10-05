@@ -33,6 +33,9 @@ namespace API.Data
             var organizations = _context.Organizations.AsQueryable();
             var query = organizations;
 
+            if (organizationParams.Established != null && organizationParams.Established > 0)
+                query = query.Where(o => o.Established == organizationParams.Established).AsQueryable();
+
             query = organizationParams.OrderBy switch
             {
                 "alphabetical" => query.OrderBy(o => o.Name),
