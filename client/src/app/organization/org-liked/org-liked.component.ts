@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Job } from 'src/app/_models/Job';
 import { Organization } from 'src/app/_models/organization';
+import { orgLike } from 'src/app/_models/orgLike';
 import { Pagination } from 'src/app/_models/pagination';
 import { JobsService } from 'src/app/_services/jobs.service';
 import { OrganizationsService } from 'src/app/_services/organizations.service';
@@ -28,16 +29,11 @@ export class OrgLikedComponent implements OnInit {
   loadSavedOrgs() {
     this.orgs = [];
     this.orgsService.getLikes( this.pageNumber, this.pageSize).subscribe(response => {
-    for(var res of response.result)
-    {
-      this.orgsService.getOrganization(res.orgId).subscribe(response => {
-        this.orgs.push(response);
-      })
-    }
-
-    this.pagination = response.pagination;
+      this.orgs = response.result;
+      this.pagination = response.pagination;
     })
   }
+
 
 
 

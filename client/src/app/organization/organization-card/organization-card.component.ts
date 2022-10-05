@@ -17,10 +17,7 @@ import { PresenceService } from 'src/app/_services/presence.service';
 })
 export class OrganizationCardComponent implements OnInit {
   @Input() org: Organization;
-  orgs: orgLike[];
-  pageNumber = 1;
-  pageSize = 5;
-  pagination: Pagination;
+
 
   constructor(private membersService: MembersService, private orgsService: OrganizationsService, private toastr: ToastrService, 
     public presence: PresenceService) { 
@@ -28,7 +25,9 @@ export class OrganizationCardComponent implements OnInit {
     }
 
   ngOnInit(): void {
+
   }
+
 
   addLike(org: Organization) {
     this.orgsService.addLike(org.id).subscribe(() => {
