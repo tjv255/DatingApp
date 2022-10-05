@@ -24,11 +24,8 @@
     </div>
     <div class="card-body p-1">
         <h6 class="card-title text-center mb-1">
-            <span [class.is-online]="(presence.onlineUsers$ | async).includes(org.name)">
-                <i class="fa fa-user mr-2"></i>
-            </span>
-            {{org.established}}
+            {{org.name}}
         </h6>
-        <p class="card-text text-muted text-center">{{org.name}}</p>
+        <p class="card-text text-muted text-center">{{org.country}}</p>
     </div>
 </div>

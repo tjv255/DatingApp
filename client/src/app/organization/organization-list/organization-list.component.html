@@ -1,7 +1,7 @@
 
 <div class="container bg-light my-3 pt-3 rounded" >
   <div class="row ">
-    <div class="col justify-content-right">
+    <div class="col text-center">
       <div class="btn-group">
         <button class="btn btn-primary" routerLink="/organization/register"> Post Organization</button>
         <button *ngIf="this.member" class="btn btn-primary" (click)="loadOrganizationsByUserId(this.member.id)">Posted by me</button>
