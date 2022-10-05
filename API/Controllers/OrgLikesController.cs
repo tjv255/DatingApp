@@ -48,18 +48,39 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PagedList<OrgLikeDto>>> GetOrganizationLikes([FromQuery] PaginationParams pagiparams )
+        public async Task<ActionResult<IEnumerable<OrgLikeDto>>> GetOrganizationLikesByOrgId(int id)
             {
+                var org = await _organizationRepository.GetOrganizationByIdAsync(id);
 
+                if (org == null) return NotFound("Organization not found");
 
-                var orgs = await _orgLikesRepository.GetOrganizationLikes(pagiparams);
-            
-                Response.AddPaginationHeader(orgs.CurrentPage,
-                 orgs.PageSize, orgs.TotalCount, orgs.TotalPages);
-
-                return Ok(orgs);
-                
-            }
-
+                return Ok(await _orgLikesRepository.GetOrganizationLikesByOrgId(id));     
         }
+
+        [HttpGet("liked")]
+        public async Task<ActionResult<IEnumerable<OrgLikeDto>>> GetLikedOrganizations([FromQuery] OrgLikeParams orgLikeParams)
+        {
+            orgLikeParams.UserId = User.GetUserId();
+            var likedOrgs = await _orgLikesRepository.GetLikedOrganizations(orgLikeParams);
+
+            Response.AddPaginationHeader(likedOrgs.CurrentPage, likedOrgs.PageSize,
+        likedOrgs.TotalCount, likedOrgs.TotalPages);
+
+            return Ok(likedOrgs);
+        }
+
+        [HttpGet("likedBy")]
+        public async Task<ActionResult<IEnumerable<OrgLikeDto>>> GetLikedByUsers([FromQuery] OrgLikeParams orgLikeParams, int id)
+        {
+            var org = await _organizationRepository.GetOrganizationByIdAsync(id);
+            if (org == null) return NotFound("Organization not found");
+            
+            var likedByUsers = await _orgLikesRepository.GetLikedByUsers(orgLikeParams, id);
+
+            Response.AddPaginationHeader(likedByUsers.CurrentPage, likedByUsers.PageSize,
+        likedByUsers.TotalCount, likedByUsers.TotalPages);
+
+            return Ok(likedByUsers);
+        }
+    }
 }

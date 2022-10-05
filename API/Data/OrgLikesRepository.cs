@@ -4,7 +4,9 @@ using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API.Data
 {
@@ -23,6 +25,16 @@ namespace API.Data
             return await _context.OrgLikes.FindAsync(OrgId, likedUserId);
         }
 
+        public async Task<IEnumerable<OrgLikeDto>> GetOrganizationLikesByOrgId(int orgId)
+        {
+            return await _context.OrgLikes
+                            .Where(o => o.OrgId == orgId)
+                            .Include(o => o.Org)
+                            .Include(o => o.LikedUser)
+                            .ProjectTo<OrgLikeDto>(_mapper.ConfigurationProvider)
+                            .ToListAsync();
+        }
+
         public async Task<Organization> GetOrganizationWithLikes(int orgId)
         {
             return await _context.Organizations
@@ -30,39 +42,53 @@ namespace API.Data
                 .FirstOrDefaultAsync(x => x.Id ==orgId);
         }
 
-        public async Task<PagedList<OrgLikeDto>> GetOrganizationLikes(PaginationParams pagiparams)
+        public async Task<PagedList<OrgLikeDto>> GetLikedOrganizations(OrgLikeParams orgLikeParams)
         {
-            // var organizations = _context.Organizations.OrderBy(u => u.Name).AsQueryable();
-            //var orgLikes = _context.OrgLikes.AsQueryable();
+            var orgs = _context.Organizations.OrderBy(o => o.Name).AsQueryable();
+            var orgLikes = _context.OrgLikes.OrderBy(o => o.Org.Name).AsQueryable();
 
+            
+            orgLikes = orgLikes.Where(like => like.LikedUserId == orgLikeParams.UserId);
+            orgs = orgLikes.Select(like => like.Org);
 
-            // orgLikes = orgLikes.Where(like => like.OrgId == orgId);
-            // organizations = orgLikes.Select(like => like.Org);
+            var result = await GetPaginatedResult<OrgLikeDto>(orgs.ProjectTo<OrgLikeDto>(_mapper.ConfigurationProvider), orgLikeParams);
 
-            // return await organizations.Select(organization => new OrgLikeDto
+            // var likedUsers = users.Select(user => new LikeDto
             // {
+            //     Username = user.UserName,
+            //     KnownAs = user.KnownAs,
+            //     PhotoUrl = user.Photos.FirstOrDefault(p => p.IsMain).Url,
+            //     City = user.City,
+            //     Id = user.Id
+            // });
 
-            //     OrgId = organization.Id,
-            //     Name = organization.Name,
-            //     Introduction = organization.Introduction,
-            //     PhotoUrl = organization.Photos.FirstOrDefault(p => p.IsMain).Url,
-            //     Established = organization.Established,
-            //     Created = organization.Created,
-            //     LastUpdated = organization.LastUpdated,
-            //     City = organization.City,
-            //     ProvinceOrState = organization.ProvinceOrState,
-            //     Country = organization.Country
+            // return await _context.OrgLikes
+            //                 .Include(o => o.Org)
+            //                 .Include(o => o.LikedUser)
+            //                 .ProjectTo<OrgLikeDto>(_mapper.ConfigurationProvider)
+            //                 .ToListAsync();
+            return result;
+        }
 
-            // }).ToListAsync();
+        public async Task<PagedList<MemberDto>> GetLikedByUsers(OrgLikeParams orgLikeParams, int orgId)
+        {
+            var users = _context.Users.OrderBy(u => u.UserName).AsQueryable();
+            var orgLikes = _context.OrgLikes.OrderBy(o => o.Org.Name).AsQueryable();
 
-            var orgs =  _context.OrgLikes
-                            .Include(o => o.Org)
-                            .Include(o => o.LikedUser)
-                            .ProjectTo<OrgLikeDto>(_mapper.ConfigurationProvider);
+            orgLikes = orgLikes.Where(like => like.OrgId == orgLikeParams.OrgId);
+            users = orgLikes.Select(like => like.LikedUser);
 
-            return await PagedList<OrgLikeDto>.CreateAsync(orgs,
-       pagiparams.PageNumber, pagiparams.PageSize);
+            var result = await GetPaginatedResult<MemberDto>(users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider), orgLikeParams);
 
+            return result;
+        }
+
+        private async Task<PagedList<T>> GetPaginatedResult<T>(IQueryable<T> query, OrgLikeParams orgLikeParams)
+        {
+            return await PagedList<T>.CreateAsync(
+                    query,
+                    orgLikeParams.PageNumber,
+                    orgLikeParams.PageSize);
         }
 
     }

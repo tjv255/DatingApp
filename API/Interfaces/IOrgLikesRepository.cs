@@ -9,7 +9,8 @@ namespace API.Interfaces
     {
         Task<OrgLike> GetOrganizationLike(int OrgId, int likedUserId);
         Task<Organization> GetOrganizationWithLikes(int orgId);
-
-        Task<PagedList<OrgLikeDto>> GetOrganizationLikes( PaginationParams pagiparams);
+        Task<IEnumerable<OrgLikeDto>> GetOrganizationLikesByOrgId(int orgId);
+        Task<PagedList<OrgLikeDto>> GetLikedOrganizations(OrgLikeParams orgLikeParams);
+        Task<PagedList<MemberDto>> GetLikedByUsers(OrgLikeParams orgLikeParams, int orgId);
     }
 }

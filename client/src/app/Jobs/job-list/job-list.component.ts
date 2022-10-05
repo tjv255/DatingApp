@@ -7,7 +7,7 @@ import { User } from 'src/app/_models/user';
 import { UserParams } from 'src/app/_models/userParams';
 import { AccountService } from 'src/app/_services/account.service';
 import { MembersService } from 'src/app/_services/members.service';
-import { GENDER_LIST } from 'src/app/util/constants';
+import { GENDER_LIST, JOB_TYPE } from 'src/app/util/constants';
 import { Job } from 'src/app/_models/job';
 import { JobsParams } from 'src/app/_models/jobParams';
 import { JobsService } from 'src/app/_services/jobs.service';
@@ -27,6 +27,7 @@ export class JobListComponent implements OnInit {
   jobParams: JobsParams;
   title: string;
   postedloded: boolean = false;
+  jobTypeList = JOB_TYPE;
 
   constructor(private memberService: MembersService, private jobsService: JobsService, private accountService: AccountService) {
     this.jobParams = this.jobsService.getUserParams();
@@ -35,16 +36,14 @@ export class JobListComponent implements OnInit {
       console.log(m);
       this.member = m;
     });
-
   }
 
   ngOnInit(): void {
-    this.loadMembers();
+    this.loadJobs();
   }
 
-  loadMembers() {
+  loadJobs() {
     this.jobsService.setUserParams(this.jobParams);
-
     this.jobsService.getJobs(this.jobParams).subscribe((response) => {
       this.jobs = response.result;
       console.log(response.result);
@@ -53,6 +52,7 @@ export class JobListComponent implements OnInit {
 
     
   }
+
 
   btnClick()
   {
@@ -103,12 +103,12 @@ export class JobListComponent implements OnInit {
 
   resetFilters() {
     this.jobParams = this.jobsService.resetUserParams();
-    this.loadMembers();
+    this.loadJobs();
   }
 
   pageChanged(event: any) {
     this.jobParams.pageNumber = event.page;
     this.jobsService.setUserParams(this.jobParams);
-    this.loadMembers();
+    this.loadJobs();
   }
 }
