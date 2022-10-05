@@ -47,12 +47,10 @@ export class OrgLikedComponent implements OnInit {
       this.loadSavedJobs();
     })
 
-<<<<<<< Updated upstream
+
   }*/
-=======
-  }
-*/
->>>>>>> Stashed changes
+
+
 
   pageChanged(event: any) {
     this.pageNumber = event.page;
