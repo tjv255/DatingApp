@@ -77,6 +77,57 @@ export const GENRE_LIST: MultiselectSelectionItem[] = [
     },
 ];
 
+export const ORG_TYPE: MultiselectSelectionItem[] = [
+  {
+    item_id: 1,
+    item_text: 'Entertainment Companies',
+  },
+  {
+    item_id: 2,
+    item_text: 'Performing Groups',
+  },
+  {
+    item_id: 3,
+    item_text: 'Theatres and Opera Houses',
+  },
+  {
+    item_id: 4,
+    item_text: 'Bands',
+  },
+  {
+    item_id: 5,
+    item_text: 'Concert Bands',
+  },
+  {
+    item_id: 6,
+    item_text: 'Musical Ensembles',
+  },
+  {
+    item_id: 7,
+    item_text: 'Symphony Orchestra',
+  },
+  {
+    item_id: 8,
+    item_text: 'Choirs',
+  },
+  {
+    item_id: 9,
+    item_text: 'Music Academies',
+  },
+  {
+    item_id: 10,
+    item_text: 'Educational Institutions',
+  },
+  {
+    item_id: 11,
+    item_text: 'Talent Agencies',
+  },
+  {
+    item_id: 12,
+    item_text: 'Others',
+  },
+];
+
 // Mock Org data. Real data will reflect OrganizationDto.cs
 export const AFFILIATION_DATA = [
   {
