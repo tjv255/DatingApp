@@ -28,23 +28,13 @@ export class OrganizationCardComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.orgsService.getLikes( this.pageNumber, this.pageSize).subscribe(response => {
-     this.orgs = response.result;
-     this.pagination = response.pagination;
-  })}
+  }
 
   addLike(org: Organization) {
     this.orgsService.addLike(org.id).subscribe(() => {
       this.toastr.success('You have liked ' + org.name);
 
     })
-  }
-
-  currMemUp()
-  {
-    this.membersService.getMember(this.membersService.currMem.username).subscribe(member =>{
-      this.membersService.currMem = member;
-      });
   }
 
 }

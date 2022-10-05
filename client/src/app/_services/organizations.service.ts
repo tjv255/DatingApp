@@ -106,7 +106,7 @@ export class OrganizationsService {
     getLikes(pageNumber, pageSize) {
         let params = getPaginationHeaders(pageNumber, pageSize);
         //params = params.append('predicate', predicate);
-        return getPaginatedResult<Partial<orgLike[]>>(this.baseUrl + 'orgLikes', params, this.http);
+        return getPaginatedResult<Partial<orgLike[]>>(this.baseUrl + 'orgLikes/liked', params, this.http);
     }
 
     //Add new organization

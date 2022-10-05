@@ -40,11 +40,11 @@ export class JobsService {
   }
 
   getJobs(jobsParams: JobsParams) {
-    /*var response = this.jobCache.get(Object.values(jobsParams).join('-'));
+    var response = this.jobCache.get(Object.values(jobsParams).join('-'));
     if (response) {
       return of(response);
     }
-    */
+  
     let params = getPaginationHeaders(jobsParams.pageNumber, jobsParams.pageSize);
 
     var regex = /^[a-zA-Z0-9 ]+$/g; //checks if the string is just empty spaces could be improved
@@ -61,7 +61,7 @@ export class JobsService {
 
     return getPaginatedResult<Job[]>(this.baseUrl + 'jobs', params, this.http)
       .pipe(map(response => {
-        //this.jobCache.set(Object.values(jobsParams).join('-'), response);
+        this.jobCache.set(Object.values(jobsParams).join('-'), response);
         return response;
       }));
   }
