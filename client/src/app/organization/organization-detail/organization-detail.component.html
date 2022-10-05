@@ -1,0 +1,66 @@
+<div *ngIf="organization" class="row d-flex justify-content-center">
+    <div class=" d-flex justify-content-center">
+      <h1 class="text-light">Organization Details</h1>
+    </div>
+  
+    <div class="col-8 glass-container p-2">
+        <div class="container">
+            <img src="{{organization.photoUrl || './assets/user.png'}}" alt="{{organization.name}}" class="card-img-top img-thumbnail rounded-circle">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="m-2">{{organization.name}}</h4>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary" (click)="addLike(organization)" type="submit">Like<i class="fa fa-thumbs-up ml-2"></i></button>
+
+                    </div>
+                </div>
+            </div>
+
+                <h5 class="m-2">Established: {{organization.established}}</h5>
+                <h5 class="m-2">Likes: {{organization.likes}}</h5>
+
+            <h5 class="m-2">Members: {{organization.members.length}}</h5>
+
+            
+            <div style="margin-top: 42px;">
+                <h4>About us</h4>
+                <div class="bg-light rounded">
+                    <p class="m-4" style="font-size: 18px;">{{organization.introduction}}</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 42px;">
+                <h4>Photos</h4>
+                <div class="container rounded">
+                    <ngx-gallery *ngIf="organization" [options]="galleryOptions" [images]="galleryImages"
+                        style="display: inline-block; margin-bottom: 20px;"></ngx-gallery>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div *ngIf="members && members.length > 0" class="col-8 glass-container p-2 mt-4">
+        <div class="d-flex flex-wrap px-3 justify-content-center">
+            <div *ngFor="let member of members" class="col-2" style="min-width: 187px;">
+              <app-member-card [member]="member"></app-member-card>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center" *ngIf="pagination">
+            <pagination 
+              [boundaryLinks]="true" 
+              [totalItems]="pagination.totalItems"
+              [itemsPerPage]="pagination.itemsPerPage"
+              [(ngModel)]="pagination.currentPage"
+              (pageChanged)="pageChanged($event)"
+              previousText="&lsaquo;" 
+              nextText="&rsaquo;" 
+              firstText="&laquo;" 
+              lastText="&raquo;">
+            </pagination>
+          </div>
+    </div>
+  </div>

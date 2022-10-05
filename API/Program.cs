@@ -17,8 +17,6 @@ namespace API
     {
         public static async Task Main(string[] args)
         {
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
             var host = CreateHostBuilder(args).Build();
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
@@ -28,7 +26,10 @@ namespace API
                 var userManager = services.GetRequiredService<UserManager<AppUser>>();
                 var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
                 await context.Database.MigrateAsync();
+                await context.SaveChangesAsync();
                 await Seed.SeedUsers(userManager, roleManager);
+                await Seed.SeedOrganizations(context);
+                await Seed.SeedJobs(context);
 
             }
             catch (Exception ex)
